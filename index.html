@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frescura Natural · Distribuidores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Outfit:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#f5f2ed;--surface:#fff;--border:#ddd8cf;--border2:#c8c0b4;
+  --ink:#1e1c18;--ink2:#4a4640;--ink3:#8a847a;--ink4:#b8b0a6;
+  --sage:#5a7a5c;--sage-light:#e8f0e8;
+  --blue:#3a5a7a;--blue-light:#e8eff5;
+  --gold:#8a6c3a;--gold-light:#f5f0e4;
+  --red:#9b3a3a;--red-light:#f5e8e8;
+  --r:5px;
+}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+/* ── SCREENS ── */
+.screen{display:none;position:fixed;inset:0;overflow-y:auto;background:var(--bg)}
+.screen.active{display:block}
+/* login uses flex centering */
+#screen-login.active{display:flex;align-items:center;justify-content:center;padding:20px;
+  background:linear-gradient(135deg,#1e1c18 0%,#2a2820 50%,#1a2a1c 100%)}
+
+/* ── LOGIN — handled by .screen + #screen-login.active above ── */
+.login-box{background:var(--surface);border-radius:10px;padding:40px 36px;width:100%;max-width:400px;
+  box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.login-logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.login-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:5px}
+.form-group input{width:100%;padding:10px 13px;border:1px solid var(--border);border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-size:14px;outline:none;transition:border-color .15s;background:var(--surface);color:var(--ink)}
+.form-group input:focus{border-color:var(--sage)}
+.btn-login{width:100%;background:var(--sage);color:#fff;border:none;border-radius:var(--r);
+  padding:13px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s;margin-top:4px}
+.btn-login:hover{background:#4a6a4c}
+.btn-login:disabled{background:var(--ink3);cursor:not-allowed}
+.error-msg{font-size:13px;color:var(--red);min-height:20px;margin-bottom:10px}
+
+/* ── TOPBAR ── */
+.topbar{background:#1e1c18;color:#f5f2ed;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-brand{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600}
+.topbar-sub{font-size:10px;color:var(--sage);letter-spacing:1px;margin-top:1px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.consecutivo-badge{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sage);
+  background:#2a2820;padding:4px 10px;border-radius:4px;white-space:nowrap}
+.btn-logout{background:none;border:1px solid #3a3830;color:#8a847a;border-radius:4px;
+  padding:6px 12px;font-family:'Outfit',sans-serif;font-size:11px;cursor:pointer}
+
+/* ── PROFILE FORM ── */
+#screen-perfil{background:var(--bg);display:none}
+#screen-perfil.active{display:block}
+.perfil-wrap{max-width:480px;margin:32px auto;padding:0 20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:24px;margin-bottom:16px}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--ink3);margin-bottom:20px}
+.section-label{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin:16px 0 10px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn-primary{background:var(--blue);color:#fff;border:none;border-radius:var(--r);
+  padding:12px 24px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;cursor:pointer;width:100%;margin-top:8px}
+.btn-primary:disabled{background:var(--ink3);cursor:not-allowed}
+.btn-secondary{background:var(--surface);color:var(--ink2);border:1px solid var(--border);border-radius:var(--r);
+  padding:10px 20px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer}
+
+/* ── MAIN APP ── */
+#screen-app{background:var(--bg);display:none}
+#screen-app.active{display:block}
+.app-body{max-width:720px;margin:0 auto;padding:20px}
+
+/* ── KPI CARDS ── */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.kpi-label{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.kpi-value{font-size:24px;font-weight:700;font-family:'Cormorant Garamond',serif;color:var(--ink);margin-bottom:2px}
+.kpi-sub{font-size:12px;color:var(--ink3)}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden}
+.progress-fill{height:100%;background:var(--sage);border-radius:2px;transition:width .4s}
+
+/* ── NEW ORDER BUTTON ── */
+.btn-new-order{width:100%;background:var(--blue);color:#fff;border:none;border-radius:8px;
+  padding:16px;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;
+  margin-bottom:20px;box-shadow:0 4px 16px rgba(58,90,122,.25);transition:background .15s}
+.btn-new-order:hover{background:#2a4a6a}
+
+/* ── ORDERS TABLE ── */
+.section-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.section-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.section-header-title{font-size:14px;font-weight:600;color:var(--ink)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:400px}
+thead th{padding:9px 14px;text-align:left;font-size:10px;font-weight:600;color:var(--ink3);
+  letter-spacing:1px;text-transform:uppercase;background:#faf8f5;border-bottom:1px solid var(--border)}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--ink2)}
+tbody tr:last-child td{border-bottom:none}
+.badge{display:inline-block;padding:3px 8px;border-radius:3px;font-size:11px;font-weight:500}
+.badge-green{background:#e8f0e8;color:var(--sage)}
+.badge-gold{background:var(--gold-light);color:var(--gold)}
+.mono{font-family:'JetBrains Mono',monospace;font-size:11px}
+.fw6{font-weight:600}
+
+/* ── DATE FILTER ── */
+.date-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.date-filter label{font-size:12px;font-weight:500;color:var(--ink3)}
+.date-filter input{padding:7px 10px;border:1px solid var(--border);border-radius:var(--r);
+  font-family:'Outfit',sans-serif;font-size:13px;outline:none;width:auto;background:var(--surface);color:var(--ink)}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:var(--r);border:1px solid var(--border);
+  background:var(--surface);color:var(--ink2);cursor:pointer;font-family:'Outfit',sans-serif}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;
+  align-items:flex-end;justify-content:center;z-index:1000;padding:0}
+.modal-overlay.open{display:flex}
+.modal{background:var(--surface);border-radius:12px 12px 0 0;width:100%;max-width:600px;
+  max-height:92vh;display:flex;flex-direction:column;overflow:hidden}
+@media(min-width:640px){
+  .modal-overlay{align-items:center;padding:20px}
+  .modal{border-radius:10px;max-height:88vh}
+}
+.modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.modal-title{font-size:15px;font-weight:600;color:var(--ink)}
+.modal-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink3);padding:4px}
+.modal-body{padding:18px 20px;overflow-y:auto;flex:1}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0}
+
+/* ── PRODUCT SELECTOR ── */
+.cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.cat-tab{padding:5px 12px;border-radius:20px;border:1px solid var(--border);
+  font-size:12px;cursor:pointer;background:var(--surface);color:var(--ink2);transition:all .15s}
+.cat-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.products-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;max-height:280px;overflow-y:auto}
+@media(min-width:400px){.products-grid{grid-template-columns:1fr 1fr 1fr}}
+.prod-card{border:1px solid var(--border);border-radius:6px;padding:10px;cursor:pointer;transition:all .15s;position:relative}
+.prod-card:hover{border-color:var(--blue);background:var(--blue-light)}
+.prod-card.selected{border-color:var(--sage);background:var(--sage-light)}
+.prod-card.out-of-stock{opacity:.45;cursor:not-allowed}
+.prod-name{font-size:12px;font-weight:500;color:var(--ink);line-height:1.3;margin-bottom:3px}
+.prod-price{font-size:13px;font-weight:700;color:var(--blue)}
+.prod-stock{font-size:10px;color:var(--ink3);margin-top:2px}
+.qty-control{display:flex;align-items:center;gap:6px;margin-top:6px}
+.qty-btn{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);
+  background:var(--surface);color:var(--ink2);font-size:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.qty-btn:hover{background:var(--blue-light);border-color:var(--blue)}
+.qty-val{font-size:13px;font-weight:600;min-width:20px;text-align:center;color:var(--ink)}
+
+/* ── ORDER SUMMARY ── */
+.order-summary{background:#faf8f5;border:1px solid var(--border);border-radius:6px;padding:14px;margin-top:10px}
+.summary-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:13px;color:var(--ink2)}
+.summary-divider{height:1px;background:var(--border2);margin:8px 0}
+.summary-total{font-size:16px;font-weight:700;color:var(--ink)}
+
+/* ── EMPTY ── */
+.empty{text-align:center;padding:32px 20px;color:var(--ink3)}
+.empty-icon{font-size:32px;margin-bottom:8px}
+.empty-text{font-size:13px}
+
+/* ── ALERT ── */
+.alert{padding:10px 14px;border-radius:var(--r);font-size:13px;margin-bottom:12px}
+.alert-info{background:var(--blue-light);color:var(--blue);border:1px solid #c0d0e0}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);
+  background:#1e1c18;color:#f5f2ed;padding:12px 24px;border-radius:6px;font-size:13px;
+  z-index:9999;transition:transform .3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:600px){
+  .form-row{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:1fr 1fr!important}
+  .kpi-value{font-size:18px!important}
+  .products-grid{grid-template-columns:1fr 1fr}
+  .app-body{padding:12px}
+  .topbar{padding:10px 14px}
+  .topbar-brand{font-size:16px}
+  .login-box{padding:28px 22px}
+  .modal{border-radius:12px 12px 0 0}
+  .btn-new-order{padding:14px;font-size:14px}
+  /* Table: horizontal scroll */
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{min-width:480px}
+  thead th{padding:7px 10px;font-size:9px}
+  tbody td{padding:8px 10px;font-size:12px}
+  /* topbar-right: wrap on tiny screens */
+  .topbar-right{gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .consecutivo-badge{font-size:10px;padding:3px 7px}
+  .btn-logout{font-size:10px;padding:5px 9px}
+  /* KPI cards compact */
+  .kpi-card{padding:12px}
+  .kpi-label{font-size:10px}
+  /* Section card padding */
+  .section-card{border-radius:6px}
+  .section-header{padding:10px 14px}
+  /* Products grid */
+  .prod-name{font-size:11px}
+  .prod-price{font-size:12px}
+  /* Modal body scroll */
+  .modal-body{padding:14px 16px}
+  .modal-footer{padding:12px 16px}
+}
+@media(max-width:360px){
+  .kpi-grid{grid-template-columns:1fr!important}
+}
+</style>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<!-- ══ LOGIN ══ -->
+<div id="screen-login" class="screen active">
+  <div class="login-box">
+    <div class="login-logo">Frescura Natural</div>
+    <div class="login-sub">Portal Distribuidores</div>
+    <div id="login-error" class="error-msg"></div>
+    <div class="form-group">
+      <label>Usuario</label>
+      <input type="text" id="l-user" placeholder="tu.usuario" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('l-pass').focus()">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-login" id="btn-login" onclick="doLogin()">Ingresar →</button>
+    <div style="margin-top:16px;font-size:11px;color:var(--ink3);text-align:center">Frescura Natural · Portal Distribuidores</div>
+  </div>
+</div>
+
+<!-- ══ PROFILE COMPLETION ══ -->
+<div id="screen-perfil" class="screen">
+  <div style="background:#1e1c18;color:#f5f2ed;padding:14px 20px">
+    <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600">Frescura Natural</div>
+    <div style="font-size:10px;color:var(--sage);letter-spacing:1px" id="perfil-bienvenida">Portal Distribuidores</div>
+  </div>
+  <div class="perfil-wrap">
+    <div class="card">
+      <div class="card-title">Completa tu perfil</div>
+      <div class="card-sub">Esta información es necesaria para coordinar envíos y pagos de comisiones.</div>
+      <div class="form-group"><label>Teléfono / WhatsApp *</label><input type="tel" id="dp-tel" placeholder="3001234567"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Municipio *</label><input type="text" id="dp-municipio" placeholder="ej: Bucaramanga"></div>
+        <div class="form-group"><label>Dirección de envío</label><input type="text" id="dp-dir" placeholder="Calle, barrio..."></div>
+      </div>
+      <div class="section-label">Datos para pago de comisiones</div>
+      <div class="form-row">
+        <div class="form-group"><label>Entidad bancaria *</label><input type="text" id="dp-banco" placeholder="ej: Nequi, Bancolombia"></div>
+        <div class="form-group"><label>Número de cuenta / llave *</label><input type="text" id="dp-cuenta" placeholder="ej: 3001234567"></div>
+      </div>
+      <div id="perfil-error" class="error-msg"></div>
+      <button class="btn-primary" id="btn-perfil" onclick="guardarPerfil()">Guardar y continuar →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN APP ══ -->
+<div id="screen-app" class="screen">
+  <div class="topbar">
+    <div>
+      <div class="topbar-brand">Frescura Natural</div>
+      <div class="topbar-sub" id="dist-bienvenida">Dashboard · Registro de Ventas</div>
+    </div>
+    <div class="topbar-right">
+      <span id="topbar-date" style="font-size:11px;color:#8a847a"></span>
+      <button onclick="openModalMeta()" style="background:none;border:1px solid #3a3830;color:#8a847a;border-radius:4px;padding:5px 9px;font-family:'Outfit',sans-serif;font-size:11px;cursor:pointer">🎯 Meta</button>
+      <button onclick="editarMisDatos()" style="background:none;border:1px solid #3a3830;color:#8a847a;border-radius:4px;padding:5px 9px;font-family:'Outfit',sans-serif;font-size:11px;cursor:pointer">✏️ Mis Datos</button>
+      <button class="btn-logout" onclick="doLogout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <!-- KPIs -->
+    <div class="kpi-grid" id="kpi-grid" style="grid-template-columns:1fr 1fr"></div>
+
+    <!-- Info del programa de comisiones y puntos -->
+    <details style="background:#faf8f5;border:1px solid #ddd8cf;border-radius:8px;margin-bottom:12px;overflow:hidden">
+      <summary style="padding:10px 14px;cursor:pointer;font-size:13px;font-weight:600;color:#4a4640;list-style:none;display:flex;align-items:center;gap:6px">
+        ℹ️ ¿Cómo funcionan la comisión y los puntos?
+      </summary>
+      <div id="info-programa-body" style="padding:0 14px 14px;font-size:12px;color:#4a4640"></div>
+    </details>
+
+    <!-- Actions row -->
+    <button class="btn-new-order" onclick="openModalPedido()">🛒 Nuevo Pedido</button>
+
+    <!-- Date filter -->
+    <div class="date-filter">
+      <label>Desde:</label>
+      <input type="date" id="f-desde" onchange="renderPedidos()">
+      <label>Hasta:</label>
+      <input type="date" id="f-hasta" onchange="renderPedidos()">
+      <button class="btn-sm" onclick="setMesActual()">Este mes</button>
+    </div>
+
+    <!-- Orders table -->
+    <div class="section-card">
+      <div class="section-header">
+        <span class="section-header-title">Mis Pedidos</span>
+      </div>
+      <div class="table-wrap" id="pedidos-table"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: NUEVO PEDIDO ══ -->
+<div class="modal-overlay" id="modal-pedido">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">🛒 Nuevo Pedido</span>
+      <button class="modal-close" onclick="closePedidoModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Fecha y método de pago -->
+      <div class="form-row" style="margin-bottom:14px">
+        <div class="form-group"><label>Fecha</label><input type="date" id="p-fecha"></div>
+        <div class="form-group"><label>Método de pago</label>
+          <select id="p-metodo" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:13px;outline:none;background:var(--surface);color:var(--ink)">
+            <option>Nequi</option><option>Bre-B</option><option>Daviplata</option><option>Efectivo</option><option>Transferencia</option>
+          </select>
+        </div>
+      </div>
+      <!-- Comprobante de pago -->
+      <div class="form-group" style="margin-bottom:14px">
+        <label>📎 Comprobante de transferencia (foto)</label>
+        <input type="file" id="p-comprobante" accept="image/*"
+          style="width:100%;padding:8px;border:1px solid var(--border);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:12px;background:var(--surface)"
+          onchange="previewComprobante(this)">
+        <div id="p-comprobante-preview" style="margin-top:6px"></div>
+      </div>
+      <!-- Category tabs -->
+      <div class="cat-tabs" id="cat-tabs"></div>
+      <!-- Products grid -->
+      <div class="products-grid" id="products-grid"></div>
+      <!-- Order summary -->
+      <div class="order-summary" id="order-summary">
+        <div style="font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Resumen del pedido</div>
+        <div id="summary-items"></div>
+        <div class="summary-divider"></div>
+        <div class="summary-row">
+          <span class="summary-total">Total Pedido:</span>
+          <span class="summary-total" id="summary-total">$0</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closePedidoModal()">Cancelar</button>
+      <button class="btn-primary" id="btn-enviar" onclick="enviarPedido()" style="width:auto;margin-top:0;padding:10px 24px">Enviar Pedido ✓</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// FIREBASE INIT
+// ══════════════════════════════════════════════════════════
+const FB_CONFIG = {
+  apiKey: "AIzaSyCHEiZTSKbtC3-PpRV2jo-QLpFUrFqnnKU",
+  authDomain: "frescura-admin.firebaseapp.com",
+  projectId: "frescura-admin",
+  storageBucket: "frescura-admin.firebasestorage.app",
+  messagingSenderId: "435362377462",
+  appId: "1:435362377462:web:c1d252401cc128f16a46d7"
+};
+firebase.initializeApp(FB_CONFIG);
+const db      = firebase.firestore();
+const DIST_COL  = db.collection('distribuidores');
+const PEDIDOS_COL = db.collection('pedidos_dist');    // new orders from distributors
+const ADMIN_DOC = db.collection('admin').doc('db');   // admin DB (products/stock)
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+let _dist    = null;   // current distributor object
+let _adminDB = null;   // admin DB snapshot (products)
+let _pedidos = [];     // this distributor's orders
+let _cart    = {};     // {prodId: qty}
+let _comprobanteBase64 = null; // compressed payment screenshot (base64), if attached
+let _catActiva = 'Todos';
+let _editandoPedidoId = null;  // pedido being edited
+let _lastPedidoTotal = 0;      // last order total for KPI
+let _lastPedidoComPagada = false; // last order commission status
+
+// ══════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════
+const fmt = n => new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0}).format(n||0);
+const today = () => { const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const uid = p => `${p}-${Date.now().toString(36).toUpperCase()}`;
+
+// ── Configuración del programa (compartida con el panel admin, vía Firestore) ──
+let _configComisiones = {
+  tramos_comision: [
+    {monto: 0, pct: 0}, {monto: 60000, pct: 5}, {monto: 120000, pct: 9},
+    {monto: 200000, pct: 14}, {monto: 300000, pct: 20},
+  ],
+  valor_punto: 200
+};
+async function cargarConfigComisiones() {
+  try {
+    const doc = await db.collection('admin').doc('config_comisiones').get();
+    if (doc.exists) {
+      const d = doc.data();
+      if (d.tramos_comision) _configComisiones.tramos_comision = d.tramos_comision;
+      if (d.valor_punto) _configComisiones.valor_punto = d.valor_punto;
+    }
+  } catch(e) { console.warn('[config] usando valores por defecto:', e.message); }
+}
+
+function calcComision(total) {
+  const puntos = _configComisiones.tramos_comision;
+  let pct;
+  if (total < puntos[1].monto) pct = puntos[0].pct; // corte duro: sin transición gradual desde $0
+  else if (total >= puntos[puntos.length-1].monto) pct = puntos[puntos.length-1].pct;
+  else {
+    for (let i = 1; i < puntos.length - 1; i++) {
+      const a = puntos[i], b = puntos[i+1];
+      if (total >= a.monto && total <= b.monto) { pct = a.pct + (total-a.monto)/(b.monto-a.monto)*(b.pct-a.pct); break; }
+    }
+  }
+  return { pct: Math.round(pct*10)/10, val: total*(pct/100) };
+}
+// Verificado con el usuario: $350.000 → 20 (tramo 100k-300k) + 10 (excedente) = 30 puntos
+function calcPuntos(monto) {
+  if (monto < 100000) return 0;
+  if (monto <= 300000) return Math.floor((monto - 100000) / 10000) * 1;
+  return 20 + Math.floor((monto - 300000) / 10000) * 2;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showToast(msg, dur=3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+
+function setMesActual() {
+  const n = new Date(), y = n.getFullYear(), m = String(n.getMonth()+1).padStart(2,'0');
+  const last = new Date(y, n.getMonth()+1, 0).getDate();
+  document.getElementById('f-desde').value = `${y}-${m}-01`;
+  document.getElementById('f-hasta').value = `${y}-${m}-${String(last).padStart(2,'0')}`;
+  renderPedidos();
+}
+
+// ══════════════════════════════════════════════════════════
+// SCREEN MANAGEMENT
+// ══════════════════════════════════════════════════════════
+function showApp() {
+  document.getElementById('dist-bienvenida').textContent = 'Bienvenido/a, ' + _dist.nombre;
+  // Set last pedido for KPI
+  if (_pedidos.length > 0) {
+    const last = _pedidos[0];
+    _lastPedidoTotal = last.total || 0;
+    _lastPedidoComPagada = last.comision_pagada === true;
+  }
+  // Show date in topbar
+  const fechaEl = document.getElementById('topbar-date');
+  if (fechaEl) fechaEl.textContent = new Date().toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+  showScreen('screen-app');
+  setMesActual();
+  updateNextNum();
+  renderKPIs();
+  renderPedidos();
+  startRealtimeListener();
+}
+
+function showPerfilForm() {
+  document.getElementById('perfil-bienvenida').textContent = 'Bienvenido/a, ' + _dist.nombre;
+  if (_dist.telefono) document.getElementById('dp-tel').value = _dist.telefono;
+  if (_dist.municipio) document.getElementById('dp-municipio').value = _dist.municipio;
+  if (_dist.direccion) document.getElementById('dp-dir').value = _dist.direccion;
+  if (_dist.banco) document.getElementById('dp-banco').value = _dist.banco;
+  if (_dist.cuenta) document.getElementById('dp-cuenta').value = _dist.cuenta;
+  showScreen('screen-perfil');
+}
+
+// Permite al distribuidor volver a editar sus datos (teléfono, dirección, banco, etc.) en cualquier momento
+function editarMisDatos() {
+  document.getElementById('perfil-bienvenida').textContent = 'Editar mis datos';
+  document.getElementById('btn-perfil').textContent = '💾 Guardar cambios';
+  showPerfilForm();
+}
+
+// ══════════════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', async () => {
+  firebase.auth().onAuthStateChanged(async (user) => {
+    if (user) {
+      try {
+        const snap = await DIST_COL.doc(user.uid).get();
+        if (snap.exists) {
+          _dist = {id: snap.id, ...snap.data()};
+          await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma();
+          await loadPedidos();
+          const perfilOk = _dist.telefono && _dist.municipio && _dist.banco && _dist.cuenta;
+          if (perfilOk) showApp(); else showPerfilForm();
+          return;
+        }
+      } catch(e) { console.warn('[Auth] error restaurando sesión:', e.message); }
+    }
+    showScreen('screen-login');
+    setTimeout(() => document.getElementById('l-user')?.focus(), 100);
+  });
+});
+
+async function doLogin() {
+  const usuario = document.getElementById('l-user').value.trim().toLowerCase();
+  const pwd     = document.getElementById('l-pass').value;
+  const errEl   = document.getElementById('login-error');
+  const btn     = document.getElementById('btn-login');
+  errEl.textContent = '';
+  if (!usuario || !pwd) { errEl.textContent = 'Ingresa usuario y contraseña'; return; }
+  btn.disabled = true; btn.textContent = 'Ingresando...';
+  try {
+    const internalEmail = usuario + '@frescura-admin.app';
+    const cred = await firebase.auth().signInWithEmailAndPassword(internalEmail, pwd);
+    const snap = await DIST_COL.doc(cred.user.uid).get();
+    if (!snap.exists) { errEl.textContent = 'Usuario no encontrado. Contacta al administrador.'; await firebase.auth().signOut(); return; }
+    _dist = {id: snap.id, ...snap.data()};
+    await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma();
+    await loadPedidos();
+    const perfilOk = _dist.telefono && _dist.municipio && _dist.banco && _dist.cuenta;
+    if (perfilOk) showApp(); else showPerfilForm();
+  } catch(e) {
+    if (e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found') {
+      errEl.textContent = 'Usuario o contraseña incorrectos';
+    } else {
+      errEl.textContent = 'Error al conectar: ' + e.message;
+    }
+  } finally {
+    btn.disabled = false; btn.textContent = 'Ingresar →';
+  }
+}
+
+// ── Meta de ventas ──────────────────────────────────────
+function openModalMeta() {
+  document.getElementById('meta-valor').value = _dist.meta_ventas || '';
+  const total = _pedidos.filter(p=>p.estado_pago==='confirmado').reduce((a,p)=>a+(p.total||0),0);
+  const meta  = _dist.meta_ventas || 0;
+  document.getElementById('meta-progress').innerHTML = meta > 0
+    ? `<div style="font-size:12px;color:var(--ink3);margin-bottom:4px">Progreso actual: ${fmt(total)} / ${fmt(meta)}</div>
+       <div class="progress-bar"><div class="progress-fill" style="width:${Math.min(100,total/meta*100)}%"></div></div>`
+    : '';
+  document.getElementById('modal-meta').classList.add('open');
+}
+
+async function guardarMeta() {
+  const val = parseFloat(document.getElementById('meta-valor').value) || 0;
+  try {
+    await DIST_COL.doc(_dist.id).update({meta_ventas: val});
+    _dist.meta_ventas = val;
+    document.getElementById('modal-meta').classList.remove('open');
+    renderKPIs();
+    showToast('✓ Meta guardada: ' + fmt(val));
+  } catch(e) { showToast('⚠ Error: ' + e.message); }
+}
+
+// ── Editar pedido ────────────────────────────────────────
+function editarPedido(pedidoId) {
+  const p = _pedidos.find(x => x.id === pedidoId);
+  if (!p) return;
+  if (p.procesado) { showToast('⚠ Este pedido ya fue confirmado por el administrador'); return; }
+  _editandoPedidoId = pedidoId;
+  _cart = {};
+  (p.items||[]).forEach(i => { _cart[i.id] = i.cantidad; });
+  _lastPedidoTotal = 0;
+  document.getElementById('p-fecha').value = p.fecha;
+  document.getElementById('p-metodo').value = p.metodo_pago || 'Nequi';
+  _comprobanteBase64 = p.comprobante_base64 || null;
+  document.getElementById('p-comprobante').value = '';
+  document.getElementById('p-comprobante-preview').innerHTML = _comprobanteBase64
+    ? `<img src="${_comprobanteBase64}" style="max-width:160px;border-radius:4px;border:1px solid var(--border);display:block;margin-top:4px"><span style="font-size:10px;color:var(--ink3)">Comprobante ya adjunto (sube uno nuevo para reemplazarlo)</span>`
+    : '';
+  renderCatTabs(); renderProductsGrid(); renderOrderSummary();
+  document.getElementById('modal-pedido').classList.add('open');
+  document.querySelector('#modal-pedido .modal-title').textContent = '✏️ Editar Pedido ' + p.num;
+  document.getElementById('btn-enviar').textContent = 'Actualizar Pedido ✓';
+}
+
+// ── Real-time listener: commission payment status ────────
+function startRealtimeListener() {
+  if (!_dist) return;
+  // Listen for changes to this distributor's pedidos
+  PEDIDOS_COL.where('dist_id','==',_dist.id).onSnapshot(snapshot => {
+    snapshot.docChanges().forEach(change => {
+      const data = {id: change.doc.id, ...change.doc.data()};
+      const idx = _pedidos.findIndex(p => p.id === data.id);
+      if (data.estado_pago === 'cancelado') {
+        if (idx >= 0) _pedidos.splice(idx, 1); // desaparece del panel del distribuidor
+      } else if (idx >= 0) {
+        _pedidos[idx] = {..._pedidos[idx], ...data};
+        // Update KPI "esta venta" if matches last order
+        if (_pedidos[0] && _pedidos[idx].id === _pedidos[0].id) {
+          _lastPedidoComPagada = data.comision_pagada === true;
+          if (data.estado_pago === 'confirmado') _lastPedidoTotal = data.total || _lastPedidoTotal;
+        }
+      } else if (change.type === 'added') {
+        // Only add if not already present
+        if (!_pedidos.find(p => p.id === data.id)) _pedidos.unshift(data);
+      }
+    });
+    renderKPIs();
+    renderPedidos();
+  }, err => console.warn('[listener pedidos]', err.message));
+}
+
+function doLogout() {
+  firebase.auth().signOut().catch(()=>{});
+  sessionStorage.removeItem('fn_dist_id');
+  _dist = null; _adminDB = null; _pedidos = []; _cart = {};
+  document.getElementById('l-user').value = '';
+  document.getElementById('l-pass').value = '';
+  document.getElementById('login-error').textContent = '';
+  showScreen('screen-login');
+  setTimeout(() => document.getElementById('l-user')?.focus(), 100);
+}
+
+// ══════════════════════════════════════════════════════════
+// PROFILE
+// ══════════════════════════════════════════════════════════
+async function guardarPerfil() {
+  const errEl = document.getElementById('perfil-error');
+  const btn   = document.getElementById('btn-perfil');
+  errEl.textContent = '';
+  const tel   = document.getElementById('dp-tel').value.trim();
+  const mun   = document.getElementById('dp-municipio').value.trim();
+  const dir   = document.getElementById('dp-dir').value.trim();
+  const banco = document.getElementById('dp-banco').value.trim();
+  const cta   = document.getElementById('dp-cuenta').value.trim();
+  if (!tel || !mun || !banco || !cta) { errEl.textContent = 'Teléfono, municipio, banco y cuenta son obligatorios'; return; }
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  try {
+    await DIST_COL.doc(_dist.id).update({telefono:tel, municipio:mun, direccion:dir, banco, cuenta:cta});
+    _dist = {..._dist, telefono:tel, municipio:mun, direccion:dir, banco, cuenta:cta};
+    showApp();
+  } catch(e) {
+    errEl.textContent = 'Error: ' + e.message;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Guardar y continuar →';
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// LOAD DATA
+// ══════════════════════════════════════════════════════════
+async function loadAdminDB() {
+  try {
+    const snap = await ADMIN_DOC.get();
+    if (snap.exists) _adminDB = JSON.parse(snap.data().data);
+  } catch(e) { console.warn('loadAdminDB:', e.message); }
+}
+
+async function loadPedidos() {
+  try {
+    const snap = await PEDIDOS_COL.where('dist_id','==',_dist.id).orderBy('fecha','desc').get();
+    // Los pedidos cancelados por el admin no se muestran (siguen existiendo en la base para el historial del admin)
+    _pedidos = snap.docs.map(d => ({id:d.id, ...d.data()})).filter(p => p.estado_pago !== 'cancelado');
+  } catch(e) { console.warn('loadPedidos:', e.message); _pedidos = []; }
+}
+
+// ══════════════════════════════════════════════════════════
+// CONSECUTIVE NUMBER
+// ══════════════════════════════════════════════════════════
+function updateNextNum() {
+  const n = _pedidos.length + 1;
+  const el = document.getElementById('next-num');
+  if (el) el.textContent = '#' + String(n).padStart(4,'0');
+}
+
+// ══════════════════════════════════════════════════════════
+// KPIs
+// ══════════════════════════════════════════════════════════
+// ── Catálogo de recompensas y canje de puntos ──
+// ── Caducidad de puntos: 12 meses desde la fecha de generación de cada lote (FIFO), igual que en el admin ──
+function limpiarLotesCaducados(lotes) {
+  const hoy = new Date(today());
+  let expirados = 0;
+  const nuevosLotes = (lotes||[]).map(l => {
+    if ((l.restantes||0) <= 0) return l;
+    const fechaLote = new Date(l.fecha);
+    const meses = (hoy - fechaLote) / (1000*60*60*24*30.44);
+    if (meses >= 12) { expirados += l.restantes; return {...l, restantes: 0, caducado: true}; }
+    return l;
+  });
+  return {nuevosLotes, expirados};
+}
+async function verificarYCaducarPuntosPropios() {
+  try {
+    const doc = await DIST_COL.doc(_dist.id).get();
+    if (!doc.exists) return;
+    const data = doc.data();
+    const {nuevosLotes, expirados} = limpiarLotesCaducados(data.puntos_lotes || []);
+    if (expirados > 0) {
+      const nuevoDisponible = Math.max(0, (data.puntos_disponibles||0) - expirados);
+      await DIST_COL.doc(_dist.id).update({puntos_lotes: nuevosLotes, puntos_disponibles: nuevoDisponible});
+      _dist.puntos_lotes = nuevosLotes;
+      _dist.puntos_disponibles = nuevoDisponible;
+      showToast(`⚠ ${expirados} puntos caducaron (más de 12 meses)`);
+    } else {
+      _dist.puntos_lotes = nuevosLotes;
+    }
+  } catch(e) { console.warn('[caducidad puntos]', e.message); }
+}
+// Consume puntos de los lotes más antiguos primero (FIFO); devuelve los lotes ya actualizados
+function consumirLotesFIFO(lotes, puntosAConsumir) {
+  const ordenados = [...(lotes||[])].sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
+  let restante = puntosAConsumir;
+  for (const l of ordenados) {
+    if (restante <= 0) break;
+    if ((l.restantes||0) <= 0) continue;
+    const consumir = Math.min(l.restantes, restante);
+    l.restantes -= consumir;
+    restante -= consumir;
+  }
+  return ordenados;
+}
+
+async function verCatalogoRecompensas() {
+  const overlay = document.createElement('div');
+  overlay.id = 'overlay-catalogo';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:12px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;border-radius:12px 12px 0 0">
+        <div style="font-weight:600;font-size:15px">🎁 Catálogo de Recompensas</div>
+        <button onclick="document.getElementById('overlay-catalogo').remove()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--ink3);line-height:1;padding:4px 8px">✕</button>
+      </div>
+      <div style="padding:12px 20px">
+        <div style="font-size:13px;color:var(--ink3);margin-bottom:10px">Tienes <b style="color:#6a3a7a">${_dist.puntos_disponibles||0} puntos</b> disponibles</div>
+        <div id="catalogo-items">Cargando...</div>
+      </div>
+    </div>`;
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+
+  try {
+    const snap = await db.collection('recompensas').where('activo','==',true).get();
+    const items = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b)=>a.pvp-b.pvp);
+    const disponibles = _dist.puntos_disponibles || 0;
+    document.getElementById('catalogo-items').innerHTML = items.length ? items.map(r => {
+      const pts = Math.ceil(r.pvp / _configComisiones.valor_punto);
+      const alcanza = disponibles >= pts;
+      const faltante = Math.max(0, pts - disponibles);
+      const montoFaltante = faltante * _configComisiones.valor_punto;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+        ${r.foto_base64 ? `<img src="${r.foto_base64}" style="width:48px;height:48px;object-fit:cover;border-radius:6px">` : '<div style="width:48px;height:48px;background:var(--bg);border-radius:6px;display:flex;align-items:center;justify-content:center">🎁</div>'}
+        <div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nombre}</div><div style="font-size:11px;color:var(--ink3)">${pts} puntos${!alcanza ? ` · te faltan ${faltante} pts (${fmt(montoFaltante)})` : ''}</div></div>
+        <button class="btn btn-xs" style="background:${alcanza?'var(--sage)':'#8a6c3a'};color:#fff;border:none" onclick="solicitarCanje('${r.id}','${r.nombre.replace(/'/g,"\\'")}',${pts})">${alcanza?'Canjear':'Completar con $'}</button>
+      </div>`;
+    }).join('') : '<div class="text-muted" style="font-size:13px">Aún no hay recompensas disponibles.</div>';
+  } catch(e) { document.getElementById('catalogo-items').innerHTML = '<div class="alert-strip">Error: '+e.message+'</div>'; }
+}
+
+let _canjeEfectivoComprobante = null;
+async function solicitarCanje(recompensaId, recompensaNombre, puntos) {
+  const disponibles = _dist.puntos_disponibles || 0;
+
+  if (disponibles >= puntos) {
+    // Alcanza solo con puntos
+    if (!confirm(`¿Canjear "${recompensaNombre}" por ${puntos} puntos? Quedará pendiente de aprobación del administrador.`)) return;
+    await _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados: puntos, montoEfectivo: 0, comprobanteEfectivo: null});
+    return;
+  }
+
+  // No alcanza — ofrecer completar la diferencia en efectivo
+  const faltante = puntos - disponibles;
+  const montoFaltante = faltante * _configComisiones.valor_punto;
+  const overlay = document.createElement('div');
+  overlay.id = 'overlay-canje-efectivo';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2100;display:flex;align-items:center;justify-content:center;padding:16px';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:12px;width:100%;max-width:380px;padding:20px">
+      <div style="font-weight:600;margin-bottom:10px">Completar canje con dinero</div>
+      <div style="font-size:13px;color:#4a4640;margin-bottom:14px">
+        "${recompensaNombre}" cuesta ${puntos} puntos. Tienes ${disponibles}, te faltan <b>${faltante} puntos</b>.
+        Puedes cubrir esa diferencia pagando <b style="color:#8a6c3a">${fmt(montoFaltante)}</b> por los medios de pago habituales, y subir el comprobante aquí.
+      </div>
+      <div class="form-group"><label>Comprobante de pago</label><input type="file" accept="image/*" onchange="_previewComprobanteCanje(this)"><div id="canje-efectivo-preview" style="margin-top:6px"></div></div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="btn btn-secondary" style="flex:1" onclick="document.getElementById('overlay-canje-efectivo').remove()">Cancelar</button>
+        <button class="btn btn-primary" style="flex:1" onclick="_confirmarCanjeConEfectivo('${recompensaId}','${recompensaNombre.replace(/'/g,"\\'")}',${puntos},${disponibles},${montoFaltante})">Solicitar canje</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+function _previewComprobanteCanje(input) {
+  const file = input.files?.[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, 700/img.width);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width*scale; canvas.height = img.height*scale;
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      _canjeEfectivoComprobante = canvas.toDataURL('image/jpeg', 0.6);
+      document.getElementById('canje-efectivo-preview').innerHTML = `<img src="${_canjeEfectivoComprobante}" style="max-width:140px;border-radius:4px">`;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+async function _confirmarCanjeConEfectivo(recompensaId, recompensaNombre, puntosRequeridos, puntosDisponibles, montoFaltante) {
+  if (!_canjeEfectivoComprobante) { alert('Sube el comprobante de pago antes de continuar'); return; }
+  document.getElementById('overlay-canje-efectivo')?.remove();
+  await _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados: puntosDisponibles, montoEfectivo: montoFaltante, comprobanteEfectivo: _canjeEfectivoComprobante});
+  _canjeEfectivoComprobante = null;
+}
+async function _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados, montoEfectivo, comprobanteEfectivo}) {
+  try {
+    await db.collection('canjes').add({
+      dist_id: _dist.id, dist_nombre: _dist.nombre,
+      recompensa_id: recompensaId, recompensa_nombre: recompensaNombre,
+      puntos: puntosUsados, monto_efectivo: montoEfectivo || 0,
+      comprobante_efectivo_base64: comprobanteEfectivo || null,
+      fecha: today(), estado: 'pendiente'
+    });
+    // Consumir los puntos usados de los lotes más antiguos (FIFO)
+    const nuevosLotes = consumirLotesFIFO(_dist.puntos_lotes || [], puntosUsados);
+    await DIST_COL.doc(_dist.id).update({
+      puntos_disponibles: firebase.firestore.FieldValue.increment(-puntosUsados),
+      puntos_lotes: nuevosLotes
+    });
+    _dist.puntos_disponibles = (_dist.puntos_disponibles||0) - puntosUsados;
+    _dist.puntos_lotes = nuevosLotes;
+    document.getElementById('overlay-catalogo')?.remove();
+    showToast(montoEfectivo > 0 ? '✓ Canje solicitado con pago adicional. Pendiente de aprobación.' : '✓ Canje solicitado. Pendiente de aprobación.');
+    renderKPIs();
+  } catch(e) { alert('Error al solicitar canje: ' + e.message); }
+}
+
+// Rellena la tarjeta informativa con la escala de comisión y puntos vigente (según configuración real)
+function renderInfoPrograma() {
+  const el = document.getElementById('info-programa-body');
+  if (!el) return;
+  const tramos = _configComisiones.tramos_comision;
+  const filasComision = tramos.map((t,i) => {
+    const siguiente = tramos[i+1];
+    const rango = siguiente ? `${fmt(t.monto)} – ${fmt(siguiente.monto)}` : `${fmt(t.monto)} en adelante`;
+    return `<tr><td style="padding:3px 8px 3px 0">${rango}</td><td style="padding:3px 0;font-weight:600;color:#5a7a5c">${t.pct}%</td></tr>`;
+  }).join('');
+
+  el.innerHTML = `
+    <div style="margin-bottom:10px">
+      <div style="font-weight:600;margin-bottom:4px">📊 Escala de comisión (0% → 20%)</div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">${filasComision}</table>
+      <div style="margin-top:6px;color:#8a847a;font-size:11px;line-height:1.5">
+        La comisión se calcula sobre tus <b>ventas confirmadas acumuladas del mes en curso</b>, no por pedido individual — entre más vendas en el mes, más alto sube tu %. El porcentaje sube de forma proporcional dentro de cada tramo (no salta de golpe), y se recalcula automáticamente cada vez que el admin confirma un pedido tuyo.
+      </div>
+    </div>
+    <div style="margin-bottom:10px;padding-top:10px;border-top:1px dashed #ddd8cf">
+      <div style="font-weight:600;margin-bottom:4px">💎 Cómo se generan los puntos</div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <tr><td style="padding:3px 8px 3px 0">Menos de $100.000</td><td style="padding:3px 0;font-weight:600;color:#6a3a7a">0 pts</td></tr>
+        <tr><td style="padding:3px 8px 3px 0">$100.000 – $300.000</td><td style="padding:3px 0;font-weight:600;color:#6a3a7a">1 pt por cada $10.000</td></tr>
+        <tr><td style="padding:3px 8px 3px 0">Sobre $300.000</td><td style="padding:3px 0;font-weight:600;color:#6a3a7a">2 pts por cada $10.000 adicionales</td></tr>
+      </table>
+      <div style="margin-top:6px;color:#8a847a;font-size:11px;line-height:1.5">
+        Los puntos son independientes de la comisión, no se resetean cada mes, y se acreditan cuando el admin confirma cada pedido. Se pueden canjear por productos en el catálogo de recompensas.
+      </div>
+    </div>
+    <div style="padding-top:10px;border-top:1px dashed #ddd8cf;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:600">Valor actual del punto</span>
+      <span style="font-weight:700;color:#6a3a7a">1 pt = ${fmt(_configComisiones.valor_punto)}</span>
+    </div>`;
+}
+
+function renderKPIs() {
+  const conf  = _pedidos.filter(p => p.estado_pago === 'confirmado');
+  const total = conf.reduce((a,p) => a + (p.total||0), 0);
+
+  const mesActual = today().slice(0,7);
+  const ventasMes = conf.filter(p => (p.fecha||'').startsWith(mesActual)).reduce((a,p) => a + (p.total||0), 0);
+  const comVigente = calcComision(ventasMes);
+  const puntosDisponibles = _dist.puntos_disponibles || 0;
+
+  const lastTotal = _lastPedidoTotal || 0;
+  const lastCom   = calcComision(lastTotal).val;
+  const lastComPagada = _lastPedidoComPagada || false;
+
+  const meta  = _dist.meta_ventas || 0;
+  const tramos = _configComisiones.tramos_comision;
+  const nextTierObj = tramos.find(t => t.monto > ventasMes);
+  const nextTier = nextTierObj ? {l: nextTierObj.monto, p: nextTierObj.pct} : null;
+
+  // Total histórico de comisión: se agrupa por mes (la comisión es proporcional a lo vendido cada mes)
+  const ventasPorMes = {};
+  conf.forEach(p => {
+    const mes = (p.fecha||'').slice(0,7);
+    ventasPorMes[mes] = (ventasPorMes[mes]||0) + (p.total||0);
+  });
+  const totalCom = Object.values(ventasPorMes).reduce((a, montoMes) => a + calcComision(montoMes).val, 0);
+
+  document.getElementById('kpi-grid').innerHTML = `
+    <div class="kpi-card" style="background:var(--sage-light)">
+      <div class="kpi-label" style="color:var(--sage)">Ventas Este Mes</div>
+      <div class="kpi-value" style="font-size:20px;color:var(--sage)">${fmt(ventasMes)}</div>
+      <div class="kpi-sub">Comisión vigente: <b>${comVigente.pct}%</b> ${nextTier ? `· Faltan ${fmt(nextTier.l-ventasMes)} para ${nextTier.p}%` : '🏆 Nivel máximo'}</div>
+    </div>
+    <div class="kpi-card" style="background:#f0e8f5">
+      <div class="kpi-label" style="color:#6a3a7a">💎 Puntos Disponibles</div>
+      <div class="kpi-value" style="font-size:20px;color:#6a3a7a">${puntosDisponibles}</div>
+      <div class="kpi-sub">1 punto = ${fmt(_configComisiones.valor_punto)} · <a href="javascript:void(0)" onclick="verCatalogoRecompensas()" style="color:#6a3a7a">Ver catálogo →</a></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label" style="color:var(--blue)">Total Esta Venta</div>
+      <div class="kpi-value" style="font-size:20px">${fmt(lastTotal)}</div>
+      <div class="kpi-sub">${lastTotal > 0 ? 'Último pedido registrado' : 'Sin pedido activo'}</div>
+    </div>
+    <div class="kpi-card" style="background:${lastComPagada?'var(--sage-light)':'#faf8f5'}">
+      <div class="kpi-label" style="color:${lastComPagada?'var(--sage)':'var(--gold)'}">Comisión Esta Venta</div>
+      <div class="kpi-value" style="font-size:20px;color:${lastComPagada?'var(--sage)':'var(--gold)'}">${fmt(lastCom)}</div>
+      <div class="kpi-sub">
+        <span style="display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:500;
+          background:${lastComPagada?'var(--sage)':'#f0ede8'};color:${lastComPagada?'#fff':'var(--ink3)'}">
+          ${lastComPagada ? '✓ Pagada' : '⏳ Pendiente'}
+        </span>
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Total Ventas</div>
+      <div class="kpi-value">${fmt(total)}</div>
+      <div class="kpi-sub">${conf.length} pedido${conf.length!==1?'s':''} confirmado${conf.length!==1?'s':''}</div>
+      ${meta > 0
+        ? `<div class="progress-bar" style="margin-top:7px"><div class="progress-fill" style="width:${Math.min(100,total/meta*100)}%;transition:width .4s"></div></div>
+           <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--ink3);margin-top:3px">
+             <span>${Math.min(100,(total/meta*100).toFixed(0))}% de la meta</span>
+             <span>${fmt(meta)}</span>
+           </div>`
+        : nextTier
+          ? `<div style="font-size:10px;color:var(--ink3);margin-top:4px">Sig. nivel (${nextTier.p}%) en ${fmt(nextTier.l-total)}</div>`
+          : total >= 300000 ? '<div style="font-size:10px;color:var(--sage);margin-top:4px">🏆 Nivel máximo (20%)</div>' : ''}
+    </div>
+    <div class="kpi-card" style="background:${totalCom>0?'var(--sage-light)':'#faf8f5'}">
+      <div class="kpi-label">Total Comisiones</div>
+      <div class="kpi-value" style="color:${totalCom>0?'var(--sage)':'var(--ink3)'}">${fmt(totalCom)}</div>
+      <div class="kpi-sub">${conf.length > 0 ? conf.length + ' pedido' + (conf.length>1?'s':'') + ' confirmado' + (conf.length>1?'s':'') : 'Sin pedidos confirmados'}</div>
+    </div>`;
+}
+
+function renderPedidos() {
+  const desde = document.getElementById('f-desde').value;
+  const hasta = document.getElementById('f-hasta').value;
+  const filtered = _pedidos.filter(p => {
+    if (desde && p.fecha < desde) return false;
+    if (hasta && p.fecha > hasta) return false;
+    return true;
+  });
+  const el = document.getElementById('pedidos-table');
+  if (!filtered.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">Sin pedidos en este período</div></div>';
+    return;
+  }
+  el.innerHTML = '<table><thead><tr><th>Pedido</th><th>Fecha</th><th>Total</th><th>Comisión</th><th>Puntos</th><th>Admin</th><th>Envío</th><th>Recibido</th><th>Resumen</th></tr></thead><tbody>' +
+    filtered.map(p => {
+      const pCom = calcComision(p.total||0);
+      const pPuntos = p.estado_pago === 'confirmado' ? calcPuntos(p.total||0) : 0;
+      const recibido = p.dist_recibido === true;
+      const envioMap = {preparando:'📦 Preparando',enviado:'🚚 Enviado',entregado:'✅ Entregado',cancelado:'❌ Cancelado'};
+      const envioLabel = envioMap[p.estado_envio||'preparando'] || '📦 Preparando';
+      const envioColor = p.estado_envio==='entregado'?'var(--sage)':p.estado_envio==='enviado'?'var(--blue)':p.estado_envio==='cancelado'?'var(--red)':'var(--gold)';
+      return `<tr>
+        <td class="mono fw6" style="white-space:nowrap">${p.num||p.id.slice(-6)}</td>
+        <td style="white-space:nowrap;font-size:12px">${p.fecha}</td>
+        <td class="fw6">${fmt(p.total||0)}</td>
+        <td style="white-space:nowrap">
+          ${pCom.pct > 0
+            ? `<span style="font-weight:600;color:var(--sage)">${fmt(pCom.val)}</span><span style="font-size:10px;color:var(--ink3);margin-left:2px">(${pCom.pct}%)</span>
+               ${p.comision_pagada?'<br><span style="font-size:9px;background:#e8f0e8;color:#5a7a5c;padding:1px 5px;border-radius:2px">✓ Pagada</span>':''}`
+            : '<span style="color:var(--ink3);font-size:12px">—</span>'}
+        </td>
+        <td style="white-space:nowrap">
+          ${pPuntos > 0
+            ? `<span style="font-weight:600;color:#6a3a7a">💎 ${pPuntos}</span>`
+            : p.estado_pago==='confirmado' ? '<span style="color:var(--ink3);font-size:12px">—</span>' : '<span style="color:var(--ink3);font-size:11px;font-style:italic">Pend. confirmar</span>'}
+        </td>
+        <td>
+          <span class="badge ${p.estado_pago==='confirmado'?'badge-green':'badge-gold'}" style="font-size:11px">${p.estado_pago==='confirmado'?'✓ Conf.':'⏳ Pend.'}</span>
+        </td>
+        <td style="white-space:nowrap;font-size:12px;color:${envioColor}">${envioLabel}</td>
+        <td>
+          <button onclick="toggleRecibido('${p.id}',${recibido})"
+            style="border:none;border-radius:4px;padding:4px 9px;font-size:11px;cursor:pointer;white-space:nowrap;
+              background:${recibido?'var(--sage)':'var(--bg2)'};color:${recibido?'#fff':'var(--ink3)'};
+              border:1px solid ${recibido?'var(--sage)':'var(--border)'}">
+            ${recibido?'✓ Recibido':'En espera'}
+          </button>
+        </td>
+        <td>
+          <div style="display:flex;gap:4px;flex-wrap:wrap">
+            <button onclick="verResumenPedido('${p.id}')"
+              style="border:1px solid var(--border);border-radius:4px;padding:4px 9px;font-size:11px;cursor:pointer;background:var(--surface);color:var(--ink2)">
+              📋 Ver
+            </button>
+            ${!p.procesado ? `<button onclick="editarPedido('${p.id}')"
+              style="border:1px solid var(--gold);border-radius:4px;padding:4px 9px;font-size:11px;cursor:pointer;background:var(--gold-light);color:var(--gold)">
+              ✏️ Editar
+            </button>` : ''}
+          </div>
+        </td>
+      </tr>`;
+    }).join('') + '</tbody></table>';
+}
+
+// ══════════════════════════════════════════════════════════
+// MODAL PEDIDO
+// ══════════════════════════════════════════════════════════
+// Toggle received status (controlled by distributor)
+async function toggleRecibido(pedidoId, current) {
+  const nueva = !current;
+  try {
+    await PEDIDOS_COL.doc(pedidoId).update({dist_recibido: nueva});
+    const idx = _pedidos.findIndex(p => p.id === pedidoId);
+    if (idx >= 0) _pedidos[idx].dist_recibido = nueva;
+    renderPedidos();
+    showToast(nueva ? '✓ Marcado como recibido' : 'Marcado como en espera');
+  } catch(e) { showToast('⚠ Error: ' + e.message); }
+}
+
+// Show order summary in a modal-like overlay
+function verResumenPedido(pedidoId) {
+  const p = _pedidos.find(x => x.id === pedidoId);
+  if (!p) return;
+  const pCom = calcComision(p.total||0);
+  const fmt2 = n => new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0}).format(n||0);
+  const itemsHTML = (p.items||[]).map(i =>
+    `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #e8e4dc;font-size:13px">
+       <span>${i.nombre}${i.cantidad>1?' <strong>x'+i.cantidad+'</strong>':''}</span>
+       <span style="font-weight:600">${fmt2(i.subtotal)}</span>
+     </div>`
+  ).join('');
+
+  // Create overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'overlay-resumen-pedido';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:12px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto;padding:0;box-shadow:0 10px 40px rgba(0,0,0,.25)">
+      <div style="padding:16px 20px;border-bottom:1px solid #e8e4dc;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;border-radius:12px 12px 0 0">
+        <div>
+          <div style="font-weight:600;font-size:15px">Resumen del Pedido</div>
+          <div style="font-size:12px;color:#8a847a">${p.num||p.id.slice(-6)} · ${p.fecha}</div>
+        </div>
+        <button onclick="document.getElementById('overlay-resumen-pedido').remove()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#8a847a;line-height:1;padding:4px 8px">✕</button>
+      </div>
+      <div style="padding:16px 20px">
+        <div style="font-size:11px;font-weight:600;color:#8a847a;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Productos</div>
+        ${itemsHTML}
+        <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:15px;font-weight:700">
+          <span>Total Pedido</span><span>${fmt2(p.total||0)}</span>
+        </div>
+        <div style="background:#f5f2ed;border-radius:6px;padding:12px;margin-top:8px">
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+            <span style="color:#8a847a">Porcentaje comisión</span>
+            <span style="font-weight:600">${pCom.pct}%</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700">
+            <span>Comisión Generada</span>
+            <span style="color:#5a7a5c">${fmt2(pCom.val)}</span>
+          </div>
+          ${p.comision_pagada?'<div style="margin-top:6px;font-size:11px;background:#e8f0e8;color:#5a7a5c;padding:4px 8px;border-radius:3px;display:inline-block">✓ Comisión pagada</div>':'<div style="margin-top:6px;font-size:11px;color:#8a6c3a">⏳ Pendiente de pago</div>'}
+          <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-top:10px;padding-top:10px;border-top:1px dashed #ddd8cf">
+            <span style="color:#6a3a7a">💎 Puntos generados</span>
+            <span style="color:#6a3a7a">${p.estado_pago==='confirmado' ? calcPuntos(p.total||0) : 0} pts</span>
+          </div>
+          ${p.estado_pago!=='confirmado' ? '<div style="font-size:10px;color:#8a847a;margin-top:2px">Se acreditan cuando el admin confirme el pedido</div>' : ''}
+        </div>
+      </div>
+    </div>`;
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+function openModalPedido() {
+  if (!_adminDB) { showToast('⚠ Cargando catálogo, intenta de nuevo'); loadAdminDB(); return; }
+  _editandoPedidoId = null;
+  document.querySelector('#modal-pedido .modal-title').textContent = '🛒 Nuevo Pedido';
+  document.getElementById('btn-enviar').textContent = 'Enviar Pedido ✓';
+  _cart = {};
+  _comprobanteBase64 = null;
+  document.getElementById('p-comprobante').value = '';
+  document.getElementById('p-comprobante-preview').innerHTML = '';
+  document.getElementById('p-fecha').value = today();
+  renderCatTabs();
+  renderProductsGrid();
+  renderOrderSummary();
+  document.getElementById('modal-pedido').classList.add('open');
+}
+
+function closePedidoModal() {
+  document.getElementById('modal-pedido').classList.remove('open');
+  _cart = {};
+  _comprobanteBase64 = null;
+}
+
+// ── Payment screenshot: compress client-side and store as base64 (no paid Storage needed) ──
+function previewComprobante(input) {
+  const file = input.files && input.files[0];
+  if (!file) { _comprobanteBase64 = null; document.getElementById('p-comprobante-preview').innerHTML = ''; return; }
+  const previewEl = document.getElementById('p-comprobante-preview');
+  previewEl.innerHTML = '<span style="font-size:11px;color:var(--ink3)">Comprimiendo imagen...</span>';
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX_W = 900;
+      const scale = Math.min(1, MAX_W / img.width);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+      _comprobanteBase64 = dataUrl;
+      const kb = Math.round(dataUrl.length * 0.75 / 1024); // approx decoded size
+      previewEl.innerHTML = `<img src="${dataUrl}" style="max-width:160px;border-radius:4px;border:1px solid var(--border);display:block;margin-top:4px">
+        <span style="font-size:10px;color:var(--ink3)">✓ Comprobante listo (~${kb} KB)</span>`;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderCatTabs() {
+  const prods  = (_adminDB.productos||[]).filter(p => p.activo && p.stock > 0);
+  const cats   = ['Todos', ...new Set(prods.map(p => p.categoria))];
+  document.getElementById('cat-tabs').innerHTML = cats.map(c =>
+    `<button class="cat-tab${c===_catActiva?' active':''}" onclick="setCat('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setCat(cat) {
+  _catActiva = cat;
+  renderCatTabs();
+  renderProductsGrid();
+}
+
+function renderProductsGrid() {
+  const prods = (_adminDB.productos||[]).filter(p => p.activo &&
+    (_catActiva === 'Todos' || p.categoria === _catActiva));
+  const el = document.getElementById('products-grid');
+  if (!prods.length) { el.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:20px">Sin productos en esta categoría</div>'; return; }
+  el.innerHTML = prods.map(p => {
+    const qty = _cart[p.id] || 0;
+    const agotado = p.stock <= 0;
+    return `<div class="prod-card${qty>0?' selected':''}${agotado?' out-of-stock':''}" onclick="${agotado?'':'addToCart(\''+p.id+'\')'}" id="pc-${p.id}">
+      <div class="prod-name">${p.nombre}</div>
+      <div class="prod-price">${fmt(p.precio)}</div>
+      <div class="prod-stock">${agotado?'Sin stock':'Stock: '+p.stock}</div>
+      ${qty > 0 ? `<div class="qty-control">
+        <button class="qty-btn" onclick="event.stopPropagation();changeQty('${p.id}',-1)">−</button>
+        <span class="qty-val">${qty}</span>
+        <button class="qty-btn" onclick="event.stopPropagation();changeQty('${p.id}',+1)">+</button>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function addToCart(prodId) {
+  _cart[prodId] = (_cart[prodId] || 0) + 1;
+  const p = (_adminDB.productos||[]).find(x => x.id === prodId);
+  if (p && _cart[prodId] > p.stock) _cart[prodId] = p.stock;
+  renderProductsGrid();
+  renderOrderSummary();
+}
+
+function changeQty(prodId, delta) {
+  _cart[prodId] = (_cart[prodId] || 0) + delta;
+  if (_cart[prodId] <= 0) delete _cart[prodId];
+  const p = (_adminDB.productos||[]).find(x => x.id === prodId);
+  if (p && _cart[prodId] > p.stock) _cart[prodId] = p.stock;
+  renderProductsGrid();
+  renderOrderSummary();
+}
+
+function renderOrderSummary() {
+  const items = Object.entries(_cart)
+    .map(([id,qty]) => {
+      const p = (_adminDB.productos||[]).find(x => x.id === id);
+      return p ? {id, nombre:p.nombre, qty, precio:p.precio, subtotal:p.precio*qty, costo:p.costo} : null;
+    }).filter(Boolean);
+  const total = items.reduce((a,i) => a+i.subtotal, 0);
+  const el = document.getElementById('summary-items');
+  if (!items.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--ink3);text-align:center;padding:8px">Selecciona productos del catálogo</div>';
+  } else {
+    el.innerHTML = items.map(i =>
+      `<div class="summary-row"><span>${i.nombre} x${i.qty}</span><span>${fmt(i.subtotal)}</span></div>`
+    ).join('');
+  }
+  document.getElementById('summary-total').textContent = fmt(total);
+}
+
+// ══════════════════════════════════════════════════════════
+// SEND ORDER
+// ══════════════════════════════════════════════════════════
+async function enviarPedido() {
+  const items = Object.entries(_cart)
+    .map(([id,qty]) => {
+      const p = (_adminDB.productos||[]).find(x => x.id === id);
+      return p ? {id, nombre:p.nombre, cantidad:qty, precio:p.precio, costo:p.costo, subtotal:p.precio*qty} : null;
+    }).filter(Boolean);
+
+  if (!items.length) { showToast('⚠ Agrega al menos un producto'); return; }
+
+  // EDIT MODE: update existing pedido
+  if (_editandoPedidoId) {
+    const btn = document.getElementById('btn-enviar');
+    btn.disabled = true; btn.textContent = 'Actualizando...';
+    const total = items.reduce((a,i) => a + i.subtotal, 0);
+    try {
+      await PEDIDOS_COL.doc(_editandoPedidoId).update({
+        items, total,
+        fecha: document.getElementById('p-fecha').value,
+        metodo_pago: document.getElementById('p-metodo').value,
+        comprobante_base64: _comprobanteBase64 || null
+      });
+      const idx = _pedidos.findIndex(p => p.id === _editandoPedidoId);
+      if (idx >= 0) _pedidos[idx] = {..._pedidos[idx], items, total};
+      _editandoPedidoId = null;
+      closePedidoModal();
+      renderKPIs(); renderPedidos();
+      showToast('✓ Pedido actualizado');
+    } catch(e) { showToast('⚠ Error: ' + e.message); }
+    finally { btn.disabled = false; btn.textContent = 'Enviar Pedido ✓'; }
+    return;
+  }
+
+  // Check stock one more time
+  for (const item of items) {
+    const p = (_adminDB.productos||[]).find(x => x.id === item.id);
+    if (!p || p.stock < item.cantidad) {
+      showToast(`⚠ Stock insuficiente: ${item.nombre}`); return;
+    }
+  }
+
+  // ── Verification step before sending: show a summary for the distributor to confirm ──
+  const totalPreview = items.reduce((a,i) => a + i.subtotal, 0);
+  const resumenTexto = items.map(i => `• ${i.nombre} x${i.cantidad} — ${fmt(i.subtotal)}`).join('\n')
+    + `\n\nTOTAL: ${fmt(totalPreview)}`
+    + `\n\n¿Confirmas que este pedido está correcto? Una vez enviado, solo podrás editarlo si el administrador aún no lo ha confirmado.`;
+  if (!confirm(resumenTexto)) return;
+
+  const btn = document.getElementById('btn-enviar');
+  btn.disabled = true; btn.textContent = 'Enviando...';
+
+  try {
+    const total = items.reduce((a,i) => a + i.subtotal, 0);
+    const consecutivo = _pedidos.length + 1;
+    const vid  = uid('VTA');
+    const fecha = document.getElementById('p-fecha').value;
+    const metodo = document.getElementById('p-metodo').value;
+
+    // Write to pedidos_dist — admin will pick this up via onSnapshot
+    await PEDIDOS_COL.doc(vid).set({
+      id: vid,
+      num: '#' + String(consecutivo).padStart(4,'0'),
+      dist_consecutivo: consecutivo,
+      dist_id:    _dist.id,
+      dist_nombre: _dist.nombre,
+      fecha,
+      items,
+      total,
+      metodo_pago:  metodo,
+      comprobante_base64: _comprobanteBase64 || null,
+      estado_pago:  'pendiente',
+      estado_envio: 'preparando',
+      canal_venta:  'Distribuidora',
+      creado_en:    Date.now(),
+      procesado:    false       // admin will set this to true when integrated
+    });
+
+    // Update local state
+    const newPedido = {id:vid, num:'#'+String(consecutivo).padStart(4,'0'),
+      dist_consecutivo:consecutivo, dist_id:_dist.id, dist_nombre:_dist.nombre,
+      fecha, items, total, metodo_pago:metodo, estado_pago:'pendiente',
+      estado_envio:'preparando', procesado:false, comision_pagada:false};
+    _pedidos.unshift(newPedido);
+
+    // Reset "esta venta" KPIs
+    _lastPedidoTotal = total;
+    _lastPedidoComPagada = false;
+
+    closePedidoModal();
+    updateNextNum();
+    renderKPIs();
+    renderPedidos();
+    showToast('✓ Pedido ' + '#'+String(consecutivo).padStart(4,'0') + ' enviado — pendiente de confirmación');
+
+  } catch(e) {
+    showToast('⚠ Error al enviar: ' + e.message);
+    console.error(e);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Enviar Pedido ✓';
+  }
+}
+</script>
+<!-- ══ MODAL: META ══ -->
+<div class="modal-overlay" id="modal-meta">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-header">
+      <span class="modal-title">🎯 Meta de Ventas Mensual</span>
+      <button class="modal-close" onclick="document.getElementById('modal-meta').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Meta mensual (COP)</label>
+        <input type="number" id="meta-valor" placeholder="ej: 500000" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:14px;outline:none">
+      </div>
+      <div id="meta-progress" style="margin-top:8px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="document.getElementById('modal-meta').classList.remove('open')">Cancelar</button>
+      <button class="btn-primary" onclick="guardarMeta()" style="width:auto;margin-top:0;padding:10px 20px">Guardar</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
