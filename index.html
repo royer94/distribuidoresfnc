@@ -899,7 +899,9 @@ function renderInfoPrograma() {
   const filasComision = tramos.map((t,i) => {
     const siguiente = tramos[i+1];
     const rango = siguiente ? `${fmt(t.monto)} – ${fmt(siguiente.monto)}` : `${fmt(t.monto)} en adelante`;
-    return `<tr><td>${rango}</td><td style="font-weight:600;color:#5a7a5c">${t.pct}%</td></tr>`;
+    const esPrimerTramo = i === 0;
+    const pctTexto = (siguiente && !esPrimerTramo) ? `${t.pct}% a ${siguiente.pct}%` : `${t.pct}%`;
+    return `<tr><td>${rango}</td><td style="font-weight:600;color:#5a7a5c">${pctTexto}</td></tr>`;
   }).join('');
 
   el.innerHTML = `
