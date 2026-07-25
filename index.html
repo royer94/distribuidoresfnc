@@ -461,6 +461,17 @@ async function cargarConfigComisiones() {
   } catch(e) { console.warn('[config] usando valores por defecto:', e.message); }
 }
 
+// ── Un producto está "en promo" hoy si tiene % > 0 y la fecha actual cae dentro del rango ──
+function productoEnPromoHoy(p) {
+  if (!p || !(p.descuento_pct > 0) || !p.promo_desde || !p.promo_hasta) return false;
+  const hoy = new Date().toISOString().slice(0,10);
+  return hoy >= p.promo_desde && hoy <= p.promo_hasta;
+}
+// ── Precio real a cobrar hoy (con descuento aplicado si está en promo) ──
+function precioEfectivo(p) {
+  return productoEnPromoHoy(p) ? p.precio * (1 - p.descuento_pct/100) : p.precio;
+}
+
 function calcComision(total) {
   const puntos = _configComisiones.tramos_comision;
   let pct;
@@ -1268,9 +1279,14 @@ function renderProductsGrid() {
   el.innerHTML = prods.map(p => {
     const qty = _cart[p.id] || 0;
     const agotado = p.stock <= 0;
+    const enPromo = productoEnPromoHoy(p);
+    const precioMostrar = enPromo
+      ? `<span style="text-decoration:line-through;color:var(--ink3);font-size:11px;font-weight:400;margin-right:5px">${fmt(p.precio)}</span><span style="color:var(--gold)">${fmt(precioEfectivo(p))}</span>`
+      : fmt(p.precio);
     return `<div class="prod-card${qty>0?' selected':''}${agotado?' out-of-stock':''}" onclick="${agotado?'':'addToCart(\''+p.id+'\')'}" id="pc-${p.id}">
+      ${enPromo?'<div style="font-size:9px;font-weight:700;color:var(--gold);background:var(--gold-light);display:inline-block;padding:1px 6px;border-radius:10px;margin-bottom:3px">🏷️ -'+p.descuento_pct+'%</div>':''}
       <div class="prod-name">${p.nombre}</div>
-      <div class="prod-price">${fmt(p.precio)}</div>
+      <div class="prod-price">${precioMostrar}</div>
       <div class="prod-stock">${agotado?'Sin stock':'Stock: '+p.stock}</div>
       ${qty > 0 ? `<div class="qty-control">
         <button class="qty-btn" onclick="event.stopPropagation();changeQty('${p.id}',-1)">−</button>
@@ -1302,16 +1318,19 @@ function renderOrderSummary() {
   const items = Object.entries(_cart)
     .map(([id,qty]) => {
       const p = (_adminDB.productos||[]).find(x => x.id === id);
-      return p ? {id, nombre:p.nombre, qty, precio:p.precio, subtotal:p.precio*qty, costo:p.costo} : null;
+      if (!p) return null;
+      const precioEf = precioEfectivo(p);
+      return {id, nombre:p.nombre, qty, precio:p.precio, precioEf, subtotal:precioEf*qty, ahorro:(p.precio-precioEf)*qty, costo:p.costo, enPromo:productoEnPromoHoy(p)};
     }).filter(Boolean);
   const total = items.reduce((a,i) => a+i.subtotal, 0);
+  const ahorroTotal = items.reduce((a,i) => a+i.ahorro, 0);
   const el = document.getElementById('summary-items');
   if (!items.length) {
     el.innerHTML = '<div style="font-size:13px;color:var(--ink3);text-align:center;padding:8px">Selecciona productos del catálogo</div>';
   } else {
     el.innerHTML = items.map(i =>
-      `<div class="summary-row"><span>${i.nombre} x${i.qty}</span><span>${fmt(i.subtotal)}</span></div>`
-    ).join('');
+      `<div class="summary-row"><span>${i.nombre} x${i.qty}${i.enPromo?' <span style="color:var(--gold);font-size:10px">🏷️ promo</span>':''}</span><span>${fmt(i.subtotal)}</span></div>`
+    ).join('') + (ahorroTotal>0?`<div class="summary-row" style="color:var(--gold);font-size:12px"><span>Ahorro por promociones</span><span>-${fmt(ahorroTotal)}</span></div>`:'');
   }
   document.getElementById('summary-total').textContent = fmt(total);
 }
@@ -1323,7 +1342,15 @@ async function enviarPedido() {
   const items = Object.entries(_cart)
     .map(([id,qty]) => {
       const p = (_adminDB.productos||[]).find(x => x.id === id);
-      return p ? {id, nombre:p.nombre, cantidad:qty, precio:p.precio, costo:p.costo, subtotal:p.precio*qty} : null;
+      if (!p) return null;
+      const precioEf = precioEfectivo(p);
+      const enPromo = productoEnPromoHoy(p);
+      return {
+        id, nombre:p.nombre, cantidad:qty,
+        precio: precioEf, subtotal: precioEf*qty, costo:p.costo,
+        precio_original: p.precio,
+        descuento_pct_aplicado: enPromo ? p.descuento_pct : 0
+      };
     }).filter(Boolean);
 
   if (!items.length) { showToast('⚠ Agrega al menos un producto'); return; }
