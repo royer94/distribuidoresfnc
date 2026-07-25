@@ -208,6 +208,34 @@ tbody tr:last-child td{border-bottom:none}
 @media(max-width:360px){
   .kpi-grid{grid-template-columns:1fr!important}
 }
+/* ── Tabla de comisión/puntos: 2 columnas en desktop, apilada en móvil ── */
+.tabla-info-programa{width:100%;border-collapse:collapse;font-size:12px}
+.tabla-info-programa tr{border-bottom:1px solid #eee9e0}
+.tabla-info-programa tr:last-child{border-bottom:none}
+.tabla-info-programa td{padding:5px 8px 5px 0;vertical-align:middle}
+.tabla-info-programa td:first-child{color:var(--ink2)}
+@media (max-width:520px){
+  .tabla-info-programa, .tabla-info-programa tbody, .tabla-info-programa tr, .tabla-info-programa td{display:block;width:100%}
+  .tabla-info-programa tr{padding:6px 0}
+  .tabla-info-programa td{padding:1px 0}
+  .tabla-info-programa td:first-child{font-size:11px;color:var(--ink3)}
+  .tabla-info-programa td:last-child{font-size:14px}
+}
+
+/* ── Acordeón "¿Cómo funcionan...?": resaltado para que no pase desapercibido en la 1ª visita ── */
+#info-programa-details.destacar-brillo{
+  border-color:var(--gold) !important;
+  box-shadow:0 0 0 3px rgba(138,108,58,.35), 0 4px 14px rgba(138,108,58,.25);
+  animation:pulso-info 1.8s ease-in-out infinite;
+}
+@keyframes pulso-info{
+  0%,100%{box-shadow:0 0 0 3px rgba(138,108,58,.35), 0 4px 14px rgba(138,108,58,.25)}
+  50%{box-shadow:0 0 0 7px rgba(138,108,58,.22), 0 4px 18px rgba(138,108,58,.35)}
+}
+#info-programa-details .badge-nuevo{
+  background:var(--gold);color:#fff;font-size:9px;font-weight:700;letter-spacing:.5px;
+  padding:2px 7px;border-radius:20px;text-transform:uppercase;margin-left:auto;
+}
 </style>
 </head>
 <body>
@@ -279,9 +307,10 @@ tbody tr:last-child td{border-bottom:none}
     <div class="kpi-grid" id="kpi-grid" style="grid-template-columns:1fr 1fr"></div>
 
     <!-- Info del programa de comisiones y puntos -->
-    <details style="background:#faf8f5;border:1px solid #ddd8cf;border-radius:8px;margin-bottom:12px;overflow:hidden">
+    <details id="info-programa-details" style="background:#faf8f5;border:1px solid #ddd8cf;border-radius:8px;margin-bottom:12px;overflow:hidden;transition:box-shadow .2s">
       <summary style="padding:10px 14px;cursor:pointer;font-size:13px;font-weight:600;color:#4a4640;list-style:none;display:flex;align-items:center;gap:6px">
         ℹ️ ¿Cómo funcionan la comisión y los puntos?
+        <span class="badge-nuevo" id="badge-nuevo-info" style="display:none">Abrir</span>
       </summary>
       <div id="info-programa-body" style="padding:0 14px 14px;font-size:12px;color:#4a4640"></div>
     </details>
@@ -501,7 +530,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const snap = await DIST_COL.doc(user.uid).get();
         if (snap.exists) {
           _dist = {id: snap.id, ...snap.data()};
-          await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma();
+          await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma(); resaltarInfoProgramaPrimeraVez();
           await loadPedidos();
           const perfilOk = _dist.telefono && _dist.municipio && _dist.banco && _dist.cuenta;
           if (perfilOk) showApp(); else showPerfilForm();
@@ -528,7 +557,7 @@ async function doLogin() {
     const snap = await DIST_COL.doc(cred.user.uid).get();
     if (!snap.exists) { errEl.textContent = 'Usuario no encontrado. Contacta al administrador.'; await firebase.auth().signOut(); return; }
     _dist = {id: snap.id, ...snap.data()};
-    await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma();
+    await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma(); resaltarInfoProgramaPrimeraVez();
     await loadPedidos();
     const perfilOk = _dist.telefono && _dist.municipio && _dist.banco && _dist.cuenta;
     if (perfilOk) showApp(); else showPerfilForm();
@@ -848,23 +877,23 @@ function renderInfoPrograma() {
   const filasComision = tramos.map((t,i) => {
     const siguiente = tramos[i+1];
     const rango = siguiente ? `${fmt(t.monto)} – ${fmt(siguiente.monto)}` : `${fmt(t.monto)} en adelante`;
-    return `<tr><td style="padding:3px 8px 3px 0">${rango}</td><td style="padding:3px 0;font-weight:600;color:#5a7a5c">${t.pct}%</td></tr>`;
+    return `<tr><td>${rango}</td><td style="font-weight:600;color:#5a7a5c">${t.pct}%</td></tr>`;
   }).join('');
 
   el.innerHTML = `
     <div style="margin-bottom:10px">
       <div style="font-weight:600;margin-bottom:4px">📊 Escala de comisión (0% → 20%)</div>
-      <table style="width:100%;border-collapse:collapse;font-size:12px">${filasComision}</table>
+      <table class="tabla-info-programa">${filasComision}</table>
       <div style="margin-top:6px;color:#8a847a;font-size:11px;line-height:1.5">
         La comisión se calcula sobre tus <b>ventas confirmadas acumuladas del mes en curso</b>, no por pedido individual — entre más vendas en el mes, más alto sube tu %. El porcentaje sube de forma proporcional dentro de cada tramo (no salta de golpe), y se recalcula automáticamente cada vez que el admin confirma un pedido tuyo.
       </div>
     </div>
     <div style="margin-bottom:10px;padding-top:10px;border-top:1px dashed #ddd8cf">
       <div style="font-weight:600;margin-bottom:4px">💎 Cómo se generan los puntos</div>
-      <table style="width:100%;border-collapse:collapse;font-size:12px">
-        <tr><td style="padding:3px 8px 3px 0">Menos de $100.000</td><td style="padding:3px 0;font-weight:600;color:#6a3a7a">0 pts</td></tr>
-        <tr><td style="padding:3px 8px 3px 0">$100.000 – $300.000</td><td style="padding:3px 0;font-weight:600;color:#6a3a7a">1 pt por cada $10.000</td></tr>
-        <tr><td style="padding:3px 8px 3px 0">Sobre $300.000</td><td style="padding:3px 0;font-weight:600;color:#6a3a7a">2 pts por cada $10.000 adicionales</td></tr>
+      <table class="tabla-info-programa">
+        <tr><td>Menos de $100.000</td><td style="font-weight:600;color:#6a3a7a">0 pts</td></tr>
+        <tr><td>$100.000 – $300.000</td><td style="font-weight:600;color:#6a3a7a">1 pt por cada $10.000</td></tr>
+        <tr><td>Sobre $300.000</td><td style="font-weight:600;color:#6a3a7a">2 pts por cada $10.000 adicionales</td></tr>
       </table>
       <div style="margin-top:6px;color:#8a847a;font-size:11px;line-height:1.5">
         Los puntos son independientes de la comisión, no se resetean cada mes, y se acreditan cuando el admin confirma cada pedido. Se pueden canjear por productos en el catálogo de recompensas.
@@ -874,6 +903,30 @@ function renderInfoPrograma() {
       <span style="font-weight:600">Valor actual del punto</span>
       <span style="font-weight:700;color:#6a3a7a">1 pt = ${fmt(_configComisiones.valor_punto)}</span>
     </div>`;
+}
+
+// ── Brillo permanente en el acordeón + badge "Nuevo" solo en la 1ra visita ──
+function resaltarInfoProgramaPrimeraVez() {
+  const KEY = 'frescura_dist_info_programa_visto';
+  const details = document.getElementById('info-programa-details');
+  const badge = document.getElementById('badge-nuevo-info');
+  if (!details) return;
+
+  // El brillo/pulso queda siempre presente, sin importar si ya se abrió antes
+  details.classList.add('destacar-brillo');
+
+  let yaVisto = false;
+  try { yaVisto = localStorage.getItem(KEY) === '1'; } catch(e) {}
+  if (yaVisto) return;
+
+  if (badge) badge.style.display = 'inline-block';
+
+  const marcarVisto = () => {
+    try { localStorage.setItem(KEY, '1'); } catch(e) {}
+    if (badge) badge.style.display = 'none';
+    details.removeEventListener('toggle', marcarVisto);
+  };
+  details.addEventListener('toggle', marcarVisto);
 }
 
 function renderKPIs() {
