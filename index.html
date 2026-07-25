@@ -345,28 +345,21 @@ tbody tr:last-child td{border-bottom:none}
       <button class="modal-close" onclick="closePedidoModal()">✕</button>
     </div>
     <div class="modal-body">
-      <!-- Fecha y método de pago -->
-      <div class="form-row" style="margin-bottom:14px">
-        <div class="form-group"><label>Fecha</label><input type="date" id="p-fecha"></div>
-        <div class="form-group"><label>Método de pago</label>
-          <select id="p-metodo" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:13px;outline:none;background:var(--surface);color:var(--ink)">
-            <option>Nequi</option><option>Bre-B</option><option>Daviplata</option><option>Efectivo</option><option>Transferencia</option>
-          </select>
-        </div>
-      </div>
-      <!-- Comprobante de pago -->
+      <!-- 1. Fecha -->
       <div class="form-group" style="margin-bottom:14px">
-        <label>📎 Comprobante de transferencia (foto)</label>
-        <input type="file" id="p-comprobante" accept="image/*"
-          style="width:100%;padding:8px;border:1px solid var(--border);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:12px;background:var(--surface)"
-          onchange="previewComprobante(this)">
-        <div id="p-comprobante-preview" style="margin-top:6px"></div>
+        <label>Fecha</label><input type="date" id="p-fecha">
       </div>
-      <!-- Category tabs -->
+      <!-- 2. Categorías -->
       <div class="cat-tabs" id="cat-tabs"></div>
-      <!-- Products grid -->
+      <!-- 3. Buscar producto -->
+      <div class="form-group" style="margin-bottom:12px">
+        <input type="text" id="p-buscar-producto" placeholder="🔍 Buscar producto en todo el catálogo..."
+          style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:13px;outline:none;background:var(--surface);color:var(--ink)"
+          oninput="filtrarProductosPorBusqueda(this.value)">
+      </div>
+      <!-- 4. Productos de la categoría / resultado de búsqueda -->
       <div class="products-grid" id="products-grid"></div>
-      <!-- Order summary -->
+      <!-- 5. Resumen del pedido -->
       <div class="order-summary" id="order-summary">
         <div style="font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Resumen del pedido</div>
         <div id="summary-items"></div>
@@ -376,7 +369,33 @@ tbody tr:last-child td{border-bottom:none}
           <span class="summary-total" id="summary-total">$0</span>
         </div>
       </div>
+      <!-- 6. Método de pago -->
+      <div class="form-group" style="margin:14px 0">
+        <label>Método de pago</label>
+        <select id="p-metodo" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:13px;outline:none;background:var(--surface);color:var(--ink)">
+          <option>Bre-B</option><option>Nequi</option><option>Daviplata</option>
+        </select>
+        <div style="margin-top:8px;padding:10px 12px;background:#faf8f5;border:1px solid #ddd8cf;border-radius:var(--r);font-size:12px;line-height:1.6">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <span>Llave: <b>@DLRRR66202</b></span>
+            <button type="button" onclick="copiarTexto('@DLRRR66202')" style="border:1px solid var(--border);background:var(--surface);border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;color:var(--ink)">Copiar</button>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px">
+            <span>Nequi/DaviPlata: <b>3223208126</b></span>
+            <button type="button" onclick="copiarTexto('3223208126')" style="border:1px solid var(--border);background:var(--surface);border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;color:var(--ink)">Copiar</button>
+          </div>
+        </div>
+      </div>
+      <!-- 7. Comprobante de pago -->
+      <div class="form-group" style="margin-bottom:14px">
+        <label>📎 Comprobante de transferencia (foto)</label>
+        <input type="file" id="p-comprobante" accept="image/*"
+          style="width:100%;padding:8px;border:1px solid var(--border);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:12px;background:var(--surface)"
+          onchange="previewComprobante(this)">
+        <div id="p-comprobante-preview" style="margin-top:6px"></div>
+      </div>
     </div>
+    <!-- 8. Botones finales -->
     <div class="modal-footer">
       <button class="btn-secondary" onclick="closePedidoModal()">Cancelar</button>
       <button class="btn-primary" id="btn-enviar" onclick="enviarPedido()" style="width:auto;margin-top:0;padding:10px 24px">Enviar Pedido ✓</button>
@@ -411,6 +430,7 @@ let _pedidos = [];     // this distributor's orders
 let _cart    = {};     // {prodId: qty}
 let _comprobanteBase64 = null; // compressed payment screenshot (base64), if attached
 let _catActiva = 'Todos';
+let _terminoBusquedaProd = '';
 let _editandoPedidoId = null;  // pedido being edited
 let _lastPedidoTotal = 0;      // last order total for KPI
 let _lastPedidoComPagada = false; // last order commission status
@@ -605,7 +625,9 @@ function editarPedido(pedidoId) {
   (p.items||[]).forEach(i => { _cart[i.id] = i.cantidad; });
   _lastPedidoTotal = 0;
   document.getElementById('p-fecha').value = p.fecha;
-  document.getElementById('p-metodo').value = p.metodo_pago || 'Nequi';
+  document.getElementById('p-metodo').value = p.metodo_pago || 'Bre-B';
+  _terminoBusquedaProd = '';
+  document.getElementById('p-buscar-producto').value = '';
   _comprobanteBase64 = p.comprobante_base64 || null;
   document.getElementById('p-comprobante').value = '';
   document.getElementById('p-comprobante-preview').innerHTML = _comprobanteBase64
@@ -1160,6 +1182,9 @@ function openModalPedido() {
   document.getElementById('btn-enviar').textContent = 'Enviar Pedido ✓';
   _cart = {};
   _comprobanteBase64 = null;
+  _terminoBusquedaProd = '';
+  document.getElementById('p-buscar-producto').value = '';
+  document.getElementById('p-metodo').value = 'Bre-B';
   document.getElementById('p-comprobante').value = '';
   document.getElementById('p-comprobante-preview').innerHTML = '';
   document.getElementById('p-fecha').value = today();
@@ -1218,11 +1243,26 @@ function setCat(cat) {
   renderProductsGrid();
 }
 
+// ── Buscar producto en todo el catálogo, sin importar la categoría activa ──
+function filtrarProductosPorBusqueda(valor) {
+  _terminoBusquedaProd = valor || '';
+  renderProductsGrid();
+}
+
+// ── Copiar texto (llave Bre-B / número Nequi-DaviPlata) al portapapeles ──
+function copiarTexto(texto) {
+  navigator.clipboard.writeText(texto)
+    .then(() => showToast('✓ Copiado'))
+    .catch(() => showToast('⚠ No se pudo copiar'));
+}
+
 function renderProductsGrid() {
-  const prods = (_adminDB.productos||[]).filter(p => p.activo &&
-    (_catActiva === 'Todos' || p.categoria === _catActiva));
+  const term = _terminoBusquedaProd.trim().toLowerCase();
+  const prods = term
+    ? (_adminDB.productos||[]).filter(p => p.activo && p.nombre.toLowerCase().includes(term))
+    : (_adminDB.productos||[]).filter(p => p.activo && (_catActiva === 'Todos' || p.categoria === _catActiva));
   const el = document.getElementById('products-grid');
-  if (!prods.length) { el.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:20px">Sin productos en esta categoría</div>'; return; }
+  if (!prods.length) { el.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:20px">${term?'Sin resultados para tu búsqueda':'Sin productos en esta categoría'}</div>`; return; }
   el.innerHTML = prods.map(p => {
     const qty = _cart[p.id] || 0;
     const agotado = p.stock <= 0;
