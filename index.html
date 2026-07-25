@@ -977,7 +977,7 @@ function renderPedidos() {
         <td style="white-space:nowrap">
           ${pCom.pct > 0
             ? `<span style="font-weight:600;color:var(--sage)">${fmt(pCom.val)}</span><span style="font-size:10px;color:var(--ink3);margin-left:2px">(${pCom.pct}%)</span>
-               ${p.comision_pagada?'<br><span style="font-size:9px;background:#e8f0e8;color:#5a7a5c;padding:1px 5px;border-radius:2px">✓ Pagada</span>':''}`
+               ${p.comision_pagada?`<br><span style="font-size:9px;background:#e8f0e8;color:#5a7a5c;padding:1px 5px;border-radius:2px">✓ Pagada</span>${p.comision_comprobante_base64?` <span onclick="event.stopPropagation();verComprobanteComision('${p.id}')" style="font-size:9px;color:#4a7ab5;cursor:pointer;text-decoration:underline">📎 Ver</span>`:''}`:''}`
             : '<span style="color:var(--ink3);font-size:12px">—</span>'}
         </td>
         <td style="white-space:nowrap">
@@ -1069,13 +1069,31 @@ function verResumenPedido(pedidoId) {
             <span>Comisión Generada</span>
             <span style="color:#5a7a5c">${fmt2(pCom.val)}</span>
           </div>
-          ${p.comision_pagada?'<div style="margin-top:6px;font-size:11px;background:#e8f0e8;color:#5a7a5c;padding:4px 8px;border-radius:3px;display:inline-block">✓ Comisión pagada</div>':'<div style="margin-top:6px;font-size:11px;color:#8a6c3a">⏳ Pendiente de pago</div>'}
+          ${p.comision_pagada?`<div style="margin-top:6px;font-size:11px;background:#e8f0e8;color:#5a7a5c;padding:4px 8px;border-radius:3px;display:inline-block">✓ Comisión pagada</div>${p.comision_comprobante_base64?`<div style="margin-top:8px"><div style="font-size:10px;color:#8a847a;margin-bottom:4px">Comprobante de pago:</div><img src="${p.comision_comprobante_base64}" onclick="verComprobanteComision('${p.id}')" style="max-width:140px;border-radius:4px;border:1px solid var(--border);cursor:pointer;display:block"></div>`:''}`:'<div style="margin-top:6px;font-size:11px;color:#8a6c3a">⏳ Pendiente de pago</div>'}
           <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-top:10px;padding-top:10px;border-top:1px dashed #ddd8cf">
             <span style="color:#6a3a7a">💎 Puntos generados</span>
             <span style="color:#6a3a7a">${p.estado_pago==='confirmado' ? calcPuntos(p.total||0) : 0} pts</span>
           </div>
           ${p.estado_pago!=='confirmado' ? '<div style="font-size:10px;color:#8a847a;margin-top:2px">Se acreditan cuando el admin confirme el pedido</div>' : ''}
         </div>
+      </div>
+    </div>`;
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+}
+
+// ── Ver comprobante de pago de comisión (subido por el admin) en grande ──
+function verComprobanteComision(pedidoId) {
+  const p = _pedidos.find(x => x.id === pedidoId);
+  if (!p || !p.comision_comprobante_base64) { showToast('⚠ No hay comprobante disponible'); return; }
+  const overlay = document.createElement('div');
+  overlay.id = 'overlay-comprobante-comision';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  overlay.innerHTML = `
+    <div style="max-width:90vw;max-height:90vh;text-align:center">
+      <img src="${p.comision_comprobante_base64}" style="max-width:100%;max-height:80vh;border-radius:6px;box-shadow:0 4px 20px rgba(0,0,0,.4)">
+      <div style="margin-top:10px">
+        <button onclick="document.getElementById('overlay-comprobante-comision').remove()" style="background:#fff;border:none;border-radius:4px;padding:8px 16px;font-size:13px;cursor:pointer;color:#333">Cerrar ✕</button>
       </div>
     </div>`;
   overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
