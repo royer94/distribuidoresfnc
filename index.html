@@ -503,11 +503,13 @@ tbody tr:last-child td{border-bottom:none}
 </article>
 <article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Árbol de Té — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g/100g</b>. Complemento de la terapia antiacné.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
 <article class="prod-training-card" data-cat="4">
 <div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Aura Sagrada — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Ideal para pieles sensibles o secas.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
@@ -1094,6 +1096,16 @@ function onboardingPendiente() {
   return !_dist || _dist.onboarding_completado !== true;
 }
 
+// ── Bandera local: recuerda en ESTE navegador que ya se completó el onboarding,
+//    para no repetirlo antes del login en el próximo acceso desde el mismo dispositivo. ──
+const LOCAL_ONBOARDING_DONE_KEY = 'fnc_onboarding_done_local';
+function marcarOnboardingHechoLocal() {
+  try { localStorage.setItem(LOCAL_ONBOARDING_DONE_KEY, '1'); } catch(e) {}
+}
+function onboardingHechoLocal() {
+  try { return localStorage.getItem(LOCAL_ONBOARDING_DONE_KEY) === '1'; } catch(e) { return false; }
+}
+
 function onboardingPendienteLocal() {
   try { return JSON.parse(localStorage.getItem('fnc_onboarding_pending') || 'null'); } catch(e) { return null; }
 }
@@ -1212,6 +1224,7 @@ function activarIncorporacion() {
     guardado_en: ahora
   };
   localStorage.setItem('fnc_onboarding_pending', JSON.stringify(pending));
+  marcarOnboardingHechoLocal();
 
   showToast('✓ Inducción completada. Ahora inicia sesión para activar tu cuenta.');
   _onboardingGuardando = false;
@@ -1336,6 +1349,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma(); resaltarInfoProgramaPrimeraVez();
           await loadPedidos();
           if (onboardingPendiente()) { showOnboarding(); return; }
+          marcarOnboardingHechoLocal();
           const perfilOk = _dist.telefono && _dist.municipio && _dist.banco && _dist.cuenta;
           if (perfilOk) showApp(); else showPerfilForm();
           return;
@@ -1343,8 +1357,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       } catch(e) { console.warn('[Auth] error restaurando sesión:', e.message); }
     }
     {
-      showScreen('screen-login');
-      setTimeout(() => document.getElementById('l-user')?.focus(), 100);
+      if (onboardingHechoLocal()) {
+        showScreen('screen-login');
+        setTimeout(() => document.getElementById('l-user')?.focus(), 100);
+      } else {
+        showOnboarding();
+      }
     }
   });
 });
@@ -1367,6 +1385,7 @@ async function doLogin() {
     await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma(); resaltarInfoProgramaPrimeraVez();
     await loadPedidos();
     if (onboardingPendiente()) { showOnboarding(); return; }
+    marcarOnboardingHechoLocal();
     const perfilOk = _dist.telefono && _dist.municipio && _dist.banco && _dist.cuenta;
     if (perfilOk) showApp(); else showPerfilForm();
   } catch(e) {
