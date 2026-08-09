@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+[source: 1]<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -21,6 +21,21 @@
   --r:5px;
 }
 body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+/* ── SCREEN LOADER (PANTALLA DE CARGA DE INICIALIZACIÓN) ── */
+#screen-loader{
+  position:fixed;inset:0;background:#1e1c18;z-index:99999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:#f5f2ed;transition:opacity .3s ease, visibility .3s ease;
+}
+#screen-loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-spinner{
+  width:36px;height:36px;border:3px solid rgba(255,255,255,.1);
+  border-top-color:var(--sage);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:16px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loader-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;letter-spacing:0.5px}
+.loader-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--sage);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
 
 /* ── SCREENS ── */
 .screen{display:none;position:fixed;inset:0;overflow-y:auto;background:var(--bg)}
@@ -236,14 +251,159 @@ tbody tr:last-child td{border-bottom:none}
   background:var(--gold);color:#fff;font-size:9px;font-weight:700;letter-spacing:.5px;
   padding:2px 7px;border-radius:20px;text-transform:uppercase;margin-left:auto;
 }
+
+/* ONBOARDING / INCORPORACION · WIZARD */
+#screen-onboarding{background:var(--bg);display:none}
+#screen-onboarding.active{display:block}
+.onboard-wrap{max-width:900px;margin:0 auto;padding:20px 18px 44px}
+.onboard-hero{background:#1e1c18;color:#f5f2ed;border-radius:10px;padding:28px 24px;margin-bottom:14px}
+.onboard-kicker{font-size:10px;color:var(--sage);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.onboard-hero h1{font-family:'Cormorant Garamond',serif;font-size:31px;line-height:1.05;margin-bottom:8px}
+.onboard-hero p{font-size:13px;line-height:1.65;color:#d8d2c8}
+.onboard-stepbar{display:flex;gap:5px;margin-top:18px}
+.onboard-stepdot{height:5px;flex:1;background:#3a3830;border-radius:5px}
+.onboard-stepdot.done,.onboard-stepdot.current{background:var(--sage)}
+.onboard-step-label{font-size:10px;color:#bdb7ad;margin-top:8px;text-align:right}
+.onboard-panel{display:none}
+.onboard-panel.active{display:block}
+.onboard-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:12px}
+.onboard-card h2{font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:7px}
+.onboard-card h3{font-size:14px;margin:14px 0 6px}
+.onboard-card p,.onboard-card li{font-size:12.5px;line-height:1.6;color:var(--ink2)}
+.onboard-card ul{padding-left:20px;margin:7px 0}
+.onboard-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.onboard-mini{background:#faf8f5;border:1px solid var(--border);border-radius:7px;padding:13px}
+.onboard-mini strong{display:block;font-size:13px;margin-bottom:4px}
+.onboard-mini span{font-size:11px;color:var(--ink3);line-height:1.5}
+.onboard-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
+.onboard-table th,.onboard-table td{padding:8px;border-bottom:1px solid var(--border);text-align:left}
+.onboard-table th{background:#faf8f5;font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px}
+.onboard-actions{display:flex;justify-content:space-between;gap:10px;margin-top:14px}
+.onboard-btn{background:var(--sage);color:#fff;border:none;border-radius:7px;padding:12px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.onboard-btn.secondary{background:transparent;color:var(--ink2);border:1px solid var(--border)}
+.onboard-btn:disabled{background:var(--ink4);cursor:not-allowed}
+.onboard-note{font-size:10.5px;color:var(--ink3);line-height:1.5;margin-top:8px}
+.onboard-link{color:var(--blue);text-decoration:underline;cursor:pointer}
+.product-training-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.product-filter{border:1px solid var(--border);background:var(--surface);padding:7px 10px;border-radius:20px;font-size:11px;cursor:pointer;color:var(--ink2)}
+.product-filter.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.product-training-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:650px;overflow:auto;padding-right:2px}
+.prod-training-card{border:1px solid var(--border);background:#fff;border-radius:8px;padding:13px}
+.prod-training-cat{font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
+.prod-training-card h4{font-size:13px;line-height:1.25;margin-bottom:5px}
+.prod-training-card p{font-size:11px!important;line-height:1.45!important;margin:0 0 8px}
+.prod-training-tip{font-size:10.5px;line-height:1.45;color:var(--ink3);background:#faf8f5;border-radius:6px;padding:8px}
+.quiz-question{border:1px solid var(--border);border-radius:8px;padding:15px;margin-bottom:11px;background:#fff}
+.quiz-question h4{font-size:13px;line-height:1.45;margin-bottom:10px}
+.quiz-option{display:block;border:1px solid var(--border);border-radius:6px;padding:9px 10px;margin-top:7px;cursor:pointer;font-size:11.5px;line-height:1.4}
+.quiz-option input{margin-right:7px;accent-color:var(--sage)}
+.quiz-result{display:none;border-radius:8px;padding:14px;margin-top:12px;font-size:12px;line-height:1.5}
+.quiz-result.show{display:block}
+.quiz-result.ok{background:#eef6ef;border:1px solid #c9dfcc}
+.quiz-result.fail{background:#fbf2ec;border:1px solid #ead2c2}
+.onboard-check{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;background:#faf8f5;border:1px solid var(--border);border-radius:7px;margin-top:9px;cursor:pointer}
+.onboard-check input{margin-top:3px;accent-color:var(--sage);flex:0 0 auto}
+.onboard-check span{font-size:12px;line-height:1.55;color:var(--ink2)}
+.onboard-legal{position:sticky;bottom:0;background:rgba(245,242,237,.97);padding:12px 0 2px;backdrop-filter:blur(6px);margin-top:14px}
+@media(max-width:650px){
+  .onboard-wrap{padding:14px 12px 30px}
+  .onboard-hero{padding:23px 18px}
+  .onboard-hero h1{font-size:27px}
+  .onboard-grid,.product-training-grid{grid-template-columns:1fr}
+  .onboard-actions{flex-direction:column}
+  .onboard-btn{width:100%}
+}
+
+/* ── GUIA NUEVO PEDIDO ── */
+.order-guide-overlay{position:fixed;inset:0;background:rgba(28,27,24,.58);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px}
+.order-guide-modal{width:min(680px,100%);max-height:90vh;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:10px;box-shadow:0 18px 60px rgba(0,0,0,.22)}
+.order-guide-head{padding:20px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.order-guide-head h2{font-family:'Cormorant Garamond',serif;font-size:25px;margin:0}
+.order-guide-head p{font-size:11px;color:var(--ink3);margin:4px 0 0}
+.order-guide-close{border:0;background:none;font-size:22px;color:var(--ink3);cursor:pointer;line-height:1}
+.order-guide-body{padding:18px 22px}
+.order-guide-step{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}
+.order-guide-step:last-child{border-bottom:0}
+.order-guide-num{width:28px;height:28px;flex:0 0 28px;border-radius:50%;background:var(--sage);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+.order-guide-step h3{font-size:13px;margin:0 0 4px}
+.order-guide-step p{font-size:11.5px;line-height:1.55;color:var(--ink2);margin:0}
+.order-guide-note{margin-top:14px;padding:12px 13px;border-radius:7px;background:#faf8f5;border:1px solid var(--border);font-size:11px;line-height:1.55;color:var(--ink2)}
+.order-guide-flow{margin-top:12px;padding:12px 13px;border-left:3px solid var(--sage);background:#faf8f5;font-size:11px;line-height:1.65;color:var(--ink2)}
+.order-guide-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
+.order-guide-start{background:var(--sage);color:#fff;border:0;border-radius:7px;padding:11px 18px;font-weight:600;cursor:pointer}
+@media(max-width:600px){.order-guide-modal{max-height:94vh}.order-guide-head,.order-guide-body,.order-guide-footer{padding-left:16px;padding-right:16px}}
+
 </style>
 </head>
 <body>
 
+<!-- PANTALLA DE CARGA DE INICIALIZACIÓN -->
+<div id="screen-loader">
+  <div class="loader-spinner"></div>
+  <div class="loader-title">Frescura Natural</div>
+  <div class="loader-sub">Verificando sesión...</div>
+</div>
+
 <div id="toast" class="toast"></div>
 
-<!-- ══ LOGIN ══ -->
-<div id="screen-login" class="screen active">
+<!-- ══ GUÍA NUEVO PEDIDO ══ -->
+<div id="order-guide-overlay" class="order-guide-overlay" style="display:none" onclick="cerrarGuiaPedido(event)">
+  <div class="order-guide-modal" onclick="event.stopPropagation()">
+    <div class="order-guide-head">
+      <div>
+        <h2>Cómo hacer un nuevo pedido</h2>
+        <p>Sigue estos pasos para registrar correctamente tu pedido.</p>
+      </div>
+      <button class="order-guide-close" onclick="cerrarGuiaPedido()">×</button>
+    </div>
+    <div class="order-guide-body">
+      <div class="order-guide-step">
+        <div class="order-guide-num">1</div>
+        <div><h3>Elige tus productos</h3><p>Selecciona los productos por <b>categoría</b> o búscalos por <b>nombre</b>. Agrega al pedido las cantidades que necesitas.</p></div>
+      </div>
+      <div class="order-guide-step">
+        <div class="order-guide-num">2</div>
+        <div><h3>Revisa el resumen del pedido</h3><p>Verifica cuidadosamente que los productos, cantidades y total del pedido sean correctos y que el <b>valor coincida con el precio cobrado al cliente</b>.</p></div>
+      </div>
+      <div class="order-guide-step">
+        <div class="order-guide-num">3</div>
+        <div><h3>Selecciona el método de pago</h3><p>Escoge el método de pago correspondiente antes de enviar el pedido.</p></div>
+      </div>
+      <div class="order-guide-step">
+        <div class="order-guide-num">4</div>
+        <div><h3>Carga el comprobante</h3><p>Adjunta una <b>foto del comprobante de transferencia</b> o el soporte de pago solicitado por el portal.</p></div>
+      </div>
+      <div class="order-guide-step">
+        <div class="order-guide-num">5</div>
+        <div><h3>Envía el pedido</h3><p>Cuando hayas revisado toda la información, pulsa <b>Enviar pedido</b>.</p></div>
+      </div>
+
+      <div class="order-guide-note">
+        <b>Después de enviarlo:</b> el administrador revisará el pedido y podrá <b>aprobarlo o rechazarlo</b>. Puedes consultar el resultado en <b>Mis Pedidos</b> desde la ventana principal. Todo el flujo del pedido quedará reflejado allí.
+      </div>
+
+      <div class="order-guide-flow">
+        <b>Flujo del pedido:</b><br>
+        Pedido enviado → revisión administrativa → <b>Procesando</b> → <b>Enviado</b> → <b>Recibido</b>.<br>
+        Cuando el pedido pase a <b>Enviado</b>, aparecerán la empresa transportadora y la guía de envío.
+        La distribuidora debe marcar el pedido como <b>Recibido</b> una vez la transportadora haya realizado la entrega.
+      </div>
+
+      <div class="order-guide-note">
+        <b>Resumen del pedido:</b> al final de cada fila de <b>Mis Pedidos</b> encontrarás el documento correspondiente con los datos del pedido.
+      </div>
+
+      <div class="order-guide-note">
+        <b>Comisiones y puntos:</b> al terminar el mes, el administrador liquidará y pagará la comisión correspondiente y cargará el comprobante de pago. Con esta acción termina el flujo de ventas/comisiones del mes. Los puntos adquiridos, cuando aplique, podrán consultarse en <b>💎 Puntos Disponibles</b>.
+      </div>
+    </div>
+    <div class="order-guide-footer">
+      <button class="order-guide-start" onclick="continuarDesdeGuiaPedido()">Entendido, hacer pedido →</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-login" class="screen">
   <div class="login-box">
     <div class="login-logo">Frescura Natural</div>
     <div class="login-sub">Portal Distribuidores</div>
@@ -261,6 +421,424 @@ tbody tr:last-child td{border-bottom:none}
   </div>
 </div>
 
+
+<!-- ONBOARDING / INCORPORACION · WIZARD -->
+<div id="screen-onboarding" class="screen">
+  <div class="onboard-wrap">
+    <div class="onboard-hero">
+      <div class="onboard-kicker">Frescura Natural Cosméticos · Inducción</div>
+      <h1>Conoce tu programa y aprende a vender</h1>
+      <p id="onboard-bienvenida">Antes de activar tu cuenta recorrerás, paso a paso, la información esencial del programa y de nuestros productos. Al final harás un pequeño quiz de 5 preguntas.</p>
+      <div class="onboard-stepbar" id="onboard-stepbar">
+        <span class="onboard-stepdot current"></span><span class="onboard-stepdot"></span><span class="onboard-stepdot"></span><span class="onboard-stepdot"></span><span class="onboard-stepdot"></span><span class="onboard-stepdot"></span>
+      </div>
+      <div class="onboard-step-label" id="onboard-step-label">Paso 1 de 6</div>
+    </div>
+
+    <section class="onboard-panel active" data-step="1">
+      <div class="onboard-card">
+        <h2>1. ¿Qué significa ser distribuidora?</h2>
+        <p>Participas en una actividad comercial independiente. Tú decides cómo, cuándo y dónde desarrollar tu actividad comercial, respetando las políticas del programa y la legislación aplicable.</p>
+        <p style="margin-top:8px"><b>Importante:</b> tu participación no constituye una relación laboral con Frescura Natural Cosméticos. No existe salario fijo, horario laboral ni garantía de ingresos mínimos.</p>
+      </div>
+      <div class="onboard-card">
+        <h2>¿Cómo ganas dinero?</h2>
+        <p>La comisión es <b>progresiva</b>: aumenta según el volumen de ventas mensuales.</p>
+        <table class="onboard-table"><thead><tr><th>Ventas mensuales</th><th>Comisión</th></tr></thead><tbody>
+          <tr><td>$60.000 – $119.999</td><td><b>5 %</b></td></tr>
+          <tr><td>$120.000 – $199.999</td><td><b>9 %</b></td></tr>
+          <tr><td>$200.000 – $299.999</td><td><b>14 %</b></td></tr>
+          <tr><td>$300.000 o más</td><td><b>20 %</b></td></tr>
+        </tbody></table>
+        <p style="margin-top:8px">Las comisiones se pagan <b>dentro de los primeros 5 días del mes siguiente</b>.</p>
+      </div>
+      <div class="onboard-actions"><span></span><button class="onboard-btn" onclick="onboardingNext()">Entendido · continuar →</button></div>
+    </section>
+
+    <section class="onboard-panel" data-step="2">
+      <div class="onboard-card">
+        <h2>2. Conoce nuestras líneas de productos</h2>
+        <p>Una buena distribuidora no necesita memorizar un catálogo completo. Necesita entender <b>qué problema de rutina resuelve cada producto, qué lo diferencia y cómo explicarlo sin exagerar sus beneficios</b>.</p>
+        <div class="onboard-grid" style="margin-top:12px">
+          <div class="onboard-mini"><strong>🧼 Jabones</strong><span>Limpieza corporal artesanal, diferentes aromas y combinaciones de ingredientes vegetales.</span></div>
+          <div class="onboard-mini"><strong>🌿 DeoFresh Botanic</strong><span>Desodorante en crema de 60 g; comunica la propuesta de cuidado de axilas de la marca.</span></div>
+          <div class="onboard-mini"><strong>💋 FreshLips</strong><span>Bálsamos labiales en diferentes sabores para el cuidado cotidiano de los labios.</span></div>
+          <div class="onboard-mini"><strong>💧 Sérums</strong><span>Línea de cuidado facial y capilar con productos orientados a necesidades específicas.</span></div>
+          <div class="onboard-mini"><strong>🧴 HydraSeal</strong><span>Crema hidratante facial para complementar la rutina de cuidado.</span></div>
+          <div class="onboard-mini"><strong>🎁 Packs y accesorios</strong><span>Combinaciones y complementos que facilitan regalar, probar o completar una rutina.</span></div>
+        </div>
+      </div>
+      <div class="onboard-card">
+        <h2>La regla para hablar de beneficios</h2>
+        <p>Presenta los beneficios como <b>características y propuesta cosmética</b>, no como diagnósticos o tratamientos. Cuando exista una afirmación que dependa de investigación o de la percepción individual, utiliza expresiones como <b>“se estudia”, “la marca comunica”, “puede ayudar”</b> o “está formulado para…”, según corresponda.</p>
+        <p style="margin-top:8px">Nunca afirmes que un cosmético cura, trata o previene una enfermedad ni garantices resultados individuales.</p>
+      </div>
+      <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><button class="onboard-btn" onclick="onboardingNext()">Conocer los productos →</button></div>
+    </section>
+
+    <section class="onboard-panel" data-step="3">
+      <div class="onboard-card">
+        <h2>3. Catálogo de productos</h2>
+        <p>Aquí tienes una <b>guía rápida de producto</b> para tu inducción. El catálogo operativo, precios y disponibilidad se consultan siempre en el portal.</p>
+        <div class="product-training-toolbar" id="product-training-toolbar">
+          <button class="product-filter active" data-filter="all" onclick="filtrarProductosOnboarding('all',this)">Todos</button>
+          <button class="product-filter" data-filter="Jabones" onclick="filtrarProductosOnboarding('Jabones',this)">Jabones</button>
+          <button class="product-filter" data-filter="Desodorante" onclick="filtrarProductosOnboarding('Desodorante',this)">Desodorante</button>
+          <button class="product-filter" data-filter="Cuidado Labial" onclick="filtrarProductosOnboarding('Cuidado Labial',this)">Bálsamos</button>
+          <button class="product-filter" data-filter="Serums" onclick="filtrarProductosOnboarding('Serums',this)">Sérums</button>
+          <button class="product-filter" data-filter="Cremas" onclick="filtrarProductosOnboarding('Cremas',this)">Crema</button>
+          <button class="product-filter" data-filter="Packs" onclick="filtrarProductosOnboarding('Packs',this)">Packs</button>
+          <button class="product-filter" data-filter="Accesorios" onclick="filtrarProductosOnboarding('Accesorios',this)">Accesorios</button>
+        </div>
+        <div class="product-training-grid" id="product-training-grid">
+<article class="prod-training-card" data-cat="Cuidado Labial">
+<div class="prod-training-cat">Cuidado Labial</div>
+          <h4>FreshLips — Bálsamos labiales</h4>
+          <p>Una sola línea de bálsamos labiales disponible en 5 opciones de sabor: <b>cereza, coco, fresa, hierbabuena y vainilla</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Presenta FreshLips como una misma línea con cinco opciones para que el cliente elija según su preferencia. Destaca el sabor y la experiencia de uso. La marca comunica que no contienen plomo u otros metales pesados; evita hacer afirmaciones médicas o prometer resultados.</div>
+</article>
+<article class="prod-training-card" data-cat="Desodorante">
+<div class="prod-training-cat">Desodorante</div>
+          <h4>DeoFresh Botanic</h4>
+          <p>Desodorante en crema 60g.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado de axilas. Destaca la propuesta sin aluminio, parabenos ni ftalatos según la comunicación de la marca; no prometas prevención de enfermedades.</div>
+</article>
+<article class="prod-training-card" data-cat="Jabones">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Jabón Individual (cualquier aroma)</h4>
+          <p>Jabón artesanal individual.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="Jabones">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Árbol de Té — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g/100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="4">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Aura Sagrada — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="5">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Avena — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="6">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Caléndula — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="7">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Eucalipto — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="8">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Hidratación Profunda — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="9">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Lavanda — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="Jabones">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Mujer Natural 70g x3</h4>
+          <p>Edición especial. Lavanda, Caléndula y Rosa Mosqueta.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="11">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Protección Fresca — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="12">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Renovación Nocturna — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="13">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Romero — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="Jabones">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Romero + Lavanda + Siete Esencias — presentación de 70 g / 100 g</h4>
+          <p>Kit de jabones con romero, lavanda y siete esencias. Disponible en presentaciones de <b>70 g y 100 g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="15">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Rosa Mosqueta — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="16">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Serenidad Aloe — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="17">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Siete Esencias — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Combo Jabón + Desodorante + Bálsamo Labial</h4>
+          <p>Combo completo.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+</article>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Pack Cuidado Facial (6 elementos)</h4>
+          <p>Toalla facial, 2 jabones Rosa Mosqueta, 2 esponjas, 1 FreshLips.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+</article>
+<article class="prod-training-card" data-cat="Serums">
+<div class="prod-training-cat">Serums</div>
+          <h4>Natural Clear Sérum Despigmentante — presentación de 30 / 50 mL</h4>
+          <p>Niacinamida, ácido tranexámico y extracto de regaliz. Disponible en <b>30 y 50 mL</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado facial/capilar especializado según el producto. Explica sus ingredientes destacados y uso; evita garantizar resultados.</div>
+</article>
+<article class="prod-training-card" data-cat="Serums">
+<div class="prod-training-cat">Serums</div>
+          <h4>Sérum Fuerza Capilar — presentación de 30 / 50 mL</h4>
+          <p>Aceites vegetales y esenciales de romero. Disponible en <b>30 / 50 mL</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado facial/capilar especializado según el producto. Explica sus ingredientes destacados y uso; evita garantizar resultados.</div>
+</article>
+<article class="prod-training-card" data-cat="Serums">
+<div class="prod-training-cat">Serums</div>
+          <h4>Sérum Natural Hydra E — presentación de 30 / 50 mL</h4>
+          <p>Sérum Hidratante con Vitamina E. Disponible en <b>30 / 50 mL</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado facial/capilar especializado según el producto. Explica sus ingredientes destacados y uso; evita garantizar resultados.</div>
+</article>
+<article class="prod-training-card" data-cat="Accesorios">
+<div class="prod-training-cat">Accesorios</div>
+          <h4>Jabonera de bambú</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Complemento de la rutina. Explica cómo facilita el uso de los productos.</div>
+</article>
+<article class="prod-training-card" data-cat="Accesorios">
+<div class="prod-training-cat">Accesorios</div>
+          <h4>Bolsita exfoliante de Sisal</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Complemento de la rutina. Explica cómo facilita el uso de los productos.</div>
+</article>
+<article class="prod-training-card" data-cat="Accesorios">
+<div class="prod-training-cat">Accesorios</div>
+          <h4>Toalla facial</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Complemento de la rutina. Explica cómo facilita el uso de los productos.</div>
+</article>
+<article class="prod-training-card" data-cat="Jabones">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit de Jabones Esencia de Mamá</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Kit Dia de la madre</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+</article>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Combo Jabon + jabonera + saquito exfoliante</h4>
+          <p>Combo Jabon + jabinera + saquito exfoliante</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+</article>
+<article class="prod-training-card" data-cat="Jabones">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Fuerza Natural</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Pack introkit + jabones</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+</article>
+<article class="prod-training-card" data-cat="Jabones">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Surtidos</h4>
+          <p>Kit 3 jabones surtidos de cualquier aroma.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Pack para cuidado diario de piel con acné</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+</article>
+<article class="prod-training-card" data-cat="Jabones">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones Avena - Romero - Lavanda (100 g x 3)</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="Serums">
+<div class="prod-training-cat">Serums</div>
+          <h4>Sérum Acné Balance — presentación de 30 / 50 mL</h4>
+          <p>Información específica disponible en la ficha del producto del portal. Disponible en <b>30 / 50 mL</b>.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado facial/capilar especializado según el producto. Explica sus ingredientes destacados y uso; evita garantizar resultados.</div>
+</article>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Kit De Vuelta a lo Natural</h4>
+          <p>Jabon Rosa Mosqueta + Bolsita de sisal + Jabonera de Bambú + Toalla facial</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+</article>
+<article class="prod-training-card" data-cat="Cremas">
+<div class="prod-training-cat">Cremas</div>
+          <h4>Crema Hidratante Facial HydraSeal 45g</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Hidratación facial. La marca comunica formulación sin parabenos ni ftalatos; habla de hidratación y cuidado, no de tratamientos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Combo especial Frescura Natural</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+</article>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Combo Jabón + Crema Facial + Bálsamo Labial</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+</article>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Combo Natural Hombre</h4>
+          <p>Información específica disponible en la ficha del producto del portal.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+</article>
+        </div>
+      </div>
+      <div class="onboard-card">
+        <h2>Mensajes clave por familia</h2>
+        <ul>
+          <li><b>Jabones:</b> la marca comunica que están libres de SLS, parabenos y ftalatos. Evita convertir esa característica en una afirmación médica.</li>
+          <li><b>DeoFresh:</b> la marca comunica que no contiene aluminio, parabenos ni ftalatos. No afirmes que esto previene cáncer u otras enfermedades.</li>
+          <li><b>FreshLips:</b> la marca comunica que no contiene plomo u otros metales pesados. Habla de la formulación; no hagas afirmaciones toxicológicas sobre otras marcas.</li>
+          <li><b>HydraSeal:</b> la marca comunica que no contiene parabenos ni ftalatos y está orientada a la hidratación facial.</li>
+          <li><b>Sérums:</b> la marca comunica que no contienen parabenos. Explica el ingrediente destacado y la finalidad cosmética de cada uno sin garantizar resultados.</li>
+        </ul>
+      </div>
+      <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><button class="onboard-btn" onclick="onboardingNext()">He revisado los productos →</button></div>
+    </section>
+
+    <section class="onboard-panel" data-step="4">
+      <div class="onboard-card">
+        <h2>4. Pedidos, envíos y puntos</h2>
+        <div class="onboard-grid">
+          <div class="onboard-mini"><strong>📦 Pedidos</strong><span>Se gestionan desde el Portal de Distribuidores. Revisa siempre producto, cantidad y datos del cliente.</span></div>
+          <div class="onboard-mini"><strong>🚚 Pedidos a tu domicilio</strong><span>Si el pedido llega a tu dirección, eres responsable de recibirlo y entregarlo posteriormente a tus clientes.</span></div>
+          <div class="onboard-mini"><strong>🌎 Otras ciudades</strong><span>Para una venta a otra ciudad de $60.000 o más, FNC puede enviarla directamente al cliente y asume el costo del envío.</span></div>
+          <div class="onboard-mini"><strong>🎁 Puntos</strong><span>Vigencia de 1 año; pueden cubrir hasta el 100 % de una recompensa. Puedes pagar la diferencia.</span></div>
+        </div>
+      </div>
+      <div class="onboard-card">
+        <h2>¿Qué pasa con las recompensas?</h2>
+        <ul>
+          <li>El catálogo de recompensas y los puntos requeridos se consultan en el portal.</li>
+          <li>Los productos entregados como recompensa <b>no generan nuevos puntos</b>.</li>
+          <li>El envío de una recompensa lo paga la distribuidora, salvo que pueda enviarse junto con otro pedido de clientes bajo las condiciones aplicables.</li>
+        </ul>
+      </div>
+      <div class="onboard-card">
+        <h2>Devoluciones</h2>
+        <p>Las solicitudes deben informarse dentro de los <b>7 días calendario</b> siguientes a la entrega y pueden requerir información, fotografías u otras evidencias. No prometas una solución definitiva al cliente antes de la validación de FNC.</p>
+      </div>
+      <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><button class="onboard-btn" onclick="onboardingNext()">Continuar →</button></div>
+    </section>
+
+    <section class="onboard-panel" data-step="5">
+      <div class="onboard-card">
+        <h2>5. Cómo vender correctamente</h2>
+        <div class="onboard-grid">
+          <div class="onboard-mini"><strong>✓ Habla desde la necesidad</strong><span>Pregunta qué busca el cliente y recomienda una rutina o producto coherente.</span></div>
+          <div class="onboard-mini"><strong>✓ Usa información oficial</strong><span>Apóyate en las fichas y materiales que FNC proporciona.</span></div>
+          <div class="onboard-mini"><strong>✓ Si no sabes, consulta</strong><span>Es mejor decir “voy a confirmarlo” que improvisar una respuesta.</span></div>
+          <div class="onboard-mini"><strong>✕ No prometas resultados</strong><span>No diagnostiques ni afirmes que un producto cura, trata o previene una enfermedad.</span></div>
+        </div>
+      </div>
+      <div class="onboard-card">
+        <h2>Antes de terminar</h2>
+        <p>Vas a responder <b>5 preguntas</b>. Necesitas al menos <b>4 respuestas correctas</b> para demostrar que comprendiste lo esencial. Puedes repetir el quiz si no alcanzas la puntuación.</p>
+        <p style="margin-top:8px">Después del quiz encontrarás los términos completos y podrás registrar tu aceptación para activar la cuenta.</p>
+      </div>
+      <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><button class="onboard-btn" onclick="onboardingNext()">Ir al quiz →</button></div>
+    </section>
+
+    <section class="onboard-panel" data-step="6">
+      <div class="onboard-card">
+        <h2>6. Quiz de incorporación</h2>
+        <p>Selecciona una respuesta en cada pregunta.</p>
+        <div class="quiz-question"><h4>1. ¿Cómo aumenta tu comisión?</h4>
+          <label class="quiz-option"><input type="radio" name="q1" value="a"> Es fija y no cambia.</label>
+          <label class="quiz-option"><input type="radio" name="q1" value="b"> Es progresiva y aumenta según el volumen de ventas mensuales.</label>
+          <label class="quiz-option"><input type="radio" name="q1" value="c"> La decide el cliente.</label>
+        </div>
+        <div class="quiz-question"><h4>2. Si vendes a otra ciudad y el pedido es de $60.000 o más, ¿qué puede ocurrir?</h4>
+          <label class="quiz-option"><input type="radio" name="q2" value="a"> Debes pagarlo y enviarlo personalmente.</label>
+          <label class="quiz-option"><input type="radio" name="q2" value="b"> FNC puede enviarlo directamente al cliente y asume el costo del envío.</label>
+          <label class="quiz-option"><input type="radio" name="q2" value="c"> El pedido se cancela.</label>
+        </div>
+        <div class="quiz-question"><h4>3. ¿Cuál es una forma correcta de comunicar un beneficio cosmético?</h4>
+          <label class="quiz-option"><input type="radio" name="q3" value="a"> “Te cura esta enfermedad”.</label>
+          <label class="quiz-option"><input type="radio" name="q3" value="b"> “Te garantizo que eliminará el problema”.</label>
+          <label class="quiz-option"><input type="radio" name="q3" value="c"> “Está formulado para apoyar esta rutina y puede ayudar según el producto y la persona”.</label>
+        </div>
+        <div class="quiz-question"><h4>4. ¿Qué debes hacer si no conoces la respuesta a una pregunta del cliente?</h4>
+          <label class="quiz-option"><input type="radio" name="q4" value="a"> Inventar una respuesta convincente.</label>
+          <label class="quiz-option"><input type="radio" name="q4" value="b"> Consultar a Frescura Natural antes de dar información que pueda inducir a error.</label>
+          <label class="quiz-option"><input type="radio" name="q4" value="c"> Decir que cualquier cosmético sirve.</label>
+        </div>
+        <div class="quiz-question"><h4>5. ¿Cuál afirmación sobre los puntos es correcta?</h4>
+          <label class="quiz-option"><input type="radio" name="q5" value="a"> Vencen en 1 año y los productos obtenidos como recompensa no generan nuevos puntos.</label>
+          <label class="quiz-option"><input type="radio" name="q5" value="b"> Nunca vencen.</label>
+          <label class="quiz-option"><input type="radio" name="q5" value="c"> Los productos de recompensa generan el doble de puntos.</label>
+        </div>
+        <button class="onboard-btn" onclick="calificarQuiz()">Calificar quiz</button>
+        <div id="quiz-result" class="quiz-result"></div>
+      </div>
+
+      <div class="onboard-card" id="onboard-legal-final" style="display:none">
+        <h2>Último paso: aceptación</h2>
+        <p>Lee los términos completos antes de activar tu cuenta.</p>
+        <p><a class="onboard-link" href="Terminos_y_Condiciones_Distribuidores_FNC.pdf" target="_blank" rel="noopener">📄 Ver Términos y Condiciones completos (PDF)</a></p>
+        <label class="onboard-check"><input type="checkbox" id="ob-terminos" onchange="actualizarBtnOnboarding()"><span><b>He leído y acepto los Términos y Condiciones</b> del Programa de Distribuidores.</span></label>
+        <label class="onboard-check"><input type="checkbox" id="ob-independiente" onchange="actualizarBtnOnboarding()"><span><b>Comprendo y acepto la naturaleza independiente y comercial</b> de mi participación y entiendo que no constituye una relación laboral.</span></label>
+        <label class="onboard-check"><input type="checkbox" id="ob-datos" onchange="actualizarBtnOnboarding()"><span><b>Autorizo el tratamiento de mis datos personales</b> de acuerdo con la Política de Tratamiento de Datos Personales de FNC y la normativa aplicable.</span></label>
+        <label class="onboard-check"><input type="checkbox" id="ob-veracidad" onchange="actualizarBtnOnboarding()"><span><b>Declaro que la información suministrada es verdadera, completa y actualizada</b> y me comprometo a cumplir las condiciones del programa.</span></label>
+        <div class="onboard-legal">
+          <button class="onboard-btn" id="btn-activar-onboarding" onclick="activarIncorporacion()" disabled>Continuar al acceso →</button>
+          <div class="onboard-note">La aceptación y el resultado del quiz se guardarán y se asociarán a tu cuenta al iniciar sesión.</div>
+        </div>
+      </div>
+      <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><span></span></div>
+    </section>
+  </div>
+</div>
 <!-- ══ PROFILE COMPLETION ══ -->
 <div id="screen-perfil" class="screen">
   <div style="background:#1e1c18;color:#f5f2ed;padding:14px 20px">
@@ -316,7 +894,7 @@ tbody tr:last-child td{border-bottom:none}
     </details>
 
     <!-- Actions row -->
-    <button class="btn-new-order" onclick="openModalPedido()">🛒 Nuevo Pedido</button>
+    <button class="btn-new-order" onclick="abrirGuiaPedido()">🛒 Nuevo Pedido</button>
 
     <!-- Date filter -->
     <div class="date-filter">
@@ -434,6 +1012,7 @@ let _terminoBusquedaProd = '';
 let _editandoPedidoId = null;  // pedido being edited
 let _lastPedidoTotal = 0;      // last order total for KPI
 let _lastPedidoComPagada = false; // last order commission status
+let _onboardingGuardando = false;
 
 // ══════════════════════════════════════════════════════════
 // HELPERS
@@ -492,9 +1071,15 @@ function calcPuntos(monto) {
   return 20 + Math.floor((monto - 300000) / 10000) * 2;
 }
 
+function hideLoader() {
+  const loader = document.getElementById('screen-loader');
+  if (loader) loader.classList.add('hidden');
+}
+
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  hideLoader();
 }
 
 function showToast(msg, dur=3000) {
@@ -513,17 +1098,206 @@ function setMesActual() {
 }
 
 // ══════════════════════════════════════════════════════════
-// SCREEN MANAGEMENT
+// SCREEN MANAGEMENT & ONBOARDING
 // ══════════════════════════════════════════════════════════
+
+let _onboardingStep = 1;
+let _quizAprobado = false;
+let _quizScore = 0;
+
+function onboardingPendiente() {
+  return !_dist || _dist.onboarding_completado !== true;
+}
+
+function onboardingPendienteLocal() {
+  try { return JSON.parse(localStorage.getItem('fnc_onboarding_pending') || 'null'); } catch(e) { return null; }
+}
+
+function showOnboarding() {
+  const nombre = (_dist && _dist.nombre) ? _dist.nombre.split(' ')[0] : '';
+  const el = document.getElementById('onboard-bienvenida');
+  if (el) el.textContent = nombre
+    ? `Hola, ${nombre}. Antes de activar tu cuenta recorrerás, paso a paso, la información esencial del programa y de nuestros productos. Al final harás un pequeño quiz de 5 preguntas.`
+    : 'Antes de activar tu cuenta recorrerás, paso a paso, la información esencial del programa y de nuestros productos. Al final harás un pequeño quiz de 5 preguntas.';
+  _onboardingStep = 1;
+  _quizAprobado = false;
+  _quizScore = 0;
+  document.querySelectorAll('#screen-onboarding input[type="checkbox"]').forEach(c => c.checked = false);
+  document.querySelectorAll('#screen-onboarding input[type="radio"]').forEach(c => c.checked = false);
+  document.getElementById('quiz-result')?.classList.remove('show','ok','fail');
+  const legal = document.getElementById('onboard-legal-final');
+  if (legal) legal.style.display = 'none';
+  actualizarBtnOnboarding();
+  renderOnboardingStep();
+  showScreen('screen-onboarding');
+  window.scrollTo(0,0);
+}
+
+function renderOnboardingStep() {
+  document.querySelectorAll('#screen-onboarding .onboard-panel').forEach(p => {
+    p.classList.toggle('active', Number(p.dataset.step) === _onboardingStep);
+  });
+  document.querySelectorAll('#onboard-stepbar .onboard-stepdot').forEach((d,i) => {
+    d.classList.toggle('done', i < _onboardingStep - 1);
+    d.classList.toggle('current', i === _onboardingStep - 1);
+  });
+  const label = document.getElementById('onboard-step-label');
+  if (label) label.textContent = `Paso ${_onboardingStep} de 6`;
+  window.scrollTo(0,0);
+}
+
+function onboardingNext() {
+  if (_onboardingStep < 6) {
+    _onboardingStep++;
+    renderOnboardingStep();
+  }
+}
+
+function onboardingPrev() {
+  if (_onboardingStep > 1) {
+    _onboardingStep--;
+    renderOnboardingStep();
+  }
+}
+
+function filtrarProductosOnboarding(cat, btn) {
+  document.querySelectorAll('.product-filter').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  document.querySelectorAll('.prod-training-card').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+}
+
+function calificarQuiz() {
+  const respuestas = {q1:'b', q2:'b', q3:'c', q4:'b', q5:'a'};
+  let score = 0, respondidas = 0;
+  Object.entries(respuestas).forEach(([q, correcta]) => {
+    const seleccionada = document.querySelector(`input[name="${q}"]:checked`);
+    if (seleccionada) {
+      respondidas++;
+      if (seleccionada.value === correcta) score++;
+    }
+  });
+  const result = document.getElementById('quiz-result');
+  _quizScore = score;
+  _quizAprobado = score >= 4;
+  if (!result) return;
+  result.className = 'quiz-result show ' + (_quizAprobado ? 'ok' : 'fail');
+  if (_quizAprobado) {
+    result.innerHTML = `<b>✓ Quiz aprobado: ${score}/5.</b><br>Has demostrado que comprendiste lo esencial. Ahora puedes revisar los términos y completar la aceptación para activar tu cuenta.`;
+    const legal = document.getElementById('onboard-legal-final');
+    if (legal) legal.style.display = 'block';
+    actualizarBtnOnboarding();
+  } else {
+    const faltan = 5 - respondidas;
+    result.innerHTML = `<b>Necesitas al menos 4/5.</b> Obtuviste ${score}/5.${faltan ? ` Te faltan ${faltan} pregunta(s) por responder.` : ' Puedes revisar nuevamente los pasos anteriores y repetir el quiz.'}`;
+    const legal = document.getElementById('onboard-legal-final');
+    if (legal) legal.style.display = 'none';
+  }
+}
+
+function actualizarBtnOnboarding() {
+  const ok = _quizAprobado && ['ob-terminos','ob-independiente','ob-datos','ob-veracidad']
+    .every(id => document.getElementById(id)?.checked);
+  const btn = document.getElementById('btn-activar-onboarding');
+  if (btn) btn.disabled = !ok || _onboardingGuardando;
+}
+
+function activarIncorporacion() {
+  const ok = _quizAprobado && ['ob-terminos','ob-independiente','ob-datos','ob-veracidad']
+    .every(id => document.getElementById(id)?.checked);
+  if (!ok || _onboardingGuardando) return;
+
+  _onboardingGuardando = true;
+  actualizarBtnOnboarding();
+  const btn = document.getElementById('btn-activar-onboarding');
+  if (btn) btn.textContent = 'Guardando y preparando acceso...';
+
+  const ahora = new Date().toISOString();
+  const pending = {
+    quiz_score: _quizScore,
+    quiz_aprobado: true,
+    quiz_en: ahora,
+    terminos_aceptados: true,
+    terminos_aceptados_en: ahora,
+    independencia_aceptada: true,
+    tratamiento_datos_aceptado: true,
+    tratamiento_datos_aceptado_en: ahora,
+    declaracion_veracidad_aceptada: true,
+    guardado_en: ahora
+  };
+  localStorage.setItem('fnc_onboarding_pending', JSON.stringify(pending));
+
+  showToast('✓ Inducción completada. Ahora inicia sesión para activar tu cuenta.');
+  _onboardingGuardando = false;
+  if (btn) btn.textContent = 'Continuar al acceso →';
+  setTimeout(() => {
+    document.getElementById('login-error').textContent = '';
+    showScreen('screen-login');
+    document.getElementById('l-user')?.focus();
+    window.scrollTo(0,0);
+  }, 500);
+}
+
+async function aplicarOnboardingPendiente() {
+  const pending = onboardingPendienteLocal();
+  if (!pending || !_dist || pending.quiz_aprobado !== true) return false;
+  const ahora = new Date().toISOString();
+  const update = {
+    onboarding_completado: true,
+    onboarding_completado_en: ahora,
+    onboarding_quiz_score: pending.quiz_score,
+    onboarding_quiz_aprobado: true,
+    onboarding_quiz_en: pending.quiz_en || ahora,
+    terminos_aceptados: true,
+    terminos_aceptados_en: pending.terminos_aceptados_en || ahora,
+    independencia_aceptada: true,
+    tratamiento_datos_aceptado: true,
+    tratamiento_datos_aceptado_en: pending.tratamiento_datos_aceptado_en || ahora,
+    declaracion_veracidad_aceptada: true
+  };
+  await DIST_COL.doc(_dist.id).update(update);
+  _dist = {..._dist, ...update};
+  localStorage.removeItem('fnc_onboarding_pending');
+  return true;
+}
+
+
+function abrirGuiaPedido() {
+  const el = document.getElementById('order-guide-overlay');
+  if (el) { el.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+}
+function cerrarGuiaPedido(ev) {
+  if (ev && ev.target && ev.target.id !== 'order-guide-overlay') return;
+  const el = document.getElementById('order-guide-overlay');
+  if (el) el.style.display = 'none';
+  document.body.style.overflow = '';
+}
+function continuarDesdeGuiaPedido() {
+  cerrarGuiaPedido();
+  if (typeof openModalPedido === 'function') openModalPedido();
+}
+
+
+function redondearPorcentajeComision(valor) {
+  const n = Number(valor);
+  if (!Number.isFinite(n)) return 0;
+  return Math.round((n + Number.EPSILON) * 100) / 100;
+}
+function formatearPorcentajeComision(valor) {
+  return redondearPorcentajeComision(valor).toLocaleString('es-CO', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  }) + '%';
+}
+
 function showApp() {
   document.getElementById('dist-bienvenida').textContent = 'Bienvenido/a, ' + _dist.nombre;
-  // Set last pedido for KPI
   if (_pedidos.length > 0) {
     const last = _pedidos[0];
     _lastPedidoTotal = last.total || 0;
     _lastPedidoComPagada = last.comision_pagada === true;
   }
-  // Show date in topbar
   const fechaEl = document.getElementById('topbar-date');
   if (fechaEl) fechaEl.textContent = new Date().toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
   showScreen('screen-app');
@@ -544,7 +1318,6 @@ function showPerfilForm() {
   showScreen('screen-perfil');
 }
 
-// Permite al distribuidor volver a editar sus datos (teléfono, dirección, banco, etc.) en cualquier momento
 function editarMisDatos() {
   document.getElementById('perfil-bienvenida').textContent = 'Editar mis datos';
   document.getElementById('btn-perfil').textContent = '💾 Guardar cambios';
@@ -552,8 +1325,17 @@ function editarMisDatos() {
 }
 
 // ══════════════════════════════════════════════════════════
-// AUTH
+// AUTH & INITIALIZATION
 // ══════════════════════════════════════════════════════════
+
+document.addEventListener('click', function(e){
+  const btn = e.target.closest('#btn-nuevo-pedido,[data-action="nuevo-pedido"],.btn-nuevo-pedido');
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+  abrirGuiaPedido();
+}, true);
+
 document.addEventListener('DOMContentLoaded', async () => {
   firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
@@ -561,14 +1343,37 @@ document.addEventListener('DOMContentLoaded', async () => {
         const snap = await DIST_COL.doc(user.uid).get();
         if (snap.exists) {
           _dist = {id: snap.id, ...snap.data()};
-          await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma(); resaltarInfoProgramaPrimeraVez();
+          
+          // Sincroniza onboarding realizado offline/previo al login si aplica
+          await aplicarOnboardingPendiente();
+
+          await loadAdminDB(); 
+          await cargarConfigComisiones(); 
+          await verificarYCaducarPuntosPropios(); 
+          renderInfoPrograma(); 
+          resaltarInfoProgramaPrimeraVez();
           await loadPedidos();
+
+          // Fuente de verdad sobre Onboarding desde Firestore
+          if (onboardingPendiente()) { 
+            showOnboarding(); 
+            return; 
+          }
+
           const perfilOk = _dist.telefono && _dist.municipio && _dist.banco && _dist.cuenta;
-          if (perfilOk) showApp(); else showPerfilForm();
+          if (perfilOk) {
+            showApp(); 
+          } else {
+            showPerfilForm();
+          }
           return;
         }
-      } catch(e) { console.warn('[Auth] error restaurando sesión:', e.message); }
+      } catch(e) { 
+        console.warn('[Auth] error restaurando sesión:', e.message); 
+      }
     }
+    
+    // Si no existe usuario activo o no se encontró documento
     showScreen('screen-login');
     setTimeout(() => document.getElementById('l-user')?.focus(), 100);
   });
@@ -586,10 +1391,26 @@ async function doLogin() {
     const internalEmail = usuario + '@frescura-admin.app';
     const cred = await firebase.auth().signInWithEmailAndPassword(internalEmail, pwd);
     const snap = await DIST_COL.doc(cred.user.uid).get();
-    if (!snap.exists) { errEl.textContent = 'Usuario no encontrado. Contacta al administrador.'; await firebase.auth().signOut(); return; }
+    if (!snap.exists) { 
+      errEl.textContent = 'Usuario no encontrado. Contacta al administrador.'; 
+      await firebase.auth().signOut(); 
+      return; 
+    }
     _dist = {id: snap.id, ...snap.data()};
-    await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma(); resaltarInfoProgramaPrimeraVez();
+    
+    await aplicarOnboardingPendiente();
+    await loadAdminDB(); 
+    await cargarConfigComisiones(); 
+    await verificarYCaducarPuntosPropios(); 
+    renderInfoPrograma(); 
+    resaltarInfoProgramaPrimeraVez();
     await loadPedidos();
+
+    if (onboardingPendiente()) { 
+      showOnboarding(); 
+      return; 
+    }
+    
     const perfilOk = _dist.telefono && _dist.municipio && _dist.banco && _dist.cuenta;
     if (perfilOk) showApp(); else showPerfilForm();
   } catch(e) {
@@ -653,27 +1474,23 @@ function editarPedido(pedidoId) {
 // ── Real-time listener: commission payment status ────────
 function startRealtimeListener() {
   if (!_dist) return;
-  // Listen for changes to this distributor's pedidos
   PEDIDOS_COL.where('dist_id','==',_dist.id).onSnapshot(snapshot => {
     snapshot.docChanges().forEach(change => {
       const data = {id: change.doc.id, ...change.doc.data()};
       const idx = _pedidos.findIndex(p => p.id === data.id);
       if (data.estado_pago === 'cancelado') {
-        if (idx >= 0) _pedidos.splice(idx, 1); // desaparece del panel del distribuidor
+        if (idx >= 0) _pedidos.splice(idx, 1);
       } else if (idx >= 0) {
         const estadoEnvioAnterior = _pedidos[idx].estado_envio;
-        // Aviso proactivo: el pedido acaba de pasar a "enviado" con datos de guía
         if (change.type === 'modified' && data.estado_envio === 'enviado' && estadoEnvioAnterior !== 'enviado' && data.numero_guia) {
           showToast(`🚚 Pedido ${data.num||''} enviado — ${data.transportadora||''} · Guía: ${data.numero_guia}`, 6000);
         }
         _pedidos[idx] = {..._pedidos[idx], ...data};
-        // Update KPI "esta venta" if matches last order
         if (_pedidos[0] && _pedidos[idx].id === _pedidos[0].id) {
           _lastPedidoComPagada = data.comision_pagada === true;
           if (data.estado_pago === 'confirmado') _lastPedidoTotal = data.total || _lastPedidoTotal;
         }
       } else if (change.type === 'added') {
-        // Only add if not already present
         if (!_pedidos.find(p => p.id === data.id)) _pedidos.unshift(data);
       }
     });
@@ -731,7 +1548,6 @@ async function loadAdminDB() {
 async function loadPedidos() {
   try {
     const snap = await PEDIDOS_COL.where('dist_id','==',_dist.id).orderBy('fecha','desc').get();
-    // Los pedidos cancelados por el admin no se muestran (siguen existiendo en la base para el historial del admin)
     _pedidos = snap.docs.map(d => ({id:d.id, ...d.data()})).filter(p => p.estado_pago !== 'cancelado');
   } catch(e) { console.warn('loadPedidos:', e.message); _pedidos = []; }
 }
@@ -748,8 +1564,6 @@ function updateNextNum() {
 // ══════════════════════════════════════════════════════════
 // KPIs
 // ══════════════════════════════════════════════════════════
-// ── Catálogo de recompensas y canje de puntos ──
-// ── Caducidad de puntos: 12 meses desde la fecha de generación de cada lote (FIFO), igual que en el admin ──
 function limpiarLotesCaducados(lotes) {
   const hoy = new Date(today());
   let expirados = 0;
@@ -779,7 +1593,7 @@ async function verificarYCaducarPuntosPropios() {
     }
   } catch(e) { console.warn('[caducidad puntos]', e.message); }
 }
-// Consume puntos de los lotes más antiguos primero (FIFO); devuelve los lotes ya actualizados
+
 function consumirLotesFIFO(lotes, puntosAConsumir) {
   const ordenados = [...(lotes||[])].sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
   let restante = puntosAConsumir;
@@ -834,13 +1648,11 @@ async function solicitarCanje(recompensaId, recompensaNombre, puntos) {
   const disponibles = _dist.puntos_disponibles || 0;
 
   if (disponibles >= puntos) {
-    // Alcanza solo con puntos
     if (!confirm(`¿Canjear "${recompensaNombre}" por ${puntos} puntos? Quedará pendiente de aprobación del administrador.`)) return;
     await _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados: puntos, montoEfectivo: 0, comprobanteEfectivo: null});
     return;
   }
 
-  // No alcanza — ofrecer completar la diferencia en efectivo
   const faltante = puntos - disponibles;
   const montoFaltante = faltante * _configComisiones.valor_punto;
   const overlay = document.createElement('div');
@@ -893,7 +1705,6 @@ async function _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados, mon
       comprobante_efectivo_base64: comprobanteEfectivo || null,
       fecha: today(), estado: 'pendiente'
     });
-    // Consumir los puntos usados de los lotes más antiguos (FIFO)
     const nuevosLotes = consumirLotesFIFO(_dist.puntos_lotes || [], puntosUsados);
     await DIST_COL.doc(_dist.id).update({
       puntos_disponibles: firebase.firestore.FieldValue.increment(-puntosUsados),
@@ -907,7 +1718,6 @@ async function _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados, mon
   } catch(e) { alert('Error al solicitar canje: ' + e.message); }
 }
 
-// Rellena la tarjeta informativa con la escala de comisión y puntos vigente (según configuración real)
 function renderInfoPrograma() {
   const el = document.getElementById('info-programa-body');
   if (!el) return;
@@ -945,14 +1755,12 @@ function renderInfoPrograma() {
     </div>`;
 }
 
-// ── Brillo permanente en el acordeón + badge "Nuevo" solo en la 1ra visita ──
 function resaltarInfoProgramaPrimeraVez() {
   const KEY = 'frescura_dist_info_programa_visto';
   const details = document.getElementById('info-programa-details');
   const badge = document.getElementById('badge-nuevo-info');
   if (!details) return;
 
-  // El brillo/pulso queda siempre presente, sin importar si ya se abrió antes
   details.classList.add('destacar-brillo');
 
   let yaVisto = false;
@@ -987,7 +1795,6 @@ function renderKPIs() {
   const nextTierObj = tramos.find(t => t.monto > ventasMes);
   const nextTier = nextTierObj ? {l: nextTierObj.monto, p: nextTierObj.pct} : null;
 
-  // Total histórico de comisión: se agrupa por mes (la comisión es proporcional a lo vendido cada mes)
   const ventasPorMes = {};
   conf.forEach(p => {
     const mes = (p.fecha||'').slice(0,7);
@@ -999,7 +1806,7 @@ function renderKPIs() {
     <div class="kpi-card" style="background:var(--sage-light)">
       <div class="kpi-label" style="color:var(--sage)">Ventas Este Mes</div>
       <div class="kpi-value" style="font-size:20px;color:var(--sage)">${fmt(ventasMes)}</div>
-      <div class="kpi-sub">Comisión vigente: <b>${comVigente.pct}%</b> ${nextTier ? `· Faltan ${fmt(nextTier.l-ventasMes)} para ${nextTier.p}%` : '🏆 Nivel máximo'}</div>
+      <div class="kpi-sub">Comisión vigente: <b>${formatearPorcentajeComision(comVigente.pct)}</b> ${nextTier ? `· Faltan ${fmt(nextTier.l-ventasMes)} para ${nextTier.p}%` : '🏆 Nivel máximo'}</div>
     </div>
     <div class="kpi-card" style="background:#f0e8f5">
       <div class="kpi-label" style="color:#6a3a7a">💎 Puntos Disponibles</div>
@@ -1069,7 +1876,7 @@ function renderPedidos() {
         <td class="fw6">${fmt(p.total||0)}</td>
         <td style="white-space:nowrap">
           ${pCom.pct > 0
-            ? `<span style="font-weight:600;color:var(--sage)">${fmt(pCom.val)}</span><span style="font-size:10px;color:var(--ink3);margin-left:2px">(${pCom.pct}%)</span>
+            ? `<span style="font-weight:600;color:var(--sage)">${fmt(pCom.val)}</span><span style="font-size:10px;color:var(--ink3);margin-left:2px">(${formatearPorcentajeComision(pCom.pct)})</span>
                ${p.comision_pagada?`<br><span style="font-size:9px;background:#e8f0e8;color:#5a7a5c;padding:1px 5px;border-radius:2px">✓ Pagada</span>${p.comprobante_comision_base64?` <span onclick="event.stopPropagation();verComprobanteComisionDist('${p.id}')" style="font-size:9px;color:#4a7ab5;cursor:pointer;text-decoration:underline">📎 Ver</span>`:''}`:''}`
             : '<span style="color:var(--ink3);font-size:12px">—</span>'}
         </td>
@@ -1112,7 +1919,6 @@ function renderPedidos() {
 // ══════════════════════════════════════════════════════════
 // MODAL PEDIDO
 // ══════════════════════════════════════════════════════════
-// Toggle received status (controlled by distributor)
 async function toggleRecibido(pedidoId, current) {
   const nueva = !current;
   try {
@@ -1124,7 +1930,6 @@ async function toggleRecibido(pedidoId, current) {
   } catch(e) { showToast('⚠ Error: ' + e.message); }
 }
 
-// Show order summary in a modal-like overlay
 function verResumenPedido(pedidoId) {
   const p = _pedidos.find(x => x.id === pedidoId);
   if (!p) return;
@@ -1137,7 +1942,6 @@ function verResumenPedido(pedidoId) {
      </div>`
   ).join('');
 
-  // Create overlay
   const overlay = document.createElement('div');
   overlay.id = 'overlay-resumen-pedido';
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px';
@@ -1159,7 +1963,7 @@ function verResumenPedido(pedidoId) {
         <div style="background:#f5f2ed;border-radius:6px;padding:12px;margin-top:8px">
           <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
             <span style="color:#8a847a">Porcentaje comisión</span>
-            <span style="font-weight:600">${pCom.pct}%</span>
+            <span style="font-weight:600">${formatearPorcentajeComision(pCom.pct)}</span>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700">
             <span>Comisión Generada</span>
@@ -1193,7 +1997,6 @@ function verResumenPedido(pedidoId) {
   document.body.appendChild(overlay);
 }
 
-// ── Ver comprobante de pago de comisión (subido por el admin) en grande ──
 function verComprobanteComisionDist(pedidoId) {
   const p = _pedidos.find(x => x.id === pedidoId);
   if (!p || !p.comprobante_comision_base64) { showToast('⚠ No hay comprobante disponible'); return; }
@@ -1236,7 +2039,6 @@ function closePedidoModal() {
   _comprobanteBase64 = null;
 }
 
-// ── Payment screenshot: compress client-side and store as base64 (no paid Storage needed) ──
 function previewComprobante(input) {
   const file = input.files && input.files[0];
   if (!file) { _comprobanteBase64 = null; document.getElementById('p-comprobante-preview').innerHTML = ''; return; }
@@ -1256,7 +2058,7 @@ function previewComprobante(input) {
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
       _comprobanteBase64 = dataUrl;
-      const kb = Math.round(dataUrl.length * 0.75 / 1024); // approx decoded size
+      const kb = Math.round(dataUrl.length * 0.75 / 1024);
       previewEl.innerHTML = `<img src="${dataUrl}" style="max-width:160px;border-radius:4px;border:1px solid var(--border);display:block;margin-top:4px">
         <span style="font-size:10px;color:var(--ink3)">✓ Comprobante listo (~${kb} KB)</span>`;
     };
@@ -1279,13 +2081,11 @@ function setCat(cat) {
   renderProductsGrid();
 }
 
-// ── Buscar producto en todo el catálogo, sin importar la categoría activa ──
 function filtrarProductosPorBusqueda(valor) {
   _terminoBusquedaProd = valor || '';
   renderProductsGrid();
 }
 
-// ── Copiar texto (llave Bre-B / número Nequi-DaviPlata) al portapapeles ──
 function copiarTexto(texto) {
   navigator.clipboard.writeText(texto)
     .then(() => showToast('✓ Copiado'))
@@ -1378,7 +2178,6 @@ async function enviarPedido() {
 
   if (!items.length) { showToast('⚠ Agrega al menos un producto'); return; }
 
-  // EDIT MODE: update existing pedido
   if (_editandoPedidoId) {
     const btn = document.getElementById('btn-enviar');
     btn.disabled = true; btn.textContent = 'Actualizando...';
@@ -1401,7 +2200,6 @@ async function enviarPedido() {
     return;
   }
 
-  // Check stock one more time
   for (const item of items) {
     const p = (_adminDB.productos||[]).find(x => x.id === item.id);
     if (!p || p.stock < item.cantidad) {
@@ -1409,7 +2207,6 @@ async function enviarPedido() {
     }
   }
 
-  // ── Verification step before sending: show a summary for the distributor to confirm ──
   const totalPreview = items.reduce((a,i) => a + i.subtotal, 0);
   const resumenTexto = items.map(i => `• ${i.nombre} x${i.cantidad} — ${fmt(i.subtotal)}`).join('\n')
     + `\n\nTOTAL: ${fmt(totalPreview)}`
@@ -1426,7 +2223,6 @@ async function enviarPedido() {
     const fecha = document.getElementById('p-fecha').value;
     const metodo = document.getElementById('p-metodo').value;
 
-    // Write to pedidos_dist — admin will pick this up via onSnapshot
     await PEDIDOS_COL.doc(vid).set({
       id: vid,
       num: '#' + String(consecutivo).padStart(4,'0'),
@@ -1442,17 +2238,15 @@ async function enviarPedido() {
       estado_envio: 'preparando',
       canal_venta:  'Distribuidora',
       creado_en:    Date.now(),
-      procesado:    false       // admin will set this to true when integrated
+      procesado:    false
     });
 
-    // Update local state (evita duplicado si el listener en tiempo real ya lo agregó primero)
     const newPedido = {id:vid, num:'#'+String(consecutivo).padStart(4,'0'),
       dist_consecutivo:consecutivo, dist_id:_dist.id, dist_nombre:_dist.nombre,
       fecha, items, total, metodo_pago:metodo, estado_pago:'pendiente',
       estado_envio:'preparando', procesado:false, comision_pagada:false};
     if (!_pedidos.find(p => p.id === vid)) _pedidos.unshift(newPedido);
 
-    // Reset "esta venta" KPIs
     _lastPedidoTotal = total;
     _lastPedidoComPagada = false;
 
@@ -1470,6 +2264,7 @@ async function enviarPedido() {
   }
 }
 </script>
+
 <!-- ══ MODAL: META ══ -->
 <div class="modal-overlay" id="modal-meta">
   <div class="modal" style="max-width:380px">
