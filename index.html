@@ -437,7 +437,7 @@ tbody tr:last-child td{border-bottom:none}
         <h2>¿Cómo ganas dinero?</h2>
         <p>La comisión es <b>progresiva</b>: aumenta según el volumen de ventas mensuales.</p>
         <table class="onboard-table"><thead><tr><th>Ventas mensuales</th><th>Comisión</th></tr></thead><tbody>
-          <tr><td>$60.000 – $119.999</td><td><b>5 %</b></td></tr>
+          <tr><td>$70.000 – $119.999</td><td><b>5 %</b></td></tr>
           <tr><td>$120.000 – $199.999</td><td><b>9 %</b></td></tr>
           <tr><td>$200.000 – $299.999</td><td><b>14 %</b></td></tr>
           <tr><td>$300.000 o más</td><td><b>20 %</b></td></tr>
@@ -744,7 +744,7 @@ tbody tr:last-child td{border-bottom:none}
         <div class="onboard-grid">
           <div class="onboard-mini"><strong>📦 Pedidos</strong><span>Se gestionan desde el Portal de Distribuidores. Revisa siempre producto, cantidad y datos del cliente.</span></div>
           <div class="onboard-mini"><strong>🚚 Pedidos a tu domicilio</strong><span>Si el pedido llega a tu dirección, eres responsable de recibirlo y entregarlo posteriormente a tus clientes.</span></div>
-          <div class="onboard-mini"><strong>🌎 Otras ciudades</strong><span>Para una venta a otra ciudad de $60.000 o más, FNC puede enviarla directamente al cliente y asume el costo del envío.</span></div>
+          <div class="onboard-mini"><strong>🌎 Otras ciudades</strong><span>Para una venta a otra ciudad de $70.000 o más, FNC puede enviarla directamente al cliente y asume el costo del envío.</span></div>
           <div class="onboard-mini"><strong>🎁 Puntos</strong><span>Vigencia de 1 año; pueden cubrir hasta el 100 % de una recompensa. Puedes pagar la diferencia.</span></div>
         </div>
       </div>
@@ -790,7 +790,7 @@ tbody tr:last-child td{border-bottom:none}
           <label class="quiz-option"><input type="radio" name="q1" value="b"> Es progresiva y aumenta según el volumen de ventas mensuales.</label>
           <label class="quiz-option"><input type="radio" name="q1" value="c"> La decide el cliente.</label>
         </div>
-        <div class="quiz-question"><h4>2. Si vendes a otra ciudad y el pedido es de $60.000 o más, ¿qué puede ocurrir?</h4>
+        <div class="quiz-question"><h4>2. Si vendes a otra ciudad y el pedido es de $70.000 o más, ¿qué puede ocurrir?</h4>
           <label class="quiz-option"><input type="radio" name="q2" value="a"> Debes pagarlo y enviarlo personalmente.</label>
           <label class="quiz-option"><input type="radio" name="q2" value="b"> FNC puede enviarlo directamente al cliente y asume el costo del envío.</label>
           <label class="quiz-option"><input type="radio" name="q2" value="c"> El pedido se cancela.</label>
@@ -1016,7 +1016,7 @@ const uid = p => `${p}-${Date.now().toString(36).toUpperCase()}`;
 // ── Configuración del programa (compartida con el panel admin, vía Firestore) ──
 let _configComisiones = {
   tramos_comision: [
-    {monto: 0, pct: 0}, {monto: 60000, pct: 5}, {monto: 120000, pct: 9},
+    {monto: 0, pct: 0}, {monto: 70000, pct: 5}, {monto: 120000, pct: 9},
     {monto: 200000, pct: 14}, {monto: 300000, pct: 20},
   ],
   valor_punto: 200
