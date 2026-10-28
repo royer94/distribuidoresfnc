@@ -20,10 +20,10 @@
   --red:#9b3a3a;--red-light:#f5e8e8;
   --r:5px;
 }
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+html,body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;max-width:100%;overflow-x:hidden}
 
 /* ── SCREENS ── */
-.screen{display:none;position:fixed;inset:0;overflow-y:auto;background:var(--bg)}
+.screen{display:none;position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;max-width:100vw;background:var(--bg)}
 .screen.active{display:block}
 /* login uses flex centering */
 #screen-login.active{display:flex;align-items:center;justify-content:center;padding:20px;
@@ -85,7 +85,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);min-h
 
 /* ── KPI CARDS ── */
 .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px}
+.kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:16px;min-width:0;max-width:100%;overflow-wrap:break-word}
 .kpi-label{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
 .kpi-value{font-size:24px;font-weight:700;font-family:'Cormorant Garamond',serif;color:var(--ink);margin-bottom:2px}
 .kpi-sub{font-size:12px;color:var(--ink3)}
@@ -99,11 +99,12 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);min-h
 .btn-new-order:hover{background:#2a4a6a}
 
 /* ── ORDERS TABLE ── */
-.section-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px}
-.section-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.section-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:16px;min-width:0;max-width:100%}
+.section-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
 .section-header-title{font-size:14px;font-weight:600;color:var(--ink)}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:400px}
+.table-wrap{overflow-x:auto;max-width:100%}
+table{width:100%;border-collapse:collapse}
+.table-wrap table{min-width:400px}
 thead th{padding:9px 14px;text-align:left;font-size:10px;font-weight:600;color:var(--ink3);
   letter-spacing:1px;text-transform:uppercase;background:#faf8f5;border-bottom:1px solid var(--border)}
 tbody td{padding:10px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--ink2)}
@@ -115,10 +116,11 @@ tbody tr:last-child td{border-bottom:none}
 .fw6{font-weight:600}
 
 /* ── DATE FILTER ── */
-.date-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.date-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;max-width:100%}
 .date-filter label{font-size:12px;font-weight:500;color:var(--ink3)}
 .date-filter input{padding:7px 10px;border:1px solid var(--border);border-radius:var(--r);
-  font-family:'Outfit',sans-serif;font-size:13px;outline:none;width:auto;background:var(--surface);color:var(--ink)}
+  font-family:'Outfit',sans-serif;font-size:13px;outline:none;width:auto;min-width:0;max-width:100%;background:var(--surface);color:var(--ink)}
+input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellipsis}
 .btn-sm{padding:6px 12px;font-size:12px;border-radius:var(--r);border:1px solid var(--border);
   background:var(--surface);color:var(--ink2);cursor:pointer;font-family:'Outfit',sans-serif}
 
@@ -135,7 +137,7 @@ tbody tr:last-child td{border-bottom:none}
 .modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
 .modal-title{font-size:15px;font-weight:600;color:var(--ink)}
 .modal-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink3);padding:4px}
-.modal-body{padding:18px 20px;overflow-y:auto;flex:1}
+.modal-body{padding:18px 20px;overflow-y:auto;overflow-x:hidden;flex:1}
 .modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;flex-shrink:0}
 
 /* ── PRODUCT SELECTOR ── */
@@ -145,7 +147,7 @@ tbody tr:last-child td{border-bottom:none}
 .cat-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .products-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;max-height:280px;overflow-y:auto}
 @media(min-width:400px){.products-grid{grid-template-columns:1fr 1fr 1fr}}
-.prod-card{border:1px solid var(--border);border-radius:6px;padding:10px;cursor:pointer;transition:all .15s;position:relative}
+.prod-card{border:1px solid var(--border);border-radius:6px;padding:10px;cursor:pointer;transition:all .15s;position:relative;min-width:0;max-width:100%;overflow-wrap:break-word}
 .prod-card:hover{border-color:var(--blue);background:var(--blue-light)}
 .prod-card.selected{border-color:var(--sage);background:var(--sage-light)}
 .prod-card.out-of-stock{opacity:.45;cursor:not-allowed}
@@ -161,7 +163,7 @@ tbody tr:last-child td{border-bottom:none}
 
 /* ── ORDER SUMMARY ── */
 .order-summary{background:#faf8f5;border:1px solid var(--border);border-radius:6px;padding:14px;margin-top:10px}
-.summary-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:13px;color:var(--ink2)}
+.summary-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;font-size:13px;color:var(--ink2);gap:8px}
 .summary-divider{height:1px;background:var(--border2);margin:8px 0}
 .summary-total{font-size:16px;font-weight:700;color:var(--ink)}
 
@@ -176,8 +178,8 @@ tbody tr:last-child td{border-bottom:none}
 
 /* ── TOAST ── */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);
-  background:#1e1c18;color:#f5f2ed;padding:12px 24px;border-radius:6px;font-size:13px;
-  z-index:9999;transition:transform .3s;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+  background:#1e1c18;color:#f5f2ed;padding:12px 20px;border-radius:6px;font-size:13px;
+  z-index:9999;transition:transform .3s;max-width:calc(100vw - 24px);white-space:normal;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
 @media(max-width:600px){
@@ -186,16 +188,18 @@ tbody tr:last-child td{border-bottom:none}
   .kpi-value{font-size:18px!important}
   .products-grid{grid-template-columns:1fr 1fr}
   .app-body{padding:12px}
-  .topbar{padding:10px 14px}
+  .topbar{padding:10px 12px;flex-wrap:wrap;gap:8px}
   .topbar-brand{font-size:16px}
+  #topbar-date{display:none!important}
   .login-box{padding:28px 22px}
   .modal{border-radius:12px 12px 0 0}
   .btn-new-order{padding:14px;font-size:14px}
-  /* Table: horizontal scroll */
+  /* Table: horizontal scroll only inside .table-wrap */
   .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  table{min-width:480px}
+  .table-wrap table{min-width:480px}
   thead th{padding:7px 10px;font-size:9px}
   tbody td{padding:8px 10px;font-size:12px}
+  .date-filter input[type="date"]{flex:1 1 120px;min-width:0}
   /* topbar-right: wrap on tiny screens */
   .topbar-right{gap:6px;flex-wrap:wrap;justify-content:flex-end}
   .consecutivo-badge{font-size:10px;padding:3px 7px}
@@ -217,13 +221,13 @@ tbody tr:last-child td{border-bottom:none}
   .kpi-grid{grid-template-columns:1fr!important}
 }
 /* ── Tabla de comisión/puntos: 2 columnas en desktop, apilada en móvil ── */
-.tabla-info-programa{width:100%;border-collapse:collapse;font-size:12px}
+.tabla-info-programa{width:100%!important;min-width:0!important;border-collapse:collapse;font-size:12px}
 .tabla-info-programa tr{border-bottom:1px solid #eee9e0}
 .tabla-info-programa tr:last-child{border-bottom:none}
 .tabla-info-programa td{padding:5px 8px 5px 0;vertical-align:middle}
 .tabla-info-programa td:first-child{color:var(--ink2)}
 @media (max-width:520px){
-  .tabla-info-programa, .tabla-info-programa tbody, .tabla-info-programa tr, .tabla-info-programa td{display:block;width:100%}
+  .tabla-info-programa, .tabla-info-programa tbody, .tabla-info-programa tr, .tabla-info-programa td{display:block;width:100%;min-width:0!important}
   .tabla-info-programa tr{padding:6px 0}
   .tabla-info-programa td{padding:1px 0}
   .tabla-info-programa td:first-child{font-size:11px;color:var(--ink3)}
@@ -248,7 +252,7 @@ tbody tr:last-child td{border-bottom:none}
 /* ONBOARDING / INCORPORACION · WIZARD */
 #screen-onboarding{background:var(--bg);display:none}
 #screen-onboarding.active{display:block}
-.onboard-wrap{max-width:900px;margin:0 auto;padding:20px 18px 44px}
+.onboard-wrap{max-width:900px;margin:0 auto;padding:20px 18px 44px;width:100%}
 .onboard-hero{background:#1e1c18;color:#f5f2ed;border-radius:10px;padding:28px 24px;margin-bottom:14px}
 .onboard-kicker{font-size:10px;color:var(--sage);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
 .onboard-hero h1{font-family:'Cormorant Garamond',serif;font-size:31px;line-height:1.05;margin-bottom:8px}
@@ -259,17 +263,17 @@ tbody tr:last-child td{border-bottom:none}
 .onboard-step-label{font-size:10px;color:#bdb7ad;margin-top:8px;text-align:right}
 .onboard-panel{display:none}
 .onboard-panel.active{display:block}
-.onboard-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:12px}
+.onboard-card{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:12px;min-width:0;max-width:100%;overflow-wrap:break-word}
 .onboard-card h2{font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:7px}
 .onboard-card h3{font-size:14px;margin:14px 0 6px}
 .onboard-card p,.onboard-card li{font-size:12.5px;line-height:1.6;color:var(--ink2)}
 .onboard-card ul{padding-left:20px;margin:7px 0}
 .onboard-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.onboard-mini{background:#faf8f5;border:1px solid var(--border);border-radius:7px;padding:13px}
+.onboard-mini{background:#faf8f5;border:1px solid var(--border);border-radius:7px;padding:13px;min-width:0;max-width:100%;overflow-wrap:break-word}
 .onboard-mini strong{display:block;font-size:13px;margin-bottom:4px}
 .onboard-mini span{font-size:11px;color:var(--ink3);line-height:1.5}
-.onboard-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:12px}
-.onboard-table th,.onboard-table td{padding:8px;border-bottom:1px solid var(--border);text-align:left}
+.onboard-table{width:100%!important;min-width:0!important;border-collapse:collapse;margin-top:8px;font-size:12px;table-layout:fixed}
+.onboard-table th,.onboard-table td{padding:8px;border-bottom:1px solid var(--border);text-align:left;word-break:break-word;overflow-wrap:break-word}
 .onboard-table th{background:#faf8f5;font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px}
 .onboard-actions{display:flex;justify-content:space-between;gap:10px;margin-top:14px}
 .onboard-btn{background:var(--sage);color:#fff;border:none;border-radius:7px;padding:12px 18px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
@@ -281,7 +285,7 @@ tbody tr:last-child td{border-bottom:none}
 .product-filter{border:1px solid var(--border);background:var(--surface);padding:7px 10px;border-radius:20px;font-size:11px;cursor:pointer;color:var(--ink2)}
 .product-filter.active{background:var(--ink);color:#fff;border-color:var(--ink)}
 .product-training-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-height:650px;overflow:auto;padding-right:2px}
-.prod-training-card{border:1px solid var(--border);background:#fff;border-radius:8px;padding:13px}
+.prod-training-card{border:1px solid var(--border);background:#fff;border-radius:8px;padding:13px;min-width:0;max-width:100%;overflow-wrap:break-word}
 .prod-training-cat{font-size:9px;letter-spacing:.8px;text-transform:uppercase;color:var(--ink3);margin-bottom:4px}
 .prod-training-card h4{font-size:13px;line-height:1.25;margin-bottom:5px}
 .prod-training-card p{font-size:11px!important;line-height:1.45!important;margin:0 0 8px}
@@ -300,8 +304,10 @@ tbody tr:last-child td{border-bottom:none}
 .onboard-legal{position:sticky;bottom:0;background:rgba(245,242,237,.97);padding:12px 0 2px;backdrop-filter:blur(6px);margin-top:14px}
 @media(max-width:650px){
   .onboard-wrap{padding:14px 12px 30px}
-  .onboard-hero{padding:23px 18px}
-  .onboard-hero h1{font-size:27px}
+  .onboard-hero{padding:20px 16px}
+  .onboard-hero h1{font-size:25px}
+  .onboard-card{padding:15px 14px}
+  .onboard-table th,.onboard-table td{padding:6px 5px;font-size:11px}
   .onboard-grid,.product-training-grid{grid-template-columns:1fr}
   .onboard-actions{flex-direction:column}
   .onboard-btn{width:100%}
