@@ -406,10 +406,17 @@ tbody tr:last-child td{border-bottom:none}
     </div>
     <div class="form-group">
       <label>Contraseña</label>
-      <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      <div style="position:relative">
+        <input type="password" id="l-pass" placeholder="••••••••" autocomplete="current-password" style="padding-right:38px" onkeydown="if(event.key==='Enter')doLogin()">
+        <button type="button" onclick="const i=document.getElementById('l-pass');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'🙈'" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:14px;color:var(--ink3);padding:4px" title="Mostrar/ocultar contraseña">👁</button>
+      </div>
     </div>
     <button class="btn-login" id="btn-login" onclick="doLogin()">Ingresar →</button>
-    <div style="margin-top:16px;font-size:11px;color:var(--ink3);text-align:center">Frescura Natural · Portal Distribuidores</div>
+    <div style="margin-top:14px;display:flex;flex-direction:column;gap:6px;text-align:center;font-size:11.5px">
+      <a href="https://wa.me/573027048349?text=Hola%2C%20soy%20distribuidora%20de%20Frescura%20Natural%20y%20necesito%20ayuda%20con%20mi%20contrase%C3%B1a%20del%20portal." target="_blank" rel="noopener" style="color:var(--sage);text-decoration:none;font-weight:500">¿Olvidaste tu contraseña? Solicitar ayuda →</a>
+      <a href="javascript:void(0)" onclick="showOnboarding()" style="color:var(--ink3);text-decoration:underline;font-size:11px">📖 Ver guía de inducción y catálogo</a>
+    </div>
+    <div style="margin-top:14px;font-size:11px;color:var(--ink3);text-align:center">Frescura Natural · Portal Distribuidores</div>
   </div>
 </div>
 
@@ -418,7 +425,10 @@ tbody tr:last-child td{border-bottom:none}
 <div id="screen-onboarding" class="screen">
   <div class="onboard-wrap">
     <div class="onboard-hero">
-      <div class="onboard-kicker">Frescura Natural Cosméticos · Inducción</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+        <div class="onboard-kicker" style="margin-bottom:0">Frescura Natural Cosméticos · Inducción</div>
+        <a href="javascript:void(0)" onclick="showScreen('screen-login');setTimeout(()=>document.getElementById('l-user')?.focus(),100)" style="font-size:11px;color:#cfe2d0;text-decoration:underline;font-weight:500">¿Ya tienes cuenta activa? Iniciar sesión →</a>
+      </div>
       <h1>Conoce tu programa y aprende a vender</h1>
       <p id="onboard-bienvenida">Antes de activar tu cuenta recorrerás, paso a paso, la información esencial del programa y de nuestros productos. Al final harás un pequeño quiz de 5 preguntas.</p>
       <div class="onboard-stepbar" id="onboard-stepbar">
@@ -528,37 +538,37 @@ tbody tr:last-child td{border-bottom:none}
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g/100g</b>. Complemento de la terapia antiacné.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="4">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Aura Sagrada — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Ideal para pieles sensibles o secas.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="5">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Avena — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Ideal para pieles sensibles.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="6">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Caléndula — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Calma y regenera la piel.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="7">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Eucalipto — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Refresca y alivia la piel; ideal para pieles grasas.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="8">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Hidratación Profunda — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Con aceite de rosa mosqueta y aceite de ricino para nutrir la piel.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="9">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Lavanda — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Efecto calmante de la piel.</p>
@@ -570,19 +580,19 @@ tbody tr:last-child td{border-bottom:none}
           <p>Edición especial. Lavanda, Caléndula y Rosa Mosqueta.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="11">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Protección Fresca — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Protege la barrera cutánea y ayuda a prevenir irritaciones diarias.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="12">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Renovación Nocturna — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Nutrición y restauración de la piel.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="13">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Romero — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Limpia profundamente la piel y ayuda a descongestionar los poros.</p>
@@ -594,23 +604,29 @@ tbody tr:last-child td{border-bottom:none}
           <p>Kit de jabones con romero, lavanda y siete esencias. Disponible en presentaciones de <b>70 g y 100 g</b>.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="15">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Rosa Mosqueta — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Humectación y nutrición para la piel.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="16">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Serenidad Aloe — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>. Humectación profunda y reparación.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
-<article class="prod-training-card" data-cat="17">
+<article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
           <h4>Kit Jabones Siete Esencias — presentación de 70g/100g</h4>
           <p>Kit de 3 jabones artesanales. Disponible en presentaciones de <b>70g / 100g</b>.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+</article>
+<article class="prod-training-card" data-cat="Jabones">
+<div class="prod-training-cat">Jabones</div>
+          <h4>Kit Jabones de Naranja — presentación de 70g/100g</h4>
+          <p>Kit de 3 jabones artesanales con aceite de naranja dulce. Disponible en presentaciones de <b>70g / 100g</b>. Brinda limpieza profunda e hidratación sin irritar la piel.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma cítrico, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
 </article>
 <article class="prod-training-card" data-cat="Packs">
 <div class="prod-training-cat">Packs</div>
@@ -660,22 +676,22 @@ tbody tr:last-child td{border-bottom:none}
           <p>Información específica disponible en la ficha del producto del portal.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Complemento de la rutina. Explica cómo facilita el uso de los productos.</div>
 </article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit de Jabones Esencia de Mamá</h4>
-          <p>Información específica disponible en la ficha del producto del portal. Ideal para regalar.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
+<article class="prod-training-card" data-cat="Packs">
+<div class="prod-training-cat">Packs</div>
+          <h4>Kit Ritual</h4>
+          <p>Completo ritual de autocuidado pensado para consentir la piel y brindar bienestar. Incluye 6 piezas que se complementan para una rutina sencilla.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos ideal para regalar o consentirse. Vende la solución o rutina completa, no solo el descuento.</div>
 </article>
 <article class="prod-training-card" data-cat="Packs">
 <div class="prod-training-cat">Packs</div>
-          <h4>Kit Dia de la madre</h4>
-          <p>Información específica disponible en la ficha del producto del portal.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
+          <h4>Kit Spa</h4>
+          <p>Reúne 5 elementos pensados para convertir la rutina diaria en un momento especial: jabón de rosa mosqueta, champú sólido de romero, bálsamo labial, jabonera de bambú y suave toalla facial.</p>
+          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos para una experiencia completa de autocuidado. Vende la solución o rutina, no solo el descuento.</div>
 </article>
 <article class="prod-training-card" data-cat="Packs">
 <div class="prod-training-cat">Packs</div>
-          <h4>Combo Jabon + jabonera + saquito exfoliante</h4>
-          <p>Combo Jabon + jabinera + saquito exfoliante</p>
+          <h4>Combo Jabón + Jabonera + Saquito Exfoliante</h4>
+          <p>Combo de jabón artesanal + jabonera de bambú + saquito exfoliante de sisal.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
 </article>
 <article class="prod-training-card" data-cat="Jabones">
@@ -683,12 +699,6 @@ tbody tr:last-child td{border-bottom:none}
           <h4>Kit Jabones Fuerza Natural</h4>
           <p>Información específica disponible en la ficha del producto del portal. Kit pensado con fragancias herbales para hombre.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Pack introkit + jabones</h4>
-          <p>Información específica disponible en la ficha del producto del portal.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
 </article>
 <article class="prod-training-card" data-cat="Jabones">
 <div class="prod-training-cat">Jabones</div>
@@ -717,7 +727,7 @@ tbody tr:last-child td{border-bottom:none}
 <article class="prod-training-card" data-cat="Packs">
 <div class="prod-training-cat">Packs</div>
           <h4>Kit De Vuelta a lo Natural</h4>
-          <p>Jabon Rosa Mosqueta + Bolsita de sisal + Jabonera de Bambú + Toalla facial</p>
+          <p>Jabón Rosa Mosqueta + Bolsita de sisal + Jabonera de Bambú + Toalla facial.</p>
           <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
 </article>
 <article class="prod-training-card" data-cat="Cremas">
