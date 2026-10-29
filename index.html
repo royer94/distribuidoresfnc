@@ -971,7 +971,22 @@ async function cargarConfigComisiones() {
     const doc = await db.collection('admin').doc('config_comisiones').get();
     if (doc.exists) {
       const d = doc.data();
-      if (d.tramos_comision) _configComisiones.tramos_comision = d.tramos_comision;
+      if (d.tramos_comision && Array.isArray(d.tramos_comision)) {
+        let migrado = false;
+        _configComisiones.tramos_comision = d.tramos_comision.map(t => {
+          if (t.monto === 60000) { migrado = true; return { ...t, monto: 70000 }; }
+          return { ...t };
+        });
+        if (_configComisiones.tramos_comision[1] && _configComisiones.tramos_comision[1].monto < 70000) {
+          _configComisiones.tramos_comision[1].monto = 70000;
+          migrado = true;
+        }
+        if (migrado) {
+          db.collection('admin').doc('config_comisiones').update({
+            tramos_comision: _configComisiones.tramos_comision
+          }).catch(()=>{});
+        }
+      }
       if (d.valor_punto) _configComisiones.valor_punto = d.valor_punto;
     }
   } catch(e) { console.warn('[config] usando valores por defecto:', e.message); }
@@ -1502,10 +1517,19 @@ function renderInfoPrograma() {
   const tramos = _configComisiones.tramos_comision;
   const filasComision = tramos.map((t,i) => {
     const siguiente = tramos[i+1];
-    const rango = siguiente ? `${fmt(t.monto)} – ${fmt(siguiente.monto)}` : `${fmt(t.monto)} en adelante`;
+    let rango;
+    if (i === 0 && t.monto === 0 && siguiente) {
+      rango = `Menos de ${fmt(siguiente.monto)}`;
+    } else if (siguiente) {
+      rango = `${fmt(t.monto)} – ${fmt(siguiente.monto)}`;
+    } else {
+      rango = `${fmt(t.monto)} en adelante`;
+    }
     const esPrimerTramo = i === 0;
-    const pctTexto = (siguiente && !esPrimerTramo) ? `${t.pct}% a ${siguiente.pct}%` : `${t.pct}%`;
-    return `<tr><td>${rango}</td><td style="font-weight:600;color:#5a7a5c">${pctTexto}</td></tr>`;
+    const pctTexto = (siguiente && !esPrimerTramo)
+      ? `${t.pct}% a ${siguiente.pct}%`
+      : (esPrimerTramo ? `${t.pct}% <span style="font-size:11px;font-weight:normal;color:#8a847a">(debajo del pedido mínimo)</span>` : `${t.pct}%`);
+    return `<tr><td>${rango}</td><td style="font-weight:600;color:${esPrimerTramo ? '#8a847a' : '#5a7a5c'}">${pctTexto}</td></tr>`;
   }).join('');
 
   el.innerHTML = `
@@ -1513,7 +1537,17 @@ function renderInfoPrograma() {
       <div style="font-weight:600;margin-bottom:4px">📊 Escala de comisión (5% → 20%)</div>
       <table class="tabla-info-programa">${filasComision}</table>
       <div style="margin-top:6px;color:#8a847a;font-size:11px;line-height:1.5">
-        El <b>pedido mínimo es de $70.000 COP</b>. La comisión se calcula sobre tus <b>ventas acumuladas confirmadas del mes en curso</b> — entre más vendas en el mes, más alto sube tu porcentaje.
+        El <b>pedido mínimo es de $70.000 COP</b>. La comisión se calcula sobre el subtotal de productos de tus <b>ventas acumuladas confirmadas del mes en curso</b> (los fletes de envío no generan comisión ni puntos) — entre más vendas en el mes, más alto sube tu porcentaje.
+      </div>
+    </div>
+    <div style="margin-bottom:10px;padding-top:10px;border-top:1px dashed #ddd8cf">
+      <div style="font-weight:600;margin-bottom:4px">🚚 Ventas a otra ciudad (Envíos Nacionales)</div>
+      <table class="tabla-info-programa">
+        <tr><td>$70.000 a $149.999</td><td style="font-weight:600;color:#8a6c3a">Flete $5.000 COP (cobrado a tu cliente)</td></tr>
+        <tr><td>$150.000 en adelante</td><td style="font-weight:600;color:#5a7a5c">Envío 100% GRATIS 🎉</td></tr>
+      </table>
+      <div style="margin-top:6px;color:#8a847a;font-size:11px;line-height:1.5">
+        El flete de $5.000 se registra como ítem del pedido para cobro al cliente; no genera comisión ni puntos.
       </div>
     </div>
     <div style="margin-bottom:10px;padding-top:10px;border-top:1px dashed #ddd8cf">
