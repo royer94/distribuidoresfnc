@@ -25,11 +25,8 @@ html,body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);
 /* ── SCREENS ── */
 .screen{display:none;position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;max-width:100vw;background:var(--bg)}
 .screen.active{display:block}
-/* login uses flex centering */
 #screen-login.active{display:flex;align-items:center;justify-content:center;padding:20px;
   background:linear-gradient(135deg,#1e1c18 0%,#2a2820 50%,#1a2a1c 100%)}
-
-/* ── LOADING (init) — covers UI while Firebase resolves auth state ── */
 #screen-loading.active{display:flex;align-items:center;justify-content:center;
   background:linear-gradient(135deg,#1e1c18 0%,#2a2820 50%,#1a2a1c 100%)}
 .loading-spinner{width:38px;height:38px;border-radius:50%;
@@ -37,7 +34,7 @@ html,body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);
   animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ── LOGIN — handled by .screen + #screen-login.active above ── */
+/* ── LOGIN ── */
 .login-box{background:var(--surface);border-radius:10px;padding:40px 36px;width:100%;max-width:400px;
   box-shadow:0 20px 60px rgba(0,0,0,.4)}
 .login-logo{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--ink);margin-bottom:2px}
@@ -57,13 +54,11 @@ html,body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--ink);
 .topbar{background:#1e1c18;color:#f5f2ed;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .topbar-brand{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600}
 .topbar-sub{font-size:10px;color:var(--sage);letter-spacing:1px;margin-top:1px}
-.topbar-right{display:flex;align-items:center;gap:12px}
-.consecutivo-badge{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--sage);
-  background:#2a2820;padding:4px 10px;border-radius:4px;white-space:nowrap}
+.topbar-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
 .btn-logout{background:none;border:1px solid #3a3830;color:#8a847a;border-radius:4px;
   padding:6px 12px;font-family:'Outfit',sans-serif;font-size:11px;cursor:pointer}
 
-/* ── PROFILE FORM ── */
+/* ── PROFILE & CARDS ── */
 #screen-perfil{background:var(--bg);display:none}
 #screen-perfil.active{display:block}
 .perfil-wrap{max-width:480px;margin:32px auto;padding:0 20px}
@@ -167,16 +162,12 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
 .summary-divider{height:1px;background:var(--border2);margin:8px 0}
 .summary-total{font-size:16px;font-weight:700;color:var(--ink)}
 
-/* ── EMPTY ── */
+/* ── EMPTY & ALERT & TOAST ── */
 .empty{text-align:center;padding:32px 20px;color:var(--ink3)}
 .empty-icon{font-size:32px;margin-bottom:8px}
 .empty-text{font-size:13px}
-
-/* ── ALERT ── */
 .alert{padding:10px 14px;border-radius:var(--r);font-size:13px;margin-bottom:12px}
 .alert-info{background:var(--blue-light);color:var(--blue);border:1px solid #c0d0e0}
-
-/* ── TOAST ── */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);
   background:#1e1c18;color:#f5f2ed;padding:12px 20px;border-radius:6px;font-size:13px;
   z-index:9999;transition:transform .3s;max-width:calc(100vw - 24px);white-space:normal;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.3)}
@@ -194,33 +185,22 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
   .login-box{padding:28px 22px}
   .modal{border-radius:12px 12px 0 0}
   .btn-new-order{padding:14px;font-size:14px}
-  /* Table: horizontal scroll only inside .table-wrap */
   .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
   .table-wrap table{min-width:480px}
   thead th{padding:7px 10px;font-size:9px}
   tbody td{padding:8px 10px;font-size:12px}
   .date-filter input[type="date"]{flex:1 1 120px;min-width:0}
-  /* topbar-right: wrap on tiny screens */
-  .topbar-right{gap:6px;flex-wrap:wrap;justify-content:flex-end}
-  .consecutivo-badge{font-size:10px;padding:3px 7px}
-  .btn-logout{font-size:10px;padding:5px 9px}
-  /* KPI cards compact */
   .kpi-card{padding:12px}
   .kpi-label{font-size:10px}
-  /* Section card padding */
   .section-card{border-radius:6px}
   .section-header{padding:10px 14px}
-  /* Products grid */
-  .prod-name{font-size:11px}
-  .prod-price{font-size:12px}
-  /* Modal body scroll */
   .modal-body{padding:14px 16px}
   .modal-footer{padding:12px 16px}
 }
 @media(max-width:360px){
   .kpi-grid{grid-template-columns:1fr!important}
 }
-/* ── Tabla de comisión/puntos: 2 columnas en desktop, apilada en móvil ── */
+
 .tabla-info-programa{width:100%!important;min-width:0!important;border-collapse:collapse;font-size:12px}
 .tabla-info-programa tr{border-bottom:1px solid #eee9e0}
 .tabla-info-programa tr:last-child{border-bottom:none}
@@ -234,7 +214,6 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
   .tabla-info-programa td:last-child{font-size:14px}
 }
 
-/* ── Acordeón "¿Cómo funcionan...?": resaltado para que no pase desapercibido en la 1ª visita ── */
 #info-programa-details.destacar-brillo{
   border-color:var(--gold) !important;
   box-shadow:0 0 0 3px rgba(138,108,58,.35), 0 4px 14px rgba(138,108,58,.25);
@@ -249,7 +228,7 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
   padding:2px 7px;border-radius:20px;text-transform:uppercase;margin-left:auto;
 }
 
-/* ONBOARDING / INCORPORACION · WIZARD */
+/* ONBOARDING / WIZARD */
 #screen-onboarding{background:var(--bg);display:none}
 #screen-onboarding.active{display:block}
 .onboard-wrap{max-width:900px;margin:0 auto;padding:20px 18px 44px;width:100%}
@@ -331,14 +310,11 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
 .order-guide-footer{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
 .order-guide-start{background:var(--sage);color:#fff;border:0;border-radius:7px;padding:11px 18px;font-weight:600;cursor:pointer}
 @media(max-width:600px){.order-guide-modal{max-height:94vh}.order-guide-head,.order-guide-body,.order-guide-footer{padding-left:16px;padding-right:16px}}
-
 </style>
 </head>
 <body>
 
 <div id="toast" class="toast"></div>
-
-<!-- ══ LOGIN ══ -->
 
 <!-- ══ GUÍA NUEVO PEDIDO ══ -->
 <div id="order-guide-overlay" class="order-guide-overlay" style="display:none" onclick="cerrarGuiaPedido(event)">
@@ -346,18 +322,21 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
     <div class="order-guide-head">
       <div>
         <h2>Cómo hacer un nuevo pedido</h2>
-        <p>Sigue estos pasos para registrar correctamente tu pedido.</p>
+        <p>Sigue estos pasos para registrar correctamente tu pedido de distribuidora.</p>
       </div>
       <button class="order-guide-close" onclick="cerrarGuiaPedido()">×</button>
     </div>
     <div class="order-guide-body">
+      <div style="background:#e8f0e8;border:1px solid #c9dfcc;border-radius:6px;padding:10px 14px;font-size:12px;color:var(--sage);font-weight:600;margin-bottom:12px">
+        ⚠️ Recuerda: el monto mínimo de pedido para distribuidores es de $70.000 COP.
+      </div>
       <div class="order-guide-step">
         <div class="order-guide-num">1</div>
         <div><h3>Elige tus productos</h3><p>Selecciona los productos por <b>categoría</b> o búscalos por <b>nombre</b>. Agrega al pedido las cantidades que necesitas.</p></div>
       </div>
       <div class="order-guide-step">
         <div class="order-guide-num">2</div>
-        <div><h3>Revisa el resumen del pedido</h3><p>Verifica cuidadosamente que los productos, cantidades y total del pedido sean correctos y que el <b>valor coincida con el precio cobrado al cliente</b>.</p></div>
+        <div><h3>Revisa el resumen del pedido</h3><p>Verifica que los productos sumen al menos <b>$70.000 COP</b>. Si es para un cliente en otra ciudad, entre $70.000 y $149.999 se cobrarán $5.000 de flete al cliente, y desde $150.000 el envío es gratis.</p></div>
       </div>
       <div class="order-guide-step">
         <div class="order-guide-num">3</div>
@@ -365,7 +344,7 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
       </div>
       <div class="order-guide-step">
         <div class="order-guide-num">4</div>
-        <div><h3>Carga el comprobante</h3><p>Adjunta una <b>foto del comprobante de transferencia</b> o el soporte de pago solicitado por el portal.</p></div>
+        <div><h3>Carga el comprobante</h3><p>Adjunta una <b>foto del comprobante de transferencia</b> bancaria (Nequi, Bre-B o Daviplata).</p></div>
       </div>
       <div class="order-guide-step">
         <div class="order-guide-num">5</div>
@@ -373,22 +352,18 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
       </div>
 
       <div class="order-guide-note">
-        <b>Después de enviarlo:</b> el administrador revisará el pedido y podrá <b>aprobarlo o rechazarlo</b>. Puedes consultar el resultado en <b>Mis Pedidos</b> desde la ventana principal. Todo el flujo del pedido quedará reflejado allí.
+        <b>Después de enviarlo:</b> el administrador revisará el pedido y podrá <b>aprobarlo o rechazarlo</b>. Puedes consultar el resultado en <b>Mis Pedidos</b> desde la ventana principal.
       </div>
 
       <div class="order-guide-flow">
         <b>Flujo del pedido:</b><br>
         Pedido enviado → revisión administrativa → <b>Procesando</b> → <b>Enviado</b> → <b>Recibido</b>.<br>
-        Cuando el pedido pase a <b>Enviado</b>, aparecerán la empresa transportadora y la guía de envío.
+        Cuando el pedido pase a <b>Enviado</b>, aparecerán la transportadora y la guía de envío con botón para copiar.
         La distribuidora debe marcar el pedido como <b>Recibido</b> una vez la transportadora haya realizado la entrega.
       </div>
 
       <div class="order-guide-note">
-        <b>Resumen del pedido:</b> al final de cada fila de <b>Mis Pedidos</b> encontrarás el documento correspondiente con los datos del pedido.
-      </div>
-
-      <div class="order-guide-note">
-        <b>Comisiones y puntos:</b> al terminar el mes, el administrador liquidará y pagará la comisión correspondiente y cargará el comprobante de pago. Con esta acción termina el flujo de ventas/comisiones del mes. Los puntos adquiridos, cuando aplique, podrán consultarse en <b>💎 Puntos Disponibles</b>.
+        <b>Comisiones y puntos:</b> al terminar el mes, el administrador liquidará y pagará la comisión correspondiente y cargará el comprobante de pago.
       </div>
     </div>
     <div class="order-guide-footer">
@@ -401,13 +376,14 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
   <div class="loading-spinner"></div>
 </div>
 
+<!-- ══ LOGIN ══ -->
 <div id="screen-login" class="screen">
   <div class="login-box">
     <div class="login-logo">Frescura Natural Cosméticos</div>
     <div class="login-sub">Portal Distribuidores</div>
     <div id="login-error" class="error-msg"></div>
     <div class="form-group">
-      <label>Usuario</label>
+      <label>Usuario (ej: maria.perez)</label>
       <input type="text" id="l-user" placeholder="tu.usuario" autocomplete="username" onkeydown="if(event.key==='Enter')document.getElementById('l-pass').focus()">
     </div>
     <div class="form-group">
@@ -426,8 +402,7 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
   </div>
 </div>
 
-
-<!-- ONBOARDING / INCORPORACION · WIZARD -->
+<!-- ══ ONBOARDING / INCORPORACION ══ -->
 <div id="screen-onboarding" class="screen">
   <div class="onboard-wrap">
     <div class="onboard-hero">
@@ -436,13 +411,14 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
         <a href="javascript:void(0)" onclick="showScreen('screen-login');setTimeout(()=>document.getElementById('l-user')?.focus(),100)" style="font-size:11px;color:#cfe2d0;text-decoration:underline;font-weight:500">¿Ya tienes cuenta activa? Iniciar sesión →</a>
       </div>
       <h1>Conoce tu programa y aprende a vender</h1>
-      <p id="onboard-bienvenida">Antes de activar tu cuenta recorrerás, paso a paso, la información esencial del programa y de nuestros productos. Al final harás un pequeño quiz de 5 preguntas.</p>
+      <p id="onboard-bienvenida">Antes de activar tu cuenta recorrerás, paso a paso, la información esencial del programa y de nuestros productos. Al final harás un pequeño quiz de 5 preguntas para completar tu registro.</p>
       <div class="onboard-stepbar" id="onboard-stepbar">
         <span class="onboard-stepdot current"></span><span class="onboard-stepdot"></span><span class="onboard-stepdot"></span><span class="onboard-stepdot"></span><span class="onboard-stepdot"></span><span class="onboard-stepdot"></span>
       </div>
       <div class="onboard-step-label" id="onboard-step-label">Paso 1 de 6</div>
     </div>
 
+    <!-- PASO 1 -->
     <section class="onboard-panel active" data-step="1">
       <div class="onboard-card">
         <h2>1. ¿Qué significa ser distribuidora?</h2>
@@ -451,45 +427,48 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
       </div>
       <div class="onboard-card">
         <h2>¿Cómo ganas dinero?</h2>
-        <p>La comisión es <b>progresiva</b>: aumenta según el volumen de ventas mensuales.</p>
+        <p>La comisión es <b>progresiva</b>: aumenta según el volumen de ventas mensuales acumuladas (pedido mínimo: $70.000 COP).</p>
         <table class="onboard-table"><thead><tr><th>Ventas mensuales</th><th>Comisión</th></tr></thead><tbody>
+          <tr><td>Menos de $70.000</td><td><b>0 % (debajo del pedido mínimo)</b></td></tr>
           <tr><td>$70.000 – $119.999</td><td><b>5 % a 9 %</b></td></tr>
           <tr><td>$120.000 – $199.999</td><td><b>9 % a 14 %</b></td></tr>
           <tr><td>$200.000 – $299.999</td><td><b>14 % a 20 %</b></td></tr>
           <tr><td>$300.000 o más</td><td><b>20 %</b></td></tr>
         </tbody></table>
-        <p style="margin-top:8px;font-size:11.5px;color:#8a847a">El porcentaje sube de forma proporcional dentro de cada tramo (no salta de golpe) y se calcula sobre tus ventas confirmadas acumuladas del mes.</p>
-        <p style="margin-top:8px">Las comisiones se pagan <b>dentro de los primeros 5 días del mes siguiente</b>.</p>
+        <p style="margin-top:8px;font-size:11.5px;color:#8a847a">El porcentaje sube de forma proporcional dentro de cada tramo y se calcula sobre tus ventas confirmadas acumuladas del mes.</p>
+        <p style="margin-top:8px">Las comisiones se liquidan y pagan <b>dentro de los primeros 5 días del mes siguiente</b>.</p>
       </div>
       <div class="onboard-actions"><span></span><button class="onboard-btn" onclick="onboardingNext()">Entendido · continuar →</button></div>
     </section>
 
+    <!-- PASO 2 -->
     <section class="onboard-panel" data-step="2">
       <div class="onboard-card">
         <h2>2. Conoce nuestras líneas de productos</h2>
-        <p>Una buena distribuidora no necesita memorizar un catálogo completo. Necesita entender <b>qué problema de rutina resuelve cada producto, qué lo diferencia y cómo explicarlo sin exagerar sus beneficios</b>.</p>
+        <p>Una buena distribuidora entiende <b>qué problema de rutina resuelve cada producto, qué lo diferencia y cómo explicarlo sin exagerar sus beneficios</b>.</p>
         <div class="onboard-grid" style="margin-top:12px">
-          <div class="onboard-mini"><strong>🧼 Jabones</strong><span>Limpieza corporal artesanal, diferentes aromas y combinaciones de ingredientes vegetales.</span></div>
-          <div class="onboard-mini"><strong>🌿 DeoFresh Botanic</strong><span>Desodorante disponible en crema de 60 g y ahora también en barra de 75 g; comunica la propuesta de cuidado de axilas de la marca.</span></div>
-          <div class="onboard-mini"><strong>💋 FreshLips</strong><span>Bálsamos labiales en diferentes sabores para el cuidado cotidiano de los labios.</span></div>
-          <div class="onboard-mini"><strong>💧 Sérums</strong><span>Línea de cuidado facial y capilar con productos orientados a necesidades específicas.</span></div>
-          <div class="onboard-mini"><strong>🧴 HydraSeal</strong><span>Crema hidratante facial para complementar la rutina de cuidado.</span></div>
-          <div class="onboard-mini"><strong>🧖 Champús Sólidos</strong><span>Barra de champú de 50 g, sin sales ni parabenos, en romero y lavanda.</span></div>
-          <div class="onboard-mini"><strong>🎁 Packs y accesorios</strong><span>Combinaciones y complementos que facilitan regalar, probar o completar una rutina.</span></div>
+          <div class="onboard-mini"><strong>🧼 Jabones</strong><span>Limpieza corporal artesanal con base vegetal de glicerina y aromas herbales.</span></div>
+          <div class="onboard-mini"><strong>🌿 DeoFresh Botanic</strong><span>Desodorante en crema (60g) y barra (75g); activo natural con aceite de árbol de té, sin aluminio.</span></div>
+          <div class="onboard-mini"><strong>💋 FreshLips</strong><span>Bálsamos labiales en 5 sabores (cereza, coco, fresa, hierbabuena, vainilla).</span></div>
+          <div class="onboard-mini"><strong>💧 Sérums</strong><span>Cuidado facial y capilar especializado (Despigmentante, Fuerza Capilar, Hydra E, Acné Balance).</span></div>
+          <div class="onboard-mini"><strong>🧴 HydraSeal</strong><span>Crema facial hidratante y prebase de maquillaje de rápida absorción.</span></div>
+          <div class="onboard-mini"><strong>🧖 Champús Sólidos</strong><span>Barras de 50 g sin sales ni parabenos, en romero y lavanda.</span></div>
+          <div class="onboard-mini"><strong>🎁 Packs y accesorios</strong><span>Jaboneras de bambú, saquitos de sisal y kits de regalo para rutinas completas.</span></div>
         </div>
       </div>
       <div class="onboard-card">
         <h2>La regla para hablar de beneficios</h2>
-        <p>Presenta los beneficios como <b>características y propuesta cosmética</b>, no como diagnósticos o tratamientos. Cuando exista una afirmación que dependa de investigación o de la percepción individual, utiliza expresiones como <b>“se estudia”, “la marca comunica”, “puede ayudar”</b> o “está formulado para…”, según corresponda.</p>
-        <p style="margin-top:8px">Nunca afirmes que un cosmético cura, trata o previene una enfermedad ni garantices resultados individuales.</p>
+        <p>Presenta los beneficios como <b>características y propuesta cosmética</b>, no como diagnósticos médicos. Utiliza expresiones como <b>“se estudia”, “la marca comunica”, “puede ayudar”</b> o “está formulado para…”.</p>
+        <p style="margin-top:8px">Nunca afirmes que un cosmético cura, trata o previene una enfermedad ni garantices resultados individuales milagrosos.</p>
       </div>
       <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><button class="onboard-btn" onclick="onboardingNext()">Conocer los productos →</button></div>
     </section>
 
+    <!-- PASO 3 -->
     <section class="onboard-panel" data-step="3">
       <div class="onboard-card">
         <h2>3. Catálogo de productos</h2>
-        <p>Aquí tienes una <b>guía rápida de producto</b> para tu inducción. El catálogo operativo, precios y disponibilidad se consultan siempre en el portal.</p>
+        <p>Aquí tienes una guía rápida de producto. Los precios vigentes y el stock en vivo se consultan siempre en tu portal.</p>
         <div class="product-training-toolbar" id="product-training-toolbar">
           <button class="product-filter active" data-filter="all" onclick="filtrarProductosOnboarding('all',this)">Todos</button>
           <button class="product-filter" data-filter="Jabones" onclick="filtrarProductosOnboarding('Jabones',this)">Jabones</button>
@@ -499,380 +478,229 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
           <button class="product-filter" data-filter="Cremas" onclick="filtrarProductosOnboarding('Cremas',this)">Crema</button>
           <button class="product-filter" data-filter="Champus" onclick="filtrarProductosOnboarding('Champus',this)">Champús Sólidos</button>
           <button class="product-filter" data-filter="Packs" onclick="filtrarProductosOnboarding('Packs',this)">Packs</button>
-          <button class="product-filter" data-filter="Accesorios" onclick="filtrarProductosOnboarding('Accesorios',this)">Accesorios</button>
         </div>
         <div class="product-training-grid" id="product-training-grid">
-<article class="prod-training-card" data-cat="Cuidado Labial">
-<div class="prod-training-cat">Cuidado Labial</div>
-          <h4>FreshLips — Bálsamos labiales</h4>
-          <p>Una sola línea de bálsamos labiales disponible en 5 opciones de sabor: <b>cereza, coco, fresa, hierbabuena y vainilla</b>. Hidratante labial.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Presenta FreshLips como una misma línea con cinco opciones para que el cliente elija según su preferencia. Destaca el sabor y la experiencia de uso. La marca comunica que no contienen plomo u otros metales pesados; evita hacer afirmaciones médicas o prometer resultados.</div>
-</article>
-<article class="prod-training-card" data-cat="Desodorante">
-<div class="prod-training-cat">Desodorante</div>
-          <h4>DeoFresh Botanic — crema 60 g</h4>
-          <p>Desodorante en crema 60g. Desodorante, no antitranspirante, con aceite de árbol de té como activo.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado de axilas. Destaca la propuesta sin aluminio, parabenos ni ftalatos según la comunicación de la marca; no prometas prevención de enfermedades.</div>
-</article>
-<article class="prod-training-card" data-cat="Desodorante">
-<div class="prod-training-cat">Desodorante</div>
-          <h4>DeoFresh Botanic — barra 75 g</h4>
-          <p>Desodorante en barra de 75g. Misma propuesta que la versión en crema: desodorante, no antitranspirante, con aceite de árbol de té como activo, en formato de barra.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado de axilas. Destaca la propuesta sin aluminio, parabenos ni ftalatos según la comunicación de la marca y la comodidad del formato en barra; no prometas prevención de enfermedades.</div>
-</article>
-<article class="prod-training-card" data-cat="Champus">
-<div class="prod-training-cat">Champús Sólidos</div>
-          <h4>Champú Sólido Romero — 50 g</h4>
-          <p>Barra de champú sólido de 50 g con romero, sin sales ni parabenos.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Destaca el formato en barra (sin sales ni parabenos) y el aroma a romero. Habla de la experiencia de uso y la propuesta cosmética; evita afirmaciones médicas sobre el cabello o el cuero cabelludo.</div>
-</article>
-<article class="prod-training-card" data-cat="Champus">
-<div class="prod-training-cat">Champús Sólidos</div>
-          <h4>Champú Sólido Lavanda — 50 g</h4>
-          <p>Barra de champú sólido de 50 g con lavanda, sin sales ni parabenos.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Destaca el formato en barra (sin sales ni parabenos) y el aroma a lavanda. Habla de la experiencia de uso y la propuesta cosmética; evita afirmaciones médicas sobre el cabello o el cuero cabelludo.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Jabón Individual — 100 g (cualquier aroma)</h4>
-          <p>Jabón artesanal individual de <b>100 g</b> elaborado con base vegetal de glicerina y enriquecido con ingredientes naturales.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Árbol de Té — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno. Complemento ideal en la rutina de cuidado para pieles con tendencia acneica.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Aura Sagrada — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno. Ideal para pieles sensibles o secas.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Avena — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales con extracto de avena en presentación de <b>100 g</b> cada uno. Ideal para pieles sensibles.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Caléndula — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno. Calma y suaviza la piel.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Eucalipto — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno. Refresca y limpia la piel; ideal para pieles grasas.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Hidratación Profunda — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno. Con aceite de rosa mosqueta y aceite de ricino para nutrir la piel.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Lavanda — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno. Aporta una sensación relajante y suave para la piel.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Mujer Natural — 70 g x 3</h4>
-          <p>Edición especial en presentación de <b>70 g</b> cada uno. Combina aromas de Lavanda, Caléndula y Rosa Mosqueta.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Protección Fresca — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno. Protege la barrera cutánea y cuida la piel en el uso diario.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Renovación Nocturna — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno. Nutrición y cuidado nocturno de la piel.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Romero — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno. Limpia profundamente la piel y aporta frescura herbal.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Romero + Lavanda + Siete Esencias — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales combinados (romero, lavanda y siete esencias) en presentación de <b>100 g</b> cada uno.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Rosa Mosqueta — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno. Humectación y nutrición para la piel.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Serenidad Aloe — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales con aloe vera en presentación de <b>100 g</b> cada uno. Humectación profunda y suavidad.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Siete Esencias — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno, con mezcla botánica de siete esencias.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones de Naranja — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales con aceite de naranja dulce en presentación de <b>100 g</b> cada uno. Brinda limpieza profunda e hidratación sin irritar la piel.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma cítrico, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Combo Jabón + Desodorante + Bálsamo Labial</h4>
-          <p>Combo completo.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Pack Cuidado Facial (6 elementos)</h4>
-          <p>Toalla facial, 2 jabones Rosa Mosqueta, 2 esponjas, 1 FreshLips.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
-</article>
-<article class="prod-training-card" data-cat="Serums">
-<div class="prod-training-cat">Serums</div>
-          <h4>Natural Clear Sérum Despigmentante — presentación de 30 / 50 mL</h4>
-          <p>Niacinamida, ácido tranexámico y extracto de regaliz. Disponible en <b>30 y 50 mL</b>. Ayuda a unificar el tono, disminuir la apariencia de manchas y mejorar la luminosidad natural de la piel.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado facial/capilar especializado según el producto. Explica sus ingredientes destacados y uso; evita garantizar resultados.</div>
-</article>
-<article class="prod-training-card" data-cat="Serums">
-<div class="prod-training-cat">Serums</div>
-          <h4>Sérum Fuerza Capilar — presentación de 30 / 50 mL</h4>
-          <p>Aceites vegetales y esenciales de romero. Disponible en <b>30 / 50 mL</b>. Estimula el crecimiento y aporta brillo y suavidad al cabello.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado facial/capilar especializado según el producto. Explica sus ingredientes destacados y uso; evita garantizar resultados.</div>
-</article>
-<article class="prod-training-card" data-cat="Serums">
-<div class="prod-training-cat">Serums</div>
-          <h4>Sérum Natural Hydra E — presentación de 30 / 50 mL</h4>
-          <p>Sérum Hidratante con Vitamina E. Disponible en <b>30 / 50 mL</b>. Solución ideal para quienes buscan una hidratación profunda y nutritiva para su piel.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado facial/capilar especializado según el producto. Explica sus ingredientes destacados y uso; evita garantizar resultados.</div>
-</article>
-<article class="prod-training-card" data-cat="Accesorios">
-<div class="prod-training-cat">Accesorios</div>
-          <h4>Jabonera de bambú</h4>
-          <p>Información específica disponible en la ficha del producto del portal.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Complemento de la rutina. Explica cómo facilita el uso de los productos.</div>
-</article>
-<article class="prod-training-card" data-cat="Accesorios">
-<div class="prod-training-cat">Accesorios</div>
-          <h4>Bolsita exfoliante de Sisal</h4>
-          <p>Información específica disponible en la ficha del producto del portal.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Complemento de la rutina. Explica cómo facilita el uso de los productos.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Kit Ritual</h4>
-          <p>Completo ritual de autocuidado pensado para consentir la piel y brindar bienestar. Incluye 6 piezas que se complementan para una rutina sencilla.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos ideal para regalar o consentirse. Vende la solución o rutina completa, no solo el descuento.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Kit Spa</h4>
-          <p>Reúne 5 elementos pensados para convertir la rutina diaria en un momento especial: jabón de rosa mosqueta, champú sólido de romero, bálsamo labial, jabonera de bambú y suave toalla facial.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos para una experiencia completa de autocuidado. Vende la solución o rutina, no solo el descuento.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Combo Jabón + Jabonera + Saquito Exfoliante</h4>
-          <p>Combo de jabón artesanal + jabonera de bambú + saquito exfoliante de sisal.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Fuerza Natural — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales en presentación de <b>100 g</b> cada uno, formulado con fragancias herbales de pino, eucalipto y romero.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Surtidos — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales surtidos de cualquier aroma en presentación de <b>100 g</b> cada uno.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Pack para cuidado diario de piel con acné</h4>
-          <p>Información específica disponible en la ficha del producto del portal.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
-</article>
-<article class="prod-training-card" data-cat="Jabones">
-<div class="prod-training-cat">Jabones</div>
-          <h4>Kit Jabones Avena + Romero + Lavanda — 100 g x 3</h4>
-          <p>Kit de 3 jabones artesanales combinados (avena, romero y lavanda) en presentación de <b>100 g</b> cada uno.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Línea de limpieza corporal artesanal. Destaca aroma, ingredientes vegetales y la experiencia sensorial; evita prometer efectos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Serums">
-<div class="prod-training-cat">Serums</div>
-          <h4>Sérum Acné Balance — presentación de 30 / 50 mL</h4>
-          <p>Información específica disponible en la ficha del producto del portal. Formulado como complemento en el tratamiento del acné. Disponible en <b>30 / 50 mL</b>.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Cuidado facial/capilar especializado según el producto. Explica sus ingredientes destacados y uso; evita garantizar resultados.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Kit De Vuelta a lo Natural</h4>
-          <p>Jabón Rosa Mosqueta + Bolsita de sisal + Jabonera de Bambú + Toalla facial.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
-</article>
-<article class="prod-training-card" data-cat="Cremas">
-<div class="prod-training-cat">Cremas</div>
-          <h4>Crema Hidratante Facial HydraSeal 45g</h4>
-          <p>Información específica disponible en la ficha del producto del portal. Crema hidratante y nutritiva, ideal como prebase.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Hidratación facial. La marca comunica formulación sin parabenos ni ftalatos; habla de hidratación y cuidado, no de tratamientos médicos.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Combo especial Frescura Natural</h4>
-          <p>Información específica disponible en la ficha del producto del portal.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Combo Jabón + Crema Facial + Bálsamo Labial</h4>
-          <p>Información específica disponible en la ficha del producto del portal.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
-</article>
-<article class="prod-training-card" data-cat="Packs">
-<div class="prod-training-cat">Packs</div>
-          <h4>Combo Natural Hombre</h4>
-          <p>Información específica disponible en la ficha del producto del portal.</p>
-          <div class="prod-training-tip"><b>Cómo venderlo:</b> Una combinación práctica de productos. Vende la solución o rutina, no solo el descuento.</div>
-</article>
+          <article class="prod-training-card" data-cat="Cuidado Labial">
+            <div class="prod-training-cat">Cuidado Labial</div>
+            <h4>FreshLips — Bálsamos labiales</h4>
+            <p>Disponible en 5 sabores: cereza, coco, fresa, hierbabuena y vainilla. Hidratante labial con manteca de cacao y cera de abejas.</p>
+            <div class="prod-training-tip"><b>Tip de venta:</b> Destaca que no contienen plomo ni metales pesados. Excelente producto gancho de bajo costo para sumar a cualquier pedido.</div>
+          </article>
+          <article class="prod-training-card" data-cat="Desodorante">
+            <div class="prod-training-cat">Desodorante</div>
+            <h4>DeoFresh Botanic — crema 60g y barra 75g</h4>
+            <p>Desodorante natural, no antitranspirante, con aceite de árbol de té y bicarbonato de sodio.</p>
+            <div class="prod-training-tip"><b>Tip de venta:</b> Destaca que es libre de sales de aluminio y parabenos. Permite la transpiración natural neutralizando el mal olor.</div>
+          </article>
+          <article class="prod-training-card" data-cat="Jabones">
+            <div class="prod-training-cat">Jabones</div>
+            <h4>Kits de Jabones Artesanales (3 x 100g)</h4>
+            <p>Variedades: Avena, Caléndula, Romero, Árbol de Té, Eucalipto, Rosa Mosqueta, Lavanda, Siete Esencias y Cítricos.</p>
+            <div class="prod-training-tip"><b>Tip de venta:</b> Jabones elaborados en frío, muy rendidores y suaves con la barrera cutánea.</div>
+          </article>
+          <article class="prod-training-card" data-cat="Serums">
+            <div class="prod-training-cat">Serums</div>
+            <h4>Natural Clear Sérum Despigmentante (30 y 50 mL)</h4>
+            <p>Con niacinamida, ácido tranexámico y extracto de regaliz. Ayuda a unificar el tono y aportar luminosidad.</p>
+            <div class="prod-training-tip"><b>Tip de venta:</b> Recomienda usar siempre bloqueador solar al día siguiente. No garantiza eliminación completa de manchas pero sí una mejora progresiva del tono.</div>
+          </article>
+          <article class="prod-training-card" data-cat="Serums">
+            <div class="prod-training-cat">Serums</div>
+            <h4>Sérum Fuerza Capilar (30 y 50 mL)</h4>
+            <p>Fórmula botánica con aceite esencial de romero, ricino y jojoba. Fortalece el cuero cabelludo y las puntas.</p>
+            <div class="prod-training-tip"><b>Tip de venta:</b> Ideal para masajes capilares nocturnos 2 o 3 veces por semana antes del lavado.</div>
+          </article>
+          <article class="prod-training-card" data-cat="Cremas">
+            <div class="prod-training-cat">Cremas</div>
+            <h4>Crema Facial HydraSeal 45g</h4>
+            <p>Hidratación profunda sin sensación grasosa. Enriquecida con ceramidas vegetales y ácido hialurónico.</p>
+            <div class="prod-training-tip"><b>Tip de venta:</b> Apta para todo tipo de piel, excelente como prebase antes del protector o maquillaje.</div>
+          </article>
         </div>
-      </div>
-      <div class="onboard-card">
-        <h2>Mensajes clave por familia</h2>
-        <ul>
-          <li><b>Jabones:</b> la marca comunica que están libres de SLS, parabenos y ftalatos. Evita convertir esa característica en una afirmación médica.</li>
-          <li><b>DeoFresh:</b> la marca comunica que no contiene aluminio, parabenos ni ftalatos. No afirmes que esto previene cáncer u otras enfermedades.</li>
-          <li><b>FreshLips:</b> la marca comunica que no contiene plomo u otros metales pesados. Habla de la formulación; no hagas afirmaciones toxicológicas sobre otras marcas.</li>
-          <li><b>HydraSeal:</b> la marca comunica que no contiene parabenos ni ftalatos y está orientada a la hidratación facial.</li>
-          <li><b>Sérums:</b> la marca comunica que no contienen parabenos. Explica el ingrediente destacado y la finalidad cosmética de cada uno sin garantizar resultados.</li>
-          <li><b>Champús Sólidos:</b> la marca comunica que están libres de sales y parabenos. Habla del aroma (romero o lavanda) y la experiencia de uso; evita afirmaciones médicas.</li>
-        </ul>
-      </div>
-      <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><button class="onboard-btn" onclick="onboardingNext()">He revisado los productos →</button></div>
-    </section>
-
-    <section class="onboard-panel" data-step="4">
-      <div class="onboard-card">
-        <h2>4. Pedidos, envíos y puntos</h2>
-        <div class="onboard-grid">
-          <div class="onboard-mini"><strong>📦 Pedidos</strong><span>Se gestionan desde el Portal de Distribuidores. Revisa siempre producto, cantidad y datos del cliente.</span></div>
-          <div class="onboard-mini"><strong>🚚 Pedidos a tu domicilio</strong><span>Si el pedido llega a tu dirección, eres responsable de recibirlo y entregarlo posteriormente a tus clientes.</span></div>
-          <div class="onboard-mini"><strong>🌎 Otras ciudades</strong><span>Para una venta a otra ciudad de $70.000 o más, FNC puede enviarla directamente al cliente y asume el costo del envío.</span></div>
-          <div class="onboard-mini"><strong>🎁 Puntos</strong><span>Vigencia de 1 año; pueden cubrir hasta el 100 % de una recompensa. Puedes pagar la diferencia.</span></div>
-        </div>
-      </div>
-      <div class="onboard-card">
-        <h2>¿Qué pasa con las recompensas?</h2>
-        <ul>
-          <li>El catálogo de recompensas y los puntos requeridos se consultan en el portal.</li>
-          <li>Los productos entregados como recompensa <b>no generan nuevos puntos</b>.</li>
-          <li>El envío de una recompensa lo paga la distribuidora, salvo que pueda enviarse junto con otro pedido de clientes bajo las condiciones aplicables.</li>
-        </ul>
-      </div>
-      <div class="onboard-card">
-        <h2>Devoluciones</h2>
-        <p>Las solicitudes deben informarse dentro de los <b>7 días calendario</b> siguientes a la entrega y pueden requerir información, fotografías u otras evidencias. No prometas una solución definitiva al cliente antes de la validación de FNC.</p>
       </div>
       <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><button class="onboard-btn" onclick="onboardingNext()">Continuar →</button></div>
     </section>
 
+    <!-- PASO 4 -->
+    <section class="onboard-panel" data-step="4">
+      <div class="onboard-card">
+        <h2>4. Pedidos, envíos y puntos</h2>
+        <div class="onboard-grid">
+          <div class="onboard-mini"><strong>📦 Pedido Mínimo</strong><span>El monto mínimo por pedido para distribuidoras es de <b>$70.000 COP</b>.</span></div>
+          <div class="onboard-mini"><strong>🚚 Envíos a tu domicilio</strong><span>Llegan a tu dirección para que entregues a tus clientes locales.</span></div>
+          <div class="onboard-mini"><strong>🌎 Ventas a otra ciudad</strong><span>Pedidos de <b>$70.000 a $149.999</b> tienen flete fijo de <b>$5.000 COP</b> (cobrado a tu cliente). Desde <b>$150.000 COP</b> el envío es <b>100% GRATIS</b> asumido por FNC.</span></div>
+          <div class="onboard-mini"><strong>💎 Puntos de fidelización</strong><span>Vigencia FIFO de 1 año; acumulas puntos con cada pedido confirmado y puedes canjearlos por productos del catálogo.</span></div>
+        </div>
+      </div>
+      <div class="onboard-card">
+        <h2>Devoluciones y garantías</h2>
+        <p>Las reclamaciones por avería o producto incorrecto deben reportarse dentro de los <b>7 días calendario</b> siguientes a la entrega con fotos de respaldo. FNC validará y repondrá la unidad.</p>
+      </div>
+      <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><button class="onboard-btn" onclick="onboardingNext()">Continuar →</button></div>
+    </section>
+
+    <!-- PASO 5 -->
     <section class="onboard-panel" data-step="5">
       <div class="onboard-card">
         <h2>5. Cómo vender correctamente</h2>
         <div class="onboard-grid">
-          <div class="onboard-mini"><strong>✓ Habla desde la necesidad</strong><span>Pregunta qué busca el cliente y recomienda una rutina o producto coherente.</span></div>
-          <div class="onboard-mini"><strong>✓ Usa información oficial</strong><span>Apóyate en las fichas y materiales que FNC proporciona.</span></div>
-          <div class="onboard-mini"><strong>✓ Si no sabes, consulta</strong><span>Es mejor decir “voy a confirmarlo” que improvisar una respuesta.</span></div>
-          <div class="onboard-mini"><strong>✕ No prometas resultados</strong><span>No diagnostiques ni afirmes que un producto cura, trata o previene una enfermedad.</span></div>
+          <div class="onboard-mini"><strong>✓ Escucha a tu cliente</strong><span>Pregunta por su tipo de piel y recomienda rutinas sencillas.</span></div>
+          <div class="onboard-mini"><strong>✓ Usa materiales oficiales</strong><span>Descarga fotos y fichas técnicas de la marca.</span></div>
+          <div class="onboard-mini"><strong>✓ Transparencia total</strong><span>Si no sabes un componente, consúltalo antes de inventar.</span></div>
+          <div class="onboard-mini"><strong>✕ Cero promesas médicas</strong><span>No afirmes que curas acné severo, melasma hormonal o dermatitis.</span></div>
         </div>
       </div>
       <div class="onboard-card">
-        <h2>Antes de terminar</h2>
-        <p>Vas a responder <b>5 preguntas</b>. Necesitas al menos <b>4 respuestas correctas</b> para demostrar que comprendiste lo esencial. Puedes repetir el quiz si no alcanzas la puntuación.</p>
-        <p style="margin-top:8px">Después del quiz encontrarás los términos completos y podrás registrar tu aceptación para activar la cuenta.</p>
+        <h2>Antes de activar tu cuenta</h2>
+        <p>A continuación responderás <b>5 preguntas</b> sencillas. Necesitas al menos <b>4 respuestas correctas</b>. Luego de aprobarlo, completarás tus datos para generar tu usuario y contraseña de inmediato.</p>
       </div>
       <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><button class="onboard-btn" onclick="onboardingNext()">Ir al quiz →</button></div>
     </section>
 
+    <!-- PASO 6 -->
     <section class="onboard-panel" data-step="6">
-      <div class="onboard-card">
+      <div class="onboard-card" id="card-quiz-preguntas">
         <h2>6. Quiz de incorporación</h2>
         <p>Selecciona una respuesta en cada pregunta.</p>
-        <div class="quiz-question"><h4>1. ¿Cómo aumenta tu comisión?</h4>
-          <label class="quiz-option"><input type="radio" name="q1" value="a"> Es fija y no cambia.</label>
-          <label class="quiz-option"><input type="radio" name="q1" value="b"> Es progresiva y aumenta según el volumen de ventas mensuales.</label>
-          <label class="quiz-option"><input type="radio" name="q1" value="c"> La decide el cliente.</label>
+        <div class="quiz-question"><h4>1. ¿Cuál es el monto mínimo de pedido para distribuidores?</h4>
+          <label class="quiz-option"><input type="radio" name="q1" value="a"> No hay mínimo, se puede pedir cualquier valor.</label>
+          <label class="quiz-option"><input type="radio" name="q1" value="b"> $70.000 COP como monto mínimo unificado.</label>
+          <label class="quiz-option"><input type="radio" name="q1" value="c"> $500.000 COP obligatorios.</label>
         </div>
-        <div class="quiz-question"><h4>2. Si vendes a otra ciudad y el pedido es de $70.000 o más, ¿qué puede ocurrir?</h4>
-          <label class="quiz-option"><input type="radio" name="q2" value="a"> Debes pagarlo y enviarlo personalmente.</label>
-          <label class="quiz-option"><input type="radio" name="q2" value="b"> FNC puede enviarlo directamente al cliente y asume el costo del envío.</label>
-          <label class="quiz-option"><input type="radio" name="q2" value="c"> El pedido se cancela.</label>
+        <div class="quiz-question"><h4>2. Si vendes a un cliente en otra ciudad (envío nacional), ¿cómo funciona el flete?</h4>
+          <label class="quiz-option"><input type="radio" name="q2" value="a"> La distribuidora siempre debe pagar $15.000 por su cuenta sin importar el monto.</label>
+          <label class="quiz-option"><input type="radio" name="q2" value="b"> Entre $70.000 y $149.999 se cobran $5.000 de flete al cliente; a partir de $150.000 el envío es gratis asumido por FNC.</label>
+          <label class="quiz-option"><input type="radio" name="q2" value="c"> FNC no realiza envíos directos a clientes en otras ciudades.</label>
         </div>
-        <div class="quiz-question"><h4>3. ¿Cuál es una forma correcta de comunicar un beneficio cosmético?</h4>
-          <label class="quiz-option"><input type="radio" name="q3" value="a"> “Te cura esta enfermedad”.</label>
-          <label class="quiz-option"><input type="radio" name="q3" value="b"> “Te garantizo que eliminará el problema”.</label>
-          <label class="quiz-option"><input type="radio" name="q3" value="c"> “Está formulado para apoyar esta rutina y puede ayudar según el producto y la persona”.</label>
+        <div class="quiz-question"><h4>3. ¿Cuál es la forma correcta de comunicar un beneficio cosmético?</h4>
+          <label class="quiz-option"><input type="radio" name="q3" value="a"> “Te garantizo que te cura esta enfermedad”.</label>
+          <label class="quiz-option"><input type="radio" name="q3" value="b"> “Está formulado con ingredientes botánicos que apoyan el cuidado de la piel según la rutina de cada persona”.</label>
+          <label class="quiz-option"><input type="radio" name="q3" value="c"> “Es un medicamento dermatológico recetado”.</label>
         </div>
-        <div class="quiz-question"><h4>4. ¿Qué debes hacer si no conoces la respuesta a una pregunta del cliente?</h4>
-          <label class="quiz-option"><input type="radio" name="q4" value="a"> Inventar una respuesta convincente.</label>
-          <label class="quiz-option"><input type="radio" name="q4" value="b"> Consultar a Frescura Natural antes de dar información que pueda inducir a error.</label>
-          <label class="quiz-option"><input type="radio" name="q4" value="c"> Decir que cualquier cosmético sirve.</label>
+        <div class="quiz-question"><h4>4. ¿Qué debes hacer si un cliente te hace una pregunta técnica que desconoces?</h4>
+          <label class="quiz-option"><input type="radio" name="q4" value="a"> Inventar una respuesta convincente para no perder la venta.</label>
+          <label class="quiz-option"><input type="radio" name="q4" value="b"> Consultar a Frescura Natural por WhatsApp antes de dar información incorrecta.</label>
+          <label class="quiz-option"><input type="radio" name="q4" value="c"> Decirle que cualquier producto del mercado funciona igual.</label>
         </div>
-        <div class="quiz-question"><h4>5. ¿Cuál afirmación sobre los puntos es correcta?</h4>
-          <label class="quiz-option"><input type="radio" name="q5" value="a"> Vencen en 1 año y los productos obtenidos como recompensa no generan nuevos puntos.</label>
-          <label class="quiz-option"><input type="radio" name="q5" value="b"> Nunca vencen.</label>
-          <label class="quiz-option"><input type="radio" name="q5" value="c"> Los productos de recompensa generan el doble de puntos.</label>
+        <div class="quiz-question"><h4>5. ¿Cuánto tiempo de vigencia tienen los puntos de fidelización?</h4>
+          <label class="quiz-option"><input type="radio" name="q5" value="a"> Vencen a los 12 meses (1 año) desde la fecha en que se generó cada lote.</label>
+          <label class="quiz-option"><input type="radio" name="q5" value="b"> Vencen al final de cada mes junto con la comisión.</label>
+          <label class="quiz-option"><input type="radio" name="q5" value="c"> Nunca vencen.</label>
         </div>
         <button class="onboard-btn" onclick="calificarQuiz()">Calificar quiz</button>
         <div id="quiz-result" class="quiz-result"></div>
       </div>
 
+      <!-- TÉRMINOS LEGALES -->
       <div class="onboard-card" id="onboard-legal-final" style="display:none">
-        <h2>Último paso: aceptación</h2>
-        <p>Lee los términos completos antes de activar tu cuenta.</p>
-        <p><a class="onboard-link" href="Terminos_y_Condiciones_Distribuidores_FNC.pdf" target="_blank" rel="noopener">📄 Ver Términos y Condiciones completos (PDF)</a></p>
+        <h2>Aceptación de Términos</h2>
+        <p>Lee y autoriza las condiciones antes de completar tu cuenta.</p>
+        <p style="margin:8px 0"><a class="onboard-link" href="Terminos_y_Condiciones_Distribuidores_FNC.pdf" target="_blank" rel="noopener">📄 Ver Términos y Condiciones completos (PDF)</a></p>
         <label class="onboard-check"><input type="checkbox" id="ob-terminos" onchange="actualizarBtnOnboarding()"><span><b>He leído y acepto los Términos y Condiciones</b> del Programa de Distribuidores.</span></label>
         <label class="onboard-check"><input type="checkbox" id="ob-independiente" onchange="actualizarBtnOnboarding()"><span><b>Comprendo y acepto la naturaleza independiente y comercial</b> de mi participación y entiendo que no constituye una relación laboral.</span></label>
-        <label class="onboard-check"><input type="checkbox" id="ob-datos" onchange="actualizarBtnOnboarding()"><span><b>Autorizo el tratamiento de mis datos personales</b> de acuerdo con la Política de Tratamiento de Datos Personales de FNC y la normativa aplicable.</span></label>
+        <label class="onboard-check"><input type="checkbox" id="ob-datos" onchange="actualizarBtnOnboarding()"><span><b>Autorizo el tratamiento de mis datos personales</b> de acuerdo con la Política de Tratamiento de Datos Personales de FNC y la Ley 1581 de 2012.</span></label>
         <label class="onboard-check"><input type="checkbox" id="ob-veracidad" onchange="actualizarBtnOnboarding()"><span><b>Declaro que la información suministrada es verdadera, completa y actualizada</b> y me comprometo a cumplir las condiciones del programa.</span></label>
         <div class="onboard-legal">
-          <button class="onboard-btn" id="btn-activar-onboarding" onclick="activarIncorporacion()" disabled>Continuar al acceso →</button>
-          <div class="onboard-note">La aceptación y el resultado del quiz se guardarán y se asociarán a tu cuenta al iniciar sesión.</div>
+          <button class="onboard-btn" id="btn-activar-onboarding" onclick="mostrarFormularioRegistro()" disabled style="width:100%;padding:14px;font-size:14px">
+            Continuar a crear mi cuenta →
+          </button>
         </div>
       </div>
+
+      <!-- FORMULARIO DE AUTO-REGISTRO INTELIGENTE -->
+      <div class="onboard-card" id="onboard-registro-final" style="display:none;border-color:var(--sage)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-size:24px">🎉</span>
+          <h2 style="margin-bottom:0">Crea tu cuenta de Distribuidora</h2>
+        </div>
+        <p class="card-sub" style="margin-bottom:18px">Completa tus datos para activar tu acceso inmediato. Tu usuario de acceso se generará automáticamente.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Primer Nombre (y segundo si tienes) *</label>
+            <input type="text" id="reg-nombres" placeholder="ej: María Camila" oninput="actualizarSugerenciaUsuario()">
+          </div>
+          <div class="form-group">
+            <label>Primer Apellido (y segundo) *</label>
+            <input type="text" id="reg-apellidos" placeholder="ej: Pérez Gómez" oninput="actualizarSugerenciaUsuario()">
+          </div>
+        </div>
+
+        <!-- Previsualización de usuario autogenerado -->
+        <div style="background:#f0e8f5;border:1px solid #d4c0e0;border-radius:6px;padding:12px 14px;margin-bottom:16px">
+          <div style="font-size:10px;font-weight:700;color:#6a3a7a;text-transform:uppercase;letter-spacing:1px">👤 Tu usuario asignado de acceso:</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#4a2a5a;margin-top:2px" id="reg-usuario-preview">—</div>
+          <input type="hidden" id="reg-usuario">
+          <div style="font-size:11px;color:#7a5a8a;margin-top:3px">Formato automático: <b>primernombre.primerapellido</b> (lo usarás siempre para iniciar sesión).</div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Crea tu contraseña * (mínimo 6 caracteres)</label>
+            <div style="position:relative">
+              <input type="password" id="reg-pass" placeholder="••••••••" style="padding-right:38px">
+              <button type="button" onclick="const i=document.getElementById('reg-pass');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'🙈'" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:14px;color:var(--ink3);padding:4px">👁</button>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Confirma tu contraseña *</label>
+            <div style="position:relative">
+              <input type="password" id="reg-pass-confirm" placeholder="••••••••" style="padding-right:38px">
+              <button type="button" onclick="const i=document.getElementById('reg-pass-confirm');i.type=i.type==='password'?'text':'password';this.textContent=i.type==='password'?'👁':'🙈'" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:14px;color:var(--ink3);padding:4px">👁</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Teléfono / WhatsApp *</label>
+            <input type="tel" id="reg-tel" placeholder="ej: 3001234567">
+          </div>
+          <div class="form-group">
+            <label>Municipio / Ciudad *</label>
+            <input type="text" id="reg-municipio" placeholder="ej: Bucaramanga">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Dirección de envío completa *</label>
+          <input type="text" id="reg-direccion" placeholder="Calle, número, barrio, indicaciones de entrega...">
+        </div>
+
+        <div class="section-label">Datos bancarios para pago de tus comisiones</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Entidad bancaria *</label>
+            <input type="text" id="reg-banco" placeholder="ej: Nequi, Daviplata, Bancolombia">
+          </div>
+          <div class="form-group">
+            <label>Número de cuenta / llave *</label>
+            <input type="text" id="reg-cuenta" placeholder="ej: 3001234567">
+          </div>
+        </div>
+
+        <div id="reg-error" class="error-msg"></div>
+
+        <button class="onboard-btn" id="btn-finalizar-registro" onclick="ejecutarAutoRegistroDistribuidor()" style="width:100%;padding:14px;font-size:14px;margin-top:6px;background:var(--sage)">
+          🚀 Activar mi cuenta y entrar al portal →
+        </button>
+      </div>
+
       <div class="onboard-actions"><button class="onboard-btn secondary" onclick="onboardingPrev()">← Atrás</button><span></span></div>
     </section>
   </div>
 </div>
-<!-- ══ PROFILE COMPLETION ══ -->
+
+<!-- ══ EDITAR PERFIL (MIS DATOS) ══ -->
 <div id="screen-perfil" class="screen">
-  <div style="background:#1e1c18;color:#f5f2ed;padding:14px 20px">
+  <div style="background:#1e1c18;color:#f5f2ed;padding:14px 20px;display:flex;align-items:center;justify-content:space-between">
     <div style="font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600">Frescura Natural</div>
-    <div style="font-size:10px;color:var(--sage);letter-spacing:1px" id="perfil-bienvenida">Portal Distribuidores</div>
+    <button onclick="showApp()" style="background:none;border:1px solid #3a3830;color:#c8b98a;border-radius:4px;padding:5px 10px;font-size:11px;cursor:pointer">← Volver al panel</button>
   </div>
   <div class="perfil-wrap">
     <div class="card">
-      <div class="card-title">Completa tu perfil</div>
-      <div class="card-sub">Esta información es necesaria para coordinar envíos y pagos de comisiones.</div>
+      <div class="card-title">Mis Datos de Distribuidora</div>
+      <div class="card-sub">Actualiza tu información para coordinación de envíos y pagos de comisiones.</div>
       <div class="form-group"><label>Teléfono / WhatsApp *</label><input type="tel" id="dp-tel" placeholder="3001234567"></div>
       <div class="form-row">
         <div class="form-group"><label>Municipio *</label><input type="text" id="dp-municipio" placeholder="ej: Bucaramanga"></div>
@@ -884,7 +712,7 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
         <div class="form-group"><label>Número de cuenta / llave *</label><input type="text" id="dp-cuenta" placeholder="ej: 3001234567"></div>
       </div>
       <div id="perfil-error" class="error-msg"></div>
-      <button class="btn-primary" id="btn-perfil" onclick="guardarPerfil()">Guardar y continuar →</button>
+      <button class="btn-primary" id="btn-perfil" onclick="guardarPerfil()">Guardar cambios ✓</button>
     </div>
   </div>
 </div>
@@ -947,10 +775,72 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
       <button class="modal-close" onclick="closePedidoModal()">✕</button>
     </div>
     <div class="modal-body">
+      <div style="background:#e8f0e8;border:1px solid #c9dfcc;border-radius:6px;padding:8px 12px;font-size:11.5px;color:var(--sage);margin-bottom:12px">
+        ℹ️ Monto mínimo por pedido de distribuidora: <b>$70.000 COP</b>.
+      </div>
       <!-- 1. Fecha -->
       <div class="form-group" style="margin-bottom:14px">
         <label>Fecha</label><input type="date" id="p-fecha">
       </div>
+      <!-- 2. Categorías -->
+      <!-- Destino del Pedido -->
+      <div style="background:#faf8f5;border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:14px">
+        <div style="font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">
+          📍 Destino del Pedido
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <label id="lbl-dest-dist" style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:1.5px solid var(--sage);border-radius:6px;background:#f0fdf4;cursor:pointer;font-size:12px;font-weight:500">
+            <input type="radio" name="p-tipo-destino" value="distribuidora" checked onchange="toggleTipoDestinoPedido()" style="accent-color:var(--sage)">
+            <span>🚚 A mi domicilio<br><small style="color:var(--ink3);font-weight:400">Entrega a clientes locales</small></span>
+          </label>
+          <label id="lbl-dest-otra" style="display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;background:#fff;cursor:pointer;font-size:12px;font-weight:500">
+            <input type="radio" name="p-tipo-destino" value="cliente_otra_ciudad" onchange="toggleTipoDestinoPedido()" style="accent-color:var(--sage)">
+            <span>🌎 Cliente en otra ciudad<br><small style="color:var(--ink3);font-weight:400">Envío directo FNC</small></span>
+          </label>
+        </div>
+
+        <!-- Domicilio distribuidora info -->
+        <div id="p-box-dest-dist" style="font-size:11.5px;color:var(--ink2);line-height:1.5;background:#f3f4f6;padding:8px 12px;border-radius:6px">
+          📦 Se enviará a tu dirección registrada: <b id="p-dest-mi-dir">...</b> para que entregues a tus clientes locales. <b>Flete: $0 COP</b>.
+        </div>
+
+        <!-- Campos destinatario otra ciudad -->
+        <div id="p-box-dest-otra" style="display:none;background:#f8fafc;border:1px solid #cbd5e1;padding:12px;border-radius:6px">
+          <div style="font-size:11.5px;font-weight:600;color:#1e3a8a;margin-bottom:8px">
+            📋 Datos de Entrega del Cliente (Destinatario en otra ciudad):
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <div>
+              <label style="font-size:11px;font-weight:500;display:block;margin-bottom:4px">Nombre completo del cliente *</label>
+              <input type="text" id="p-dest-nombre" placeholder="ej: Claudia Gómez" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:#fff">
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:500;display:block;margin-bottom:4px">Teléfono / WhatsApp *</label>
+              <input type="tel" id="p-dest-tel" placeholder="ej: 3123456789" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:#fff">
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <div>
+              <label style="font-size:11px;font-weight:500;display:block;margin-bottom:4px">Ciudad / Municipio de destino *</label>
+              <input type="text" id="p-dest-ciudad" placeholder="ej: Medellín, Cali, Bogotá..." style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:#fff" oninput="renderOrderSummary()">
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:500;display:block;margin-bottom:4px">Departamento</label>
+              <input type="text" id="p-dest-depto" placeholder="ej: Antioquia, Valle..." style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:#fff">
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <label style="font-size:11px;font-weight:500;display:block;margin-bottom:4px">Dirección exacta de entrega (Barrio, Apto, Torre) *</label>
+            <input type="text" id="p-dest-direccion" placeholder="ej: Calle 10 # 43E-12, Apto 502, Barrio El Poblado" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:#fff">
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:500;display:block;margin-bottom:4px">Indicaciones de entrega (opcional)</label>
+            <input type="text" id="p-dest-notas" placeholder="ej: Dejar en portería / Conjunto cerrado..." style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;background:#fff">
+          </div>
+          <div id="p-dest-flete-banner" style="margin-top:10px;padding:8px 10px;border-radius:4px;font-size:11px;line-height:1.4"></div>
+        </div>
+      </div>
+
       <!-- 2. Categorías -->
       <div class="cat-tabs" id="cat-tabs"></div>
       <!-- 3. Buscar producto -->
@@ -979,11 +869,11 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
         </select>
         <div style="margin-top:8px;padding:10px 12px;background:#faf8f5;border:1px solid #ddd8cf;border-radius:var(--r);font-size:12px;line-height:1.6">
           <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
-            <span>Llave: <b>@DLRRR66202</b></span>
+            <span>Llave Bre-B: <b>@DLRRR66202</b></span>
             <button type="button" onclick="copiarTexto('@DLRRR66202')" style="border:1px solid var(--border);background:var(--surface);border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;color:var(--ink)">Copiar</button>
           </div>
           <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px">
-            <span>Nequi/DaviPlata: <b>3223208126</b></span>
+            <span>Nequi / DaviPlata: <b>3223208126</b></span>
             <button type="button" onclick="copiarTexto('3223208126')" style="border:1px solid var(--border);background:var(--surface);border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;color:var(--ink)">Copiar</button>
           </div>
         </div>
@@ -1005,6 +895,27 @@ input[type="file"]{max-width:100%;width:100%;overflow:hidden;text-overflow:ellip
   </div>
 </div>
 
+<!-- ══ MODAL: META ══ -->
+<div class="modal-overlay" id="modal-meta">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-header">
+      <span class="modal-title">🎯 Meta de Ventas Mensual</span>
+      <button class="modal-close" onclick="document.getElementById('modal-meta').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Meta mensual (COP)</label>
+        <input type="number" id="meta-valor" placeholder="ej: 500000" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:14px;outline:none">
+      </div>
+      <div id="meta-progress" style="margin-top:8px"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="document.getElementById('modal-meta').classList.remove('open')">Cancelar</button>
+      <button class="btn-primary" onclick="guardarMeta()" style="width:auto;margin-top:0;padding:10px 20px">Guardar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // ══════════════════════════════════════════════════════════
 // FIREBASE INIT
@@ -1018,24 +929,26 @@ const FB_CONFIG = {
   appId: "1:435362377462:web:c1d252401cc128f16a46d7"
 };
 firebase.initializeApp(FB_CONFIG);
-const db      = firebase.firestore();
+const db        = firebase.firestore();
 const DIST_COL  = db.collection('distribuidores');
-const PEDIDOS_COL = db.collection('pedidos_dist');    // new orders from distributors
-const ADMIN_DOC = db.collection('admin').doc('db');   // admin DB (products/stock)
+const PEDIDOS_COL = db.collection('pedidos_dist');
+const ADMIN_DOC = db.collection('admin').doc('db');
 
 // ══════════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════════
-let _dist    = null;   // current distributor object
-let _adminDB = null;   // admin DB snapshot (products)
-let _pedidos = [];     // this distributor's orders
-let _cart    = {};     // {prodId: qty}
-let _comprobanteBase64 = null; // compressed payment screenshot (base64), if attached
+let _dist    = null;
+let _adminDB = null;
+let _pedidos = [];
+let _cart    = {};
+let _comprobanteBase64 = null;
 let _catActiva = 'Todos';
 let _terminoBusquedaProd = '';
-let _editandoPedidoId = null;  // pedido being edited
-let _lastPedidoTotal = 0;      // last order total for KPI
-let _lastPedidoComPagada = false; // last order commission status
+let _editandoPedidoId = null;
+let _lastPedidoTotal = 0;
+let _lastPedidoSubtotal = 0;
+let _lastPedidoFlete = 0;
+let _lastPedidoComPagada = false;
 let _onboardingGuardando = false;
 
 // ══════════════════════════════════════════════════════════
@@ -1045,7 +958,7 @@ const fmt = n => new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',
 const today = () => { const d = new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
 const uid = p => `${p}-${Date.now().toString(36).toUpperCase()}`;
 
-// ── Configuración del programa (compartida con el panel admin, vía Firestore) ──
+// ── Configuración unificada: escala arranca en $70.000 ──
 let _configComisiones = {
   tramos_comision: [
     {monto: 0, pct: 0}, {monto: 70000, pct: 5}, {monto: 120000, pct: 9},
@@ -1064,13 +977,11 @@ async function cargarConfigComisiones() {
   } catch(e) { console.warn('[config] usando valores por defecto:', e.message); }
 }
 
-// ── Un producto está "en promo" hoy si tiene % > 0 y la fecha actual cae dentro del rango ──
 function productoEnPromoHoy(p) {
   if (!p || !(p.descuento_pct > 0) || !p.promo_desde || !p.promo_hasta) return false;
   const hoy = new Date().toISOString().slice(0,10);
   return hoy >= p.promo_desde && hoy <= p.promo_hasta;
 }
-// ── Precio real a cobrar hoy (con descuento aplicado si está en promo) ──
 function precioEfectivo(p) {
   return productoEnPromoHoy(p) ? p.precio * (1 - p.descuento_pct/100) : p.precio;
 }
@@ -1078,7 +989,7 @@ function precioEfectivo(p) {
 function calcComision(total) {
   const puntos = _configComisiones.tramos_comision;
   let pct;
-  if (total < puntos[1].monto) pct = puntos[0].pct; // corte duro: sin transición gradual desde $0
+  if (total < puntos[1].monto) pct = puntos[0].pct;
   else if (total >= puntos[puntos.length-1].monto) pct = puntos[puntos.length-1].pct;
   else {
     for (let i = 1; i < puntos.length - 1; i++) {
@@ -1088,7 +999,7 @@ function calcComision(total) {
   }
   return { pct: Math.round(pct*10)/10, val: total*(pct/100) };
 }
-// Verificado con el usuario: $350.000 → 20 (tramo 100k-300k) + 10 (excedente) = 30 puntos
+
 function calcPuntos(monto) {
   if (monto < 100000) return 0;
   if (monto <= 300000) return Math.floor((monto - 100000) / 10000) * 1;
@@ -1100,7 +1011,7 @@ function showScreen(id) {
   document.getElementById(id).classList.add('active');
 }
 
-function showToast(msg, dur=3000) {
+function showToast(msg, dur=3200) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
@@ -1116,20 +1027,12 @@ function setMesActual() {
 }
 
 // ══════════════════════════════════════════════════════════
-// SCREEN MANAGEMENT
+// ONBOARDING & AUTO-REGISTRO
 // ══════════════════════════════════════════════════════════
-
-
 let _onboardingStep = 1;
 let _quizAprobado = false;
 let _quizScore = 0;
 
-function onboardingPendiente() {
-  return !_dist || _dist.onboarding_completado !== true;
-}
-
-// ── Bandera local: recuerda en ESTE navegador que ya se completó el onboarding,
-//    para no repetirlo antes del login en el próximo acceso desde el mismo dispositivo. ──
 const LOCAL_ONBOARDING_DONE_KEY = 'fnc_onboarding_done_local';
 function marcarOnboardingHechoLocal() {
   try { localStorage.setItem(LOCAL_ONBOARDING_DONE_KEY, '1'); } catch(e) {}
@@ -1138,24 +1041,16 @@ function onboardingHechoLocal() {
   try { return localStorage.getItem(LOCAL_ONBOARDING_DONE_KEY) === '1'; } catch(e) { return false; }
 }
 
-function onboardingPendienteLocal() {
-  try { return JSON.parse(localStorage.getItem('fnc_onboarding_pending') || 'null'); } catch(e) { return null; }
-}
-
 function showOnboarding() {
-  const nombre = (_dist && _dist.nombre) ? _dist.nombre.split(' ')[0] : '';
-  const el = document.getElementById('onboard-bienvenida');
-  if (el) el.textContent = nombre
-    ? `Hola, ${nombre}. Antes de activar tu cuenta recorrerás, paso a paso, la información esencial del programa y de nuestros productos. Al final harás un pequeño quiz de 5 preguntas.`
-    : 'Antes de activar tu cuenta recorrerás, paso a paso, la información esencial del programa y de nuestros productos. Al final harás un pequeño quiz de 5 preguntas.';
   _onboardingStep = 1;
   _quizAprobado = false;
   _quizScore = 0;
   document.querySelectorAll('#screen-onboarding input[type="checkbox"]').forEach(c => c.checked = false);
   document.querySelectorAll('#screen-onboarding input[type="radio"]').forEach(c => c.checked = false);
   document.getElementById('quiz-result')?.classList.remove('show','ok','fail');
-  const legal = document.getElementById('onboard-legal-final');
-  if (legal) legal.style.display = 'none';
+  document.getElementById('onboard-legal-final').style.display = 'none';
+  document.getElementById('onboard-registro-final').style.display = 'none';
+  document.getElementById('card-quiz-preguntas').style.display = 'block';
   actualizarBtnOnboarding();
   renderOnboardingStep();
   showScreen('screen-onboarding');
@@ -1181,7 +1076,6 @@ function onboardingNext() {
     renderOnboardingStep();
   }
 }
-
 function onboardingPrev() {
   if (_onboardingStep > 1) {
     _onboardingStep--;
@@ -1198,7 +1092,7 @@ function filtrarProductosOnboarding(cat, btn) {
 }
 
 function calificarQuiz() {
-  const respuestas = {q1:'b', q2:'b', q3:'c', q4:'b', q5:'a'};
+  const respuestas = {q1:'b', q2:'b', q3:'b', q4:'b', q5:'a'};
   let score = 0, respondidas = 0;
   Object.entries(respuestas).forEach(([q, correcta]) => {
     const seleccionada = document.querySelector(`input[name="${q}"]:checked`);
@@ -1213,15 +1107,14 @@ function calificarQuiz() {
   if (!result) return;
   result.className = 'quiz-result show ' + (_quizAprobado ? 'ok' : 'fail');
   if (_quizAprobado) {
-    result.innerHTML = `<b>✓ Quiz aprobado: ${score}/5.</b><br>Has demostrado que comprendiste lo esencial. Ahora puedes revisar los términos y completar la aceptación para activar tu cuenta.`;
-    const legal = document.getElementById('onboard-legal-final');
-    if (legal) legal.style.display = 'block';
+    result.innerHTML = `<b>✓ ¡Excelente! Quiz aprobado: ${score}/5.</b><br>Has demostrado comprender las políticas esenciales de venta y el pedido mínimo de $70.000. Revisa los términos abajo para activar tu cuenta.`;
+    document.getElementById('onboard-legal-final').style.display = 'block';
     actualizarBtnOnboarding();
   } else {
     const faltan = 5 - respondidas;
-    result.innerHTML = `<b>Necesitas al menos 4/5.</b> Obtuviste ${score}/5.${faltan ? ` Te faltan ${faltan} pregunta(s) por responder.` : ' Puedes revisar nuevamente los pasos anteriores y repetir el quiz.'}`;
-    const legal = document.getElementById('onboard-legal-final');
-    if (legal) legal.style.display = 'none';
+    result.innerHTML = `<b>Necesitas al menos 4/5 para aprobar.</b> Obtuviste ${score}/5.${faltan ? ` Te faltan ${faltan} pregunta(s) por responder.` : ' Puedes revisar nuevamente los pasos anteriores y corregir tus respuestas.'}`;
+    document.getElementById('onboard-legal-final').style.display = 'none';
+    document.getElementById('onboard-registro-final').style.display = 'none';
   }
 }
 
@@ -1229,70 +1122,149 @@ function actualizarBtnOnboarding() {
   const ok = _quizAprobado && ['ob-terminos','ob-independiente','ob-datos','ob-veracidad']
     .every(id => document.getElementById(id)?.checked);
   const btn = document.getElementById('btn-activar-onboarding');
-  if (btn) btn.disabled = !ok || _onboardingGuardando;
+  if (btn) btn.disabled = !ok;
 }
 
-function activarIncorporacion() {
-  const ok = _quizAprobado && ['ob-terminos','ob-independiente','ob-datos','ob-veracidad']
-    .every(id => document.getElementById(id)?.checked);
-  if (!ok || _onboardingGuardando) return;
-
-  _onboardingGuardando = true;
-  actualizarBtnOnboarding();
-  const btn = document.getElementById('btn-activar-onboarding');
-  if (btn) btn.textContent = 'Guardando y preparando acceso...';
-
-  const ahora = new Date().toISOString();
-  const pending = {
-    quiz_score: _quizScore,
-    quiz_aprobado: true,
-    quiz_en: ahora,
-    terminos_aceptados: true,
-    terminos_aceptados_en: ahora,
-    independencia_aceptada: true,
-    tratamiento_datos_aceptado: true,
-    tratamiento_datos_aceptado_en: ahora,
-    declaracion_veracidad_aceptada: true,
-    guardado_en: ahora
-  };
-  localStorage.setItem('fnc_onboarding_pending', JSON.stringify(pending));
-  marcarOnboardingHechoLocal();
-
-  showToast('✓ Inducción completada. Ahora inicia sesión para activar tu cuenta.');
-  _onboardingGuardando = false;
-  if (btn) btn.textContent = 'Continuar al acceso →';
-  setTimeout(() => {
-    document.getElementById('login-error').textContent = '';
-    showScreen('screen-login');
-    document.getElementById('l-user')?.focus();
-    window.scrollTo(0,0);
-  }, 500);
+function mostrarFormularioRegistro() {
+  document.getElementById('onboard-legal-final').style.display = 'none';
+  document.getElementById('card-quiz-preguntas').style.display = 'none';
+  const regCard = document.getElementById('onboard-registro-final');
+  regCard.style.display = 'block';
+  regCard.scrollIntoView({behavior:'smooth'});
+  document.getElementById('reg-nombres')?.focus();
 }
 
-async function aplicarOnboardingPendiente() {
-  const pending = onboardingPendienteLocal();
-  if (!pending || !_dist || pending.quiz_aprobado !== true) return false;
-  const ahora = new Date().toISOString();
-  const update = {
-    onboarding_completado: true,
-    onboarding_completado_en: ahora,
-    onboarding_quiz_score: pending.quiz_score,
-    onboarding_quiz_aprobado: true,
-    onboarding_quiz_en: pending.quiz_en || ahora,
-    terminos_aceptados: true,
-    terminos_aceptados_en: pending.terminos_aceptados_en || ahora,
-    independencia_aceptada: true,
-    tratamiento_datos_aceptado: true,
-    tratamiento_datos_aceptado_en: pending.tratamiento_datos_aceptado_en || ahora,
-    declaracion_veracidad_aceptada: true
-  };
-  await DIST_COL.doc(_dist.id).update(update);
-  _dist = {..._dist, ...update};
-  localStorage.removeItem('fnc_onboarding_pending');
-  return true;
+// ── Generador automático de usuario: primernombre.primerapellido ──
+function limpiarTextoUsuario(str) {
+  return (str || '')
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '')
+    .trim();
+}
+function actualizarSugerenciaUsuario() {
+  const nombres = document.getElementById('reg-nombres').value.trim();
+  const apellidos = document.getElementById('reg-apellidos').value.trim();
+  const primerNombre = limpiarTextoUsuario(nombres.split(/\s+/)[0] || '');
+  const primerApellido = limpiarTextoUsuario(apellidos.split(/\s+/)[0] || '');
+
+  let sugerido = '';
+  if (primerNombre && primerApellido) {
+    sugerido = `${primerNombre}.${primerApellido}`;
+  } else if (primerNombre) {
+    sugerido = primerNombre;
+  }
+
+  document.getElementById('reg-usuario-preview').textContent = sugerido ? sugerido : '—';
+  document.getElementById('reg-usuario').value = sugerido;
 }
 
+// ── Ejecutar creación de cuenta en Firebase Auth + Firestore ──
+async function ejecutarAutoRegistroDistribuidor() {
+  const errEl = document.getElementById('reg-error');
+  const btn   = document.getElementById('btn-finalizar-registro');
+  errEl.textContent = '';
 
+  const nombres   = document.getElementById('reg-nombres').value.trim();
+  const apellidos = document.getElementById('reg-apellidos').value.trim();
+  const usuarioBase = document.getElementById('reg-usuario').value.trim().toLowerCase();
+  const pass      = document.getElementById('reg-pass').value;
+  const passConf  = document.getElementById('reg-pass-confirm').value;
+  const tel       = document.getElementById('reg-tel').value.trim();
+  const municipio = document.getElementById('reg-municipio').value.trim();
+  const direccion = document.getElementById('reg-direccion').value.trim();
+  const banco     = document.getElementById('reg-banco').value.trim();
+  const cuenta    = document.getElementById('reg-cuenta').value.trim();
+
+  if (!nombres || !apellidos) { errEl.textContent = 'Ingresa tus nombres y apellidos completos'; return; }
+  if (!usuarioBase) { errEl.textContent = 'No se pudo generar el usuario. Revisa tus nombres y apellidos.'; return; }
+  if (!pass || pass.length < 6) { errEl.textContent = 'La contraseña debe tener al menos 6 caracteres'; return; }
+  if (pass !== passConf) { errEl.textContent = 'Las contraseñas no coinciden'; return; }
+  if (!tel || !municipio || !direccion) { errEl.textContent = 'Teléfono, municipio y dirección de envío son obligatorios'; return; }
+  if (!banco || !cuenta) { errEl.textContent = 'Los datos bancarios (entidad y cuenta/llave) son obligatorios para tus pagos'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Creando tu cuenta y activando acceso...';
+
+  try {
+    let cred = null;
+    let usuarioFinal = usuarioBase;
+    let intento = 1;
+    let emailIntentar = `${usuarioFinal}@frescura-admin.app`;
+
+    // Manejar duplicados de usuario agregando sufijo numérico automáticamente
+    while (!cred && intento <= 10) {
+      try {
+        cred = await firebase.auth().createUserWithEmailAndPassword(emailIntentar, pass);
+      } catch (authErr) {
+        if (authErr.code === 'auth/email-already-in-use') {
+          intento++;
+          usuarioFinal = `${usuarioBase}${intento}`;
+          emailIntentar = `${usuarioFinal}@frescura-admin.app`;
+        } else {
+          throw authErr;
+        }
+      }
+    }
+
+    if (!cred) throw new Error('No se pudo generar un usuario único disponible.');
+
+    const ahora = new Date().toISOString();
+    const dataDist = {
+      id: cred.user.uid,
+      nombre: `${nombres} ${apellidos}`.trim(),
+      usuario: usuarioFinal,
+      password: pass, // Guardado para que el admin pueda recordártelo si lo requieres
+      telefono: tel,
+      municipio: municipio,
+      direccion: direccion,
+      banco: banco,
+      cuenta: cuenta,
+      comision_pagada: false,
+      puntos_disponibles: 0,
+      puntos_historicos: 0,
+      puntos_lotes: [],
+      onboarding_completado: true,
+      onboarding_completado_en: ahora,
+      onboarding_quiz_score: _quizScore || 5,
+      onboarding_quiz_aprobado: true,
+      onboarding_quiz_en: ahora,
+      terminos_aceptados: true,
+      terminos_aceptados_en: ahora,
+      independencia_aceptada: true,
+      tratamiento_datos_aceptado: true,
+      tratamiento_datos_aceptado_en: ahora,
+      declaracion_veracidad_aceptada: true,
+      fecha_registro: today(),
+      creado_en: Date.now()
+    };
+
+    // Guardar en Firestore
+    await DIST_COL.doc(cred.user.uid).set(dataDist);
+    _dist = dataDist;
+    marcarOnboardingHechoLocal();
+
+    // Cargar dependencias y dar bienvenida
+    await loadAdminDB();
+    await cargarConfigComisiones();
+    await loadPedidos();
+    renderInfoPrograma();
+    resaltarInfoProgramaPrimeraVez();
+
+    showToast(`🎉 ¡Bienvenida ${nombres}! Tu usuario es ${usuarioFinal}`, 5000);
+    showApp();
+
+  } catch (e) {
+    console.error('[AutoRegistro]', e);
+    errEl.textContent = 'Error al activar tu cuenta: ' + e.message;
+    btn.disabled = false;
+    btn.textContent = '🚀 Activar mi cuenta y entrar al portal →';
+  }
+}
+
+// ══════════════════════════════════════════════════════════
+// GUIA NUEVO PEDIDO
+// ══════════════════════════════════════════════════════════
 function abrirGuiaPedido() {
   const el = document.getElementById('order-guide-overlay');
   if (el) { el.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
@@ -1305,71 +1277,12 @@ function cerrarGuiaPedido(ev) {
 }
 function continuarDesdeGuiaPedido() {
   cerrarGuiaPedido();
-  // Continue directly into the existing order modal.
-  if (typeof openModalPedido === 'function') openModalPedido();
-}
-
-
-function redondearPorcentajeComision(valor) {
-  const n = Number(valor);
-  if (!Number.isFinite(n)) return 0;
-  return Math.round((n + Number.EPSILON) * 100) / 100;
-}
-function formatearPorcentajeComision(valor) {
-  return redondearPorcentajeComision(valor).toLocaleString('es-CO', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2
-  }) + '%';
-}
-
-function showApp() {
-  document.getElementById('dist-bienvenida').textContent = 'Bienvenido/a, ' + _dist.nombre;
-  // Set last pedido for KPI
-  if (_pedidos.length > 0) {
-    const last = _pedidos[0];
-    _lastPedidoTotal = last.total || 0;
-    _lastPedidoComPagada = last.comision_pagada === true;
-  }
-  // Show date in topbar
-  const fechaEl = document.getElementById('topbar-date');
-  if (fechaEl) fechaEl.textContent = new Date().toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
-  showScreen('screen-app');
-  setMesActual();
-  updateNextNum();
-  renderKPIs();
-  renderPedidos();
-  startRealtimeListener();
-}
-
-function showPerfilForm() {
-  document.getElementById('perfil-bienvenida').textContent = 'Bienvenido/a, ' + _dist.nombre;
-  if (_dist.telefono) document.getElementById('dp-tel').value = _dist.telefono;
-  if (_dist.municipio) document.getElementById('dp-municipio').value = _dist.municipio;
-  if (_dist.direccion) document.getElementById('dp-dir').value = _dist.direccion;
-  if (_dist.banco) document.getElementById('dp-banco').value = _dist.banco;
-  if (_dist.cuenta) document.getElementById('dp-cuenta').value = _dist.cuenta;
-  showScreen('screen-perfil');
-}
-
-// Permite al distribuidor volver a editar sus datos (teléfono, dirección, banco, etc.) en cualquier momento
-function editarMisDatos() {
-  document.getElementById('perfil-bienvenida').textContent = 'Editar mis datos';
-  document.getElementById('btn-perfil').textContent = '💾 Guardar cambios';
-  showPerfilForm();
+  openModalPedido();
 }
 
 // ══════════════════════════════════════════════════════════
-// AUTH
+// AUTHENTICATION & LOGIN
 // ══════════════════════════════════════════════════════════
-
-document.addEventListener('click', function(e){
-  const btn = e.target.closest('#btn-nuevo-pedido,[data-action="nuevo-pedido"],.btn-nuevo-pedido');
-  if (!btn) return;
-  e.preventDefault();
-  e.stopPropagation();
-  abrirGuiaPedido();
-}, true);
-
 document.addEventListener('DOMContentLoaded', async () => {
   firebase.auth().onAuthStateChanged(async (user) => {
     if (user) {
@@ -1377,24 +1290,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         const snap = await DIST_COL.doc(user.uid).get();
         if (snap.exists) {
           _dist = {id: snap.id, ...snap.data()};
-          await aplicarOnboardingPendiente();
           await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma(); resaltarInfoProgramaPrimeraVez();
           await loadPedidos();
-          if (onboardingPendiente()) { showOnboarding(); return; }
           marcarOnboardingHechoLocal();
-          const perfilOk = _dist.telefono && _dist.municipio && _dist.banco && _dist.cuenta;
-          if (perfilOk) showApp(); else showPerfilForm();
+          showApp();
           return;
         }
       } catch(e) { console.warn('[Auth] error restaurando sesión:', e.message); }
     }
-    {
-      if (onboardingHechoLocal()) {
-        showScreen('screen-login');
-        setTimeout(() => document.getElementById('l-user')?.focus(), 100);
-      } else {
-        showOnboarding();
-      }
+    if (onboardingHechoLocal()) {
+      showScreen('screen-login');
+      setTimeout(() => document.getElementById('l-user')?.focus(), 100);
+    } else {
+      showOnboarding();
     }
   });
 });
@@ -1411,15 +1319,12 @@ async function doLogin() {
     const internalEmail = usuario + '@frescura-admin.app';
     const cred = await firebase.auth().signInWithEmailAndPassword(internalEmail, pwd);
     const snap = await DIST_COL.doc(cred.user.uid).get();
-    if (!snap.exists) { errEl.textContent = 'Usuario no encontrado. Contacta al administrador.'; await firebase.auth().signOut(); return; }
+    if (!snap.exists) { errEl.textContent = 'Usuario no encontrado en la base de distribuidoras'; await firebase.auth().signOut(); return; }
     _dist = {id: snap.id, ...snap.data()};
-    await aplicarOnboardingPendiente();
     await loadAdminDB(); await cargarConfigComisiones(); await verificarYCaducarPuntosPropios(); renderInfoPrograma(); resaltarInfoProgramaPrimeraVez();
     await loadPedidos();
-    if (onboardingPendiente()) { showOnboarding(); return; }
     marcarOnboardingHechoLocal();
-    const perfilOk = _dist.telefono && _dist.municipio && _dist.banco && _dist.cuenta;
-    if (perfilOk) showApp(); else showPerfilForm();
+    showApp();
   } catch(e) {
     if (e.code === 'auth/invalid-credential' || e.code === 'auth/wrong-password' || e.code === 'auth/user-not-found') {
       errEl.textContent = 'Usuario o contraseña incorrectos';
@@ -1431,7 +1336,52 @@ async function doLogin() {
   }
 }
 
-// ── Meta de ventas ──────────────────────────────────────
+function doLogout() {
+  firebase.auth().signOut().catch(()=>{});
+  _dist = null; _adminDB = null; _pedidos = []; _cart = {};
+  document.getElementById('l-user').value = '';
+  document.getElementById('l-pass').value = '';
+  document.getElementById('login-error').textContent = '';
+  showScreen('screen-login');
+  setTimeout(() => document.getElementById('l-user')?.focus(), 100);
+}
+
+// ══════════════════════════════════════════════════════════
+// PROFILE & METAS
+// ══════════════════════════════════════════════════════════
+function editarMisDatos() {
+  if (!_dist) return;
+  document.getElementById('dp-tel').value = _dist.telefono || '';
+  document.getElementById('dp-municipio').value = _dist.municipio || '';
+  document.getElementById('dp-dir').value = _dist.direccion || '';
+  document.getElementById('dp-banco').value = _dist.banco || '';
+  document.getElementById('dp-cuenta').value = _dist.cuenta || '';
+  showScreen('screen-perfil');
+}
+
+async function guardarPerfil() {
+  const errEl = document.getElementById('perfil-error');
+  const btn   = document.getElementById('btn-perfil');
+  errEl.textContent = '';
+  const tel   = document.getElementById('dp-tel').value.trim();
+  const mun   = document.getElementById('dp-municipio').value.trim();
+  const dir   = document.getElementById('dp-dir').value.trim();
+  const banco = document.getElementById('dp-banco').value.trim();
+  const cta   = document.getElementById('dp-cuenta').value.trim();
+  if (!tel || !mun || !banco || !cta) { errEl.textContent = 'Teléfono, municipio, banco y cuenta son obligatorios'; return; }
+  btn.disabled = true; btn.textContent = 'Guardando...';
+  try {
+    await DIST_COL.doc(_dist.id).update({telefono:tel, municipio:mun, direccion:dir, banco, cuenta:cta});
+    _dist = {..._dist, telefono:tel, municipio:mun, direccion:dir, banco, cuenta:cta};
+    showToast('✓ Datos actualizados correctamente');
+    showApp();
+  } catch(e) {
+    errEl.textContent = 'Error: ' + e.message;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Guardar cambios ✓';
+  }
+}
+
 function openModalMeta() {
   document.getElementById('meta-valor').value = _dist.meta_ventas || '';
   const total = _pedidos.filter(p=>p.estado_pago==='confirmado').reduce((a,p)=>a+(p.total||0),0);
@@ -1454,100 +1404,8 @@ async function guardarMeta() {
   } catch(e) { showToast('⚠ Error: ' + e.message); }
 }
 
-// ── Editar pedido ────────────────────────────────────────
-function editarPedido(pedidoId) {
-  const p = _pedidos.find(x => x.id === pedidoId);
-  if (!p) return;
-  if (p.procesado) { showToast('⚠ Este pedido ya fue confirmado por el administrador'); return; }
-  _editandoPedidoId = pedidoId;
-  _cart = {};
-  (p.items||[]).forEach(i => { _cart[i.id] = i.cantidad; });
-  _lastPedidoTotal = 0;
-  document.getElementById('p-fecha').value = p.fecha;
-  document.getElementById('p-metodo').value = p.metodo_pago || 'Bre-B';
-  _terminoBusquedaProd = '';
-  document.getElementById('p-buscar-producto').value = '';
-  _comprobanteBase64 = p.comprobante_base64 || null;
-  document.getElementById('p-comprobante').value = '';
-  document.getElementById('p-comprobante-preview').innerHTML = _comprobanteBase64
-    ? `<img src="${_comprobanteBase64}" style="max-width:160px;border-radius:4px;border:1px solid var(--border);display:block;margin-top:4px"><span style="font-size:10px;color:var(--ink3)">Comprobante ya adjunto (sube uno nuevo para reemplazarlo)</span>`
-    : '';
-  renderCatTabs(); renderProductsGrid(); renderOrderSummary();
-  document.getElementById('modal-pedido').classList.add('open');
-  document.querySelector('#modal-pedido .modal-title').textContent = '✏️ Editar Pedido ' + p.num;
-  document.getElementById('btn-enviar').textContent = 'Actualizar Pedido ✓';
-}
-
-// ── Real-time listener: commission payment status ────────
-function startRealtimeListener() {
-  if (!_dist) return;
-  // Listen for changes to this distributor's pedidos
-  PEDIDOS_COL.where('dist_id','==',_dist.id).onSnapshot(snapshot => {
-    snapshot.docChanges().forEach(change => {
-      const data = {id: change.doc.id, ...change.doc.data()};
-      const idx = _pedidos.findIndex(p => p.id === data.id);
-      if (data.estado_pago === 'cancelado') {
-        if (idx >= 0) _pedidos.splice(idx, 1); // desaparece del panel del distribuidor
-      } else if (idx >= 0) {
-        const estadoEnvioAnterior = _pedidos[idx].estado_envio;
-        // Aviso proactivo: el pedido acaba de pasar a "enviado" con datos de guía
-        if (change.type === 'modified' && data.estado_envio === 'enviado' && estadoEnvioAnterior !== 'enviado' && data.numero_guia) {
-          showToast(`🚚 Pedido ${data.num||''} enviado — ${data.transportadora||''} · Guía: ${data.numero_guia}`, 6000);
-        }
-        _pedidos[idx] = {..._pedidos[idx], ...data};
-        // Update KPI "esta venta" if matches last order
-        if (_pedidos[0] && _pedidos[idx].id === _pedidos[0].id) {
-          _lastPedidoComPagada = data.comision_pagada === true;
-          if (data.estado_pago === 'confirmado') _lastPedidoTotal = data.total || _lastPedidoTotal;
-        }
-      } else if (change.type === 'added') {
-        // Only add if not already present
-        if (!_pedidos.find(p => p.id === data.id)) _pedidos.unshift(data);
-      }
-    });
-    renderKPIs();
-    renderPedidos();
-  }, err => console.warn('[listener pedidos]', err.message));
-}
-
-function doLogout() {
-  firebase.auth().signOut().catch(()=>{});
-  sessionStorage.removeItem('fn_dist_id');
-  _dist = null; _adminDB = null; _pedidos = []; _cart = {};
-  document.getElementById('l-user').value = '';
-  document.getElementById('l-pass').value = '';
-  document.getElementById('login-error').textContent = '';
-  showScreen('screen-login');
-  setTimeout(() => document.getElementById('l-user')?.focus(), 100);
-}
-
 // ══════════════════════════════════════════════════════════
-// PROFILE
-// ══════════════════════════════════════════════════════════
-async function guardarPerfil() {
-  const errEl = document.getElementById('perfil-error');
-  const btn   = document.getElementById('btn-perfil');
-  errEl.textContent = '';
-  const tel   = document.getElementById('dp-tel').value.trim();
-  const mun   = document.getElementById('dp-municipio').value.trim();
-  const dir   = document.getElementById('dp-dir').value.trim();
-  const banco = document.getElementById('dp-banco').value.trim();
-  const cta   = document.getElementById('dp-cuenta').value.trim();
-  if (!tel || !mun || !banco || !cta) { errEl.textContent = 'Teléfono, municipio, banco y cuenta son obligatorios'; return; }
-  btn.disabled = true; btn.textContent = 'Guardando...';
-  try {
-    await DIST_COL.doc(_dist.id).update({telefono:tel, municipio:mun, direccion:dir, banco, cuenta:cta});
-    _dist = {..._dist, telefono:tel, municipio:mun, direccion:dir, banco, cuenta:cta};
-    showApp();
-  } catch(e) {
-    errEl.textContent = 'Error: ' + e.message;
-  } finally {
-    btn.disabled = false; btn.textContent = 'Guardar y continuar →';
-  }
-}
-
-// ══════════════════════════════════════════════════════════
-// LOAD DATA
+// DATA LOADING & REAL-TIME
 // ══════════════════════════════════════════════════════════
 async function loadAdminDB() {
   try {
@@ -1559,25 +1417,56 @@ async function loadAdminDB() {
 async function loadPedidos() {
   try {
     const snap = await PEDIDOS_COL.where('dist_id','==',_dist.id).orderBy('fecha','desc').get();
-    // Los pedidos cancelados por el admin no se muestran (siguen existiendo en la base para el historial del admin)
     _pedidos = snap.docs.map(d => ({id:d.id, ...d.data()})).filter(p => p.estado_pago !== 'cancelado');
   } catch(e) { console.warn('loadPedidos:', e.message); _pedidos = []; }
 }
 
-// ══════════════════════════════════════════════════════════
-// CONSECUTIVE NUMBER
-// ══════════════════════════════════════════════════════════
-function updateNextNum() {
-  const n = _pedidos.length + 1;
-  const el = document.getElementById('next-num');
-  if (el) el.textContent = '#' + String(n).padStart(4,'0');
+function showApp() {
+  document.getElementById('dist-bienvenida').textContent = 'Bienvenida/o, ' + (_dist ? _dist.nombre : 'Distribuidora');
+  if (_pedidos.length > 0) {
+    const last = _pedidos[0];
+    _lastPedidoTotal = last.total || 0;
+    _lastPedidoComPagada = last.comision_pagada === true;
+  }
+  const fechaEl = document.getElementById('topbar-date');
+  if (fechaEl) fechaEl.textContent = new Date().toLocaleDateString('es-CO',{weekday:'short',day:'numeric',month:'long',year:'numeric'});
+  showScreen('screen-app');
+  setMesActual();
+  renderKPIs();
+  renderPedidos();
+  startRealtimeListener();
+}
+
+function startRealtimeListener() {
+  if (!_dist) return;
+  PEDIDOS_COL.where('dist_id','==',_dist.id).onSnapshot(snapshot => {
+    snapshot.docChanges().forEach(change => {
+      const data = {id: change.doc.id, ...change.doc.data()};
+      const idx = _pedidos.findIndex(p => p.id === data.id);
+      if (data.estado_pago === 'cancelado') {
+        if (idx >= 0) _pedidos.splice(idx, 1);
+      } else if (idx >= 0) {
+        const estadoEnvioAnterior = _pedidos[idx].estado_envio;
+        if (change.type === 'modified' && data.estado_envio === 'enviado' && estadoEnvioAnterior !== 'enviado' && data.numero_guia) {
+          showToast(`🚚 Pedido ${data.num||''} enviado — ${data.transportadora||''} · Guía: ${data.numero_guia}`, 6000);
+        }
+        _pedidos[idx] = {..._pedidos[idx], ...data};
+        if (_pedidos[0] && _pedidos[idx].id === _pedidos[0].id) {
+          _lastPedidoComPagada = data.comision_pagada === true;
+          if (data.estado_pago === 'confirmado') _lastPedidoTotal = data.total || _lastPedidoTotal;
+        }
+      } else if (change.type === 'added') {
+        if (!_pedidos.find(p => p.id === data.id)) _pedidos.unshift(data);
+      }
+    });
+    renderKPIs();
+    renderPedidos();
+  }, err => console.warn('[listener pedidos]', err.message));
 }
 
 // ══════════════════════════════════════════════════════════
-// KPIs
+// KPIS & INFORMACIÓN DEL PROGRAMA
 // ══════════════════════════════════════════════════════════
-// ── Catálogo de recompensas y canje de puntos ──
-// ── Caducidad de puntos: 12 meses desde la fecha de generación de cada lote (FIFO), igual que en el admin ──
 function limpiarLotesCaducados(lotes) {
   const hoy = new Date(today());
   let expirados = 0;
@@ -1601,141 +1490,12 @@ async function verificarYCaducarPuntosPropios() {
       await DIST_COL.doc(_dist.id).update({puntos_lotes: nuevosLotes, puntos_disponibles: nuevoDisponible});
       _dist.puntos_lotes = nuevosLotes;
       _dist.puntos_disponibles = nuevoDisponible;
-      showToast(`⚠ ${expirados} puntos caducaron (más de 12 meses)`);
     } else {
       _dist.puntos_lotes = nuevosLotes;
     }
   } catch(e) { console.warn('[caducidad puntos]', e.message); }
 }
-// Consume puntos de los lotes más antiguos primero (FIFO); devuelve los lotes ya actualizados
-function consumirLotesFIFO(lotes, puntosAConsumir) {
-  const ordenados = [...(lotes||[])].sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
-  let restante = puntosAConsumir;
-  for (const l of ordenados) {
-    if (restante <= 0) break;
-    if ((l.restantes||0) <= 0) continue;
-    const consumir = Math.min(l.restantes, restante);
-    l.restantes -= consumir;
-    restante -= consumir;
-  }
-  return ordenados;
-}
 
-async function verCatalogoRecompensas() {
-  const overlay = document.createElement('div');
-  overlay.id = 'overlay-catalogo';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px';
-  overlay.innerHTML = `
-    <div style="background:#fff;border-radius:12px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto">
-      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;border-radius:12px 12px 0 0">
-        <div style="font-weight:600;font-size:15px">🎁 Catálogo de Recompensas</div>
-        <button onclick="document.getElementById('overlay-catalogo').remove()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--ink3);line-height:1;padding:4px 8px">✕</button>
-      </div>
-      <div style="padding:12px 20px">
-        <div style="font-size:13px;color:var(--ink3);margin-bottom:10px">Tienes <b style="color:#6a3a7a">${_dist.puntos_disponibles||0} puntos</b> disponibles</div>
-        <div id="catalogo-items">Cargando...</div>
-      </div>
-    </div>`;
-  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
-  document.body.appendChild(overlay);
-
-  try {
-    const snap = await db.collection('recompensas').where('activo','==',true).get();
-    const items = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b)=>a.pvp-b.pvp);
-    const disponibles = _dist.puntos_disponibles || 0;
-    document.getElementById('catalogo-items').innerHTML = items.length ? items.map(r => {
-      const pts = Math.ceil(r.pvp / _configComisiones.valor_punto);
-      const alcanza = disponibles >= pts;
-      const faltante = Math.max(0, pts - disponibles);
-      const montoFaltante = faltante * _configComisiones.valor_punto;
-      return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
-        ${r.foto_base64 ? `<img src="${r.foto_base64}" style="width:48px;height:48px;object-fit:cover;border-radius:6px">` : '<div style="width:48px;height:48px;background:var(--bg);border-radius:6px;display:flex;align-items:center;justify-content:center">🎁</div>'}
-        <div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nombre}</div><div style="font-size:11px;color:var(--ink3)">${pts} puntos${!alcanza ? ` · te faltan ${faltante} pts (${fmt(montoFaltante)})` : ''}</div></div>
-        <button class="btn btn-xs" style="background:${alcanza?'var(--sage)':'#8a6c3a'};color:#fff;border:none" onclick="solicitarCanje('${r.id}','${r.nombre.replace(/'/g,"\\'")}',${pts})">${alcanza?'Canjear':'Completar con $'}</button>
-      </div>`;
-    }).join('') : '<div class="text-muted" style="font-size:13px">Aún no hay recompensas disponibles.</div>';
-  } catch(e) { document.getElementById('catalogo-items').innerHTML = '<div class="alert-strip">Error: '+e.message+'</div>'; }
-}
-
-let _canjeEfectivoComprobante = null;
-async function solicitarCanje(recompensaId, recompensaNombre, puntos) {
-  const disponibles = _dist.puntos_disponibles || 0;
-
-  if (disponibles >= puntos) {
-    // Alcanza solo con puntos
-    if (!confirm(`¿Canjear "${recompensaNombre}" por ${puntos} puntos? Quedará pendiente de aprobación del administrador.`)) return;
-    await _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados: puntos, montoEfectivo: 0, comprobanteEfectivo: null});
-    return;
-  }
-
-  // No alcanza — ofrecer completar la diferencia en efectivo
-  const faltante = puntos - disponibles;
-  const montoFaltante = faltante * _configComisiones.valor_punto;
-  const overlay = document.createElement('div');
-  overlay.id = 'overlay-canje-efectivo';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2100;display:flex;align-items:center;justify-content:center;padding:16px';
-  overlay.innerHTML = `
-    <div style="background:#fff;border-radius:12px;width:100%;max-width:380px;padding:20px">
-      <div style="font-weight:600;margin-bottom:10px">Completar canje con dinero</div>
-      <div style="font-size:13px;color:#4a4640;margin-bottom:14px">
-        "${recompensaNombre}" cuesta ${puntos} puntos. Tienes ${disponibles}, te faltan <b>${faltante} puntos</b>.
-        Puedes cubrir esa diferencia pagando <b style="color:#8a6c3a">${fmt(montoFaltante)}</b> por los medios de pago habituales, y subir el comprobante aquí.
-      </div>
-      <div class="form-group"><label>Comprobante de pago</label><input type="file" accept="image/*" onchange="_previewComprobanteCanje(this)"><div id="canje-efectivo-preview" style="margin-top:6px"></div></div>
-      <div style="display:flex;gap:8px;margin-top:14px">
-        <button class="btn btn-secondary" style="flex:1" onclick="document.getElementById('overlay-canje-efectivo').remove()">Cancelar</button>
-        <button class="btn btn-primary" style="flex:1" onclick="_confirmarCanjeConEfectivo('${recompensaId}','${recompensaNombre.replace(/'/g,"\\'")}',${puntos},${disponibles},${montoFaltante})">Solicitar canje</button>
-      </div>
-    </div>`;
-  document.body.appendChild(overlay);
-}
-function _previewComprobanteCanje(input) {
-  const file = input.files?.[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    const img = new Image();
-    img.onload = () => {
-      const scale = Math.min(1, 700/img.width);
-      const canvas = document.createElement('canvas');
-      canvas.width = img.width*scale; canvas.height = img.height*scale;
-      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
-      _canjeEfectivoComprobante = canvas.toDataURL('image/jpeg', 0.6);
-      document.getElementById('canje-efectivo-preview').innerHTML = `<img src="${_canjeEfectivoComprobante}" style="max-width:140px;border-radius:4px">`;
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-async function _confirmarCanjeConEfectivo(recompensaId, recompensaNombre, puntosRequeridos, puntosDisponibles, montoFaltante) {
-  if (!_canjeEfectivoComprobante) { alert('Sube el comprobante de pago antes de continuar'); return; }
-  document.getElementById('overlay-canje-efectivo')?.remove();
-  await _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados: puntosDisponibles, montoEfectivo: montoFaltante, comprobanteEfectivo: _canjeEfectivoComprobante});
-  _canjeEfectivoComprobante = null;
-}
-async function _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados, montoEfectivo, comprobanteEfectivo}) {
-  try {
-    await db.collection('canjes').add({
-      dist_id: _dist.id, dist_nombre: _dist.nombre,
-      recompensa_id: recompensaId, recompensa_nombre: recompensaNombre,
-      puntos: puntosUsados, monto_efectivo: montoEfectivo || 0,
-      comprobante_efectivo_base64: comprobanteEfectivo || null,
-      fecha: today(), estado: 'pendiente'
-    });
-    // Consumir los puntos usados de los lotes más antiguos (FIFO)
-    const nuevosLotes = consumirLotesFIFO(_dist.puntos_lotes || [], puntosUsados);
-    await DIST_COL.doc(_dist.id).update({
-      puntos_disponibles: firebase.firestore.FieldValue.increment(-puntosUsados),
-      puntos_lotes: nuevosLotes
-    });
-    _dist.puntos_disponibles = (_dist.puntos_disponibles||0) - puntosUsados;
-    _dist.puntos_lotes = nuevosLotes;
-    document.getElementById('overlay-catalogo')?.remove();
-    showToast(montoEfectivo > 0 ? '✓ Canje solicitado con pago adicional. Pendiente de aprobación.' : '✓ Canje solicitado. Pendiente de aprobación.');
-    renderKPIs();
-  } catch(e) { alert('Error al solicitar canje: ' + e.message); }
-}
-
-// Rellena la tarjeta informativa con la escala de comisión y puntos vigente (según configuración real)
 function renderInfoPrograma() {
   const el = document.getElementById('info-programa-body');
   if (!el) return;
@@ -1750,10 +1510,10 @@ function renderInfoPrograma() {
 
   el.innerHTML = `
     <div style="margin-bottom:10px">
-      <div style="font-weight:600;margin-bottom:4px">📊 Escala de comisión (0% → 20%)</div>
+      <div style="font-weight:600;margin-bottom:4px">📊 Escala de comisión (5% → 20%)</div>
       <table class="tabla-info-programa">${filasComision}</table>
       <div style="margin-top:6px;color:#8a847a;font-size:11px;line-height:1.5">
-        La comisión se calcula sobre tus <b>ventas confirmadas acumuladas del mes en curso</b>, no por pedido individual — entre más vendas en el mes, más alto sube tu %. El porcentaje sube de forma proporcional dentro de cada tramo (no salta de golpe), y se recalcula automáticamente cada vez que el admin confirma un pedido tuyo.
+        El <b>pedido mínimo es de $70.000 COP</b>. La comisión se calcula sobre tus <b>ventas acumuladas confirmadas del mes en curso</b> — entre más vendas en el mes, más alto sube tu porcentaje.
       </div>
     </div>
     <div style="margin-bottom:10px;padding-top:10px;border-top:1px dashed #ddd8cf">
@@ -1764,7 +1524,7 @@ function renderInfoPrograma() {
         <tr><td>Sobre $300.000</td><td style="font-weight:600;color:#6a3a7a">2 pts por cada $10.000 adicionales</td></tr>
       </table>
       <div style="margin-top:6px;color:#8a847a;font-size:11px;line-height:1.5">
-        Los puntos son independientes de la comisión, no se resetean cada mes, y se acreditan cuando el admin confirma cada pedido. Se pueden canjear por productos en el catálogo de recompensas.
+        Los puntos se acumulan durante 1 año (vigencia FIFO) y puedes canjearlos por productos en el catálogo.
       </div>
     </div>
     <div style="padding-top:10px;border-top:1px dashed #ddd8cf;display:flex;justify-content:space-between;align-items:center">
@@ -1773,22 +1533,16 @@ function renderInfoPrograma() {
     </div>`;
 }
 
-// ── Brillo permanente en el acordeón + badge "Nuevo" solo en la 1ra visita ──
 function resaltarInfoProgramaPrimeraVez() {
   const KEY = 'frescura_dist_info_programa_visto';
   const details = document.getElementById('info-programa-details');
   const badge = document.getElementById('badge-nuevo-info');
   if (!details) return;
-
-  // El brillo/pulso queda siempre presente, sin importar si ya se abrió antes
   details.classList.add('destacar-brillo');
-
   let yaVisto = false;
   try { yaVisto = localStorage.getItem(KEY) === '1'; } catch(e) {}
   if (yaVisto) return;
-
   if (badge) badge.style.display = 'inline-block';
-
   const marcarVisto = () => {
     try { localStorage.setItem(KEY, '1'); } catch(e) {}
     if (badge) badge.style.display = 'none';
@@ -1798,28 +1552,28 @@ function resaltarInfoProgramaPrimeraVez() {
 }
 
 function renderKPIs() {
-  const conf  = _pedidos.filter(p => p.estado_pago === 'confirmado');
-  const total = conf.reduce((a,p) => a + (p.total||0), 0);
-
+  const conf = _pedidos.filter(p => p.estado_pago === 'confirmado');
   const mesActual = today().slice(0,7);
-  const ventasMes = conf.filter(p => (p.fecha||'').startsWith(mesActual)).reduce((a,p) => a + (p.total||0), 0);
-  const comVigente = calcComision(ventasMes);
-  const puntosDisponibles = _dist.puntos_disponibles || 0;
+  const getSubtotalProd = p => (p.subtotal_productos != null ? p.subtotal_productos : ((p.total||0) - (p.flete||0)));
 
-  const lastTotal = _lastPedidoTotal || 0;
-  const lastCom   = calcComision(lastTotal).val;
+  // Ventas comisionables del mes (excluyendo flete)
+  const ventasMes = conf.filter(p => (p.fecha||'').startsWith(mesActual)).reduce((a,p) => a + getSubtotalProd(p), 0);
+  const comVigente = calcComision(ventasMes);
+  const puntosDisponibles = (_dist && _dist.puntos_disponibles) ? _dist.puntos_disponibles : 0;
+
+  const lastSubtotal = _lastPedidoSubtotal || (_lastPedidoTotal ? (_lastPedidoTotal - (_lastPedidoFlete||0)) : 0);
+  const lastCom = calcComision(lastSubtotal).val;
   const lastComPagada = _lastPedidoComPagada || false;
 
-  const meta  = _dist.meta_ventas || 0;
+  const meta  = (_dist && _dist.meta_ventas) ? _dist.meta_ventas : 0;
   const tramos = _configComisiones.tramos_comision;
   const nextTierObj = tramos.find(t => t.monto > ventasMes);
   const nextTier = nextTierObj ? {l: nextTierObj.monto, p: nextTierObj.pct} : null;
 
-  // Total histórico de comisión: se agrupa por mes (la comisión es proporcional a lo vendido cada mes)
   const ventasPorMes = {};
   conf.forEach(p => {
     const mes = (p.fecha||'').slice(0,7);
-    ventasPorMes[mes] = (ventasPorMes[mes]||0) + (p.total||0);
+    ventasPorMes[mes] = (ventasPorMes[mes]||0) + getSubtotalProd(p);
   });
   const totalCom = Object.values(ventasPorMes).reduce((a, montoMes) => a + calcComision(montoMes).val, 0);
 
@@ -1827,47 +1581,44 @@ function renderKPIs() {
     <div class="kpi-card" style="background:var(--sage-light)">
       <div class="kpi-label" style="color:var(--sage)">Ventas Este Mes</div>
       <div class="kpi-value" style="font-size:20px;color:var(--sage)">${fmt(ventasMes)}</div>
-      <div class="kpi-sub">Comisión vigente: <b>${comVigente.pct}%</b> ${nextTier ? `· Faltan ${fmt(nextTier.l-ventasMes)} para ${nextTier.p}%` : '🏆 Nivel máximo'}</div>
+      <div class="kpi-sub">Comisión vigente: <b>${comVigente.pct}%</b> ${nextTier ? `· Próximo tramo: ${nextTier.p}% en ${fmt(nextTier.l)}` : '· Tramo máximo alcanzado'}</div>
+      <div style="font-size:9.5px;color:var(--ink3);margin-top:4px">* Base sobre productos (fletes no comisionan)</div>
     </div>
-    <div class="kpi-card" style="background:#f0e8f5">
-      <div class="kpi-label" style="color:#6a3a7a">💎 Puntos Disponibles</div>
-      <div class="kpi-value" style="font-size:20px;color:#6a3a7a">${puntosDisponibles}</div>
-      <div class="kpi-sub">1 punto = ${fmt(_configComisiones.valor_punto)} · <a href="javascript:void(0)" onclick="verCatalogoRecompensas()" style="color:#6a3a7a">Ver catálogo →</a></div>
+    <div class="kpi-card" style="background:var(--gold-light)">
+      <div class="kpi-label" style="color:var(--gold)">Comisión Estimada Mes</div>
+      <div class="kpi-value" style="font-size:20px;color:var(--gold)">${fmt(comVigente.val)}</div>
+      <div class="kpi-sub">${comVigente.pct}% sobre ${fmt(ventasMes)} en ventas</div>
     </div>
-    <div class="kpi-card">
-      <div class="kpi-label" style="color:var(--blue)">Total Esta Venta</div>
-      <div class="kpi-value" style="font-size:20px">${fmt(lastTotal)}</div>
-      <div class="kpi-sub">${lastTotal > 0 ? 'Último pedido registrado' : 'Sin pedido activo'}</div>
+    <div class="kpi-card" style="background:var(--blue-light)">
+      <div class="kpi-label" style="color:var(--blue)">Puntos Disponibles</div>
+      <div class="kpi-value" style="font-size:20px;color:var(--blue)">${puntosDisponibles.toLocaleString('es-CO')} pts</div>
+      <div class="kpi-sub"><span style="cursor:pointer;text-decoration:underline" onclick="verCatalogoRecompensas()">Ver catálogo de recompensas →</span></div>
     </div>
-    <div class="kpi-card" style="background:${lastComPagada?'var(--sage-light)':'#faf8f5'}">
-      <div class="kpi-label" style="color:${lastComPagada?'var(--sage)':'var(--gold)'}">Comisión Esta Venta</div>
-      <div class="kpi-value" style="font-size:20px;color:${lastComPagada?'var(--sage)':'var(--gold)'}">${fmt(lastCom)}</div>
-      <div class="kpi-sub">
-        <span style="display:inline-block;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:500;
-          background:${lastComPagada?'var(--sage)':'#f0ede8'};color:${lastComPagada?'#fff':'var(--ink3)'}">
-          ${lastComPagada ? '✓ Pagada' : '⏳ Pendiente'}
-        </span>
-      </div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">Total Ventas</div>
-      <div class="kpi-value">${fmt(total)}</div>
-      <div class="kpi-sub">${conf.length} pedido${conf.length!==1?'s':''} confirmado${conf.length!==1?'s':''}</div>
-      ${meta > 0
-        ? `<div class="progress-bar" style="margin-top:7px"><div class="progress-fill" style="width:${Math.min(100,total/meta*100)}%;transition:width .4s"></div></div>
-           <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--ink3);margin-top:3px">
-             <span>${Math.min(100,(total/meta*100).toFixed(0))}% de la meta</span>
-             <span>${fmt(meta)}</span>
-           </div>`
-        : nextTier
-          ? `<div style="font-size:10px;color:var(--ink3);margin-top:4px">Sig. nivel (${nextTier.p}%) en ${fmt(nextTier.l-total)}</div>`
-          : total >= 300000 ? '<div style="font-size:10px;color:var(--sage);margin-top:4px">🏆 Nivel máximo (20%)</div>' : ''}
-    </div>
-    <div class="kpi-card" style="background:${totalCom>0?'var(--sage-light)':'#faf8f5'}">
-      <div class="kpi-label">Total Comisiones</div>
-      <div class="kpi-value" style="color:${totalCom>0?'var(--sage)':'var(--ink3)'}">${fmt(totalCom)}</div>
-      <div class="kpi-sub">${conf.length > 0 ? conf.length + ' pedido' + (conf.length>1?'s':'') + ' confirmado' + (conf.length>1?'s':'') : 'Sin pedidos confirmados'}</div>
-    </div>`;
+  `;
+
+  // Render meta card
+  const metaCard = document.getElementById('kpi-meta');
+  if (metaCard) {
+    if (meta > 0) {
+      const pctMeta = Math.min(100, Math.round((ventasMes / meta) * 100));
+      metaCard.style.display = 'block';
+      metaCard.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div><span style="font-weight:600;font-size:13px">Meta mensual: ${fmt(meta)}</span> <span style="font-size:11px;color:var(--ink3)">(${pctMeta}% lograda)</span></div>
+          <button class="btn-secondary" style="font-size:11px;padding:3px 8px" onclick="openModalMeta()">Editar meta</button>
+        </div>
+        <div style="background:var(--border);border-radius:4px;height:8px;overflow:hidden">
+          <div style="background:var(--sage);width:${pctMeta}%;height:100%"></div>
+        </div>
+      `;
+    } else {
+      metaCard.style.display = 'block';
+      metaCard.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:12px;color:var(--ink3)">🎯 No has fijado una meta este mes</span>
+        <button class="btn-secondary" style="font-size:11px;padding:3px 8px" onclick="openModalMeta()">Fijar meta</button>
+      </div>`;
+    }
+  }
 }
 
 function renderPedidos() {
@@ -1883,81 +1634,76 @@ function renderPedidos() {
     el.innerHTML = '<div class="empty"><div class="empty-icon">📦</div><div class="empty-text">Sin pedidos en este período</div></div>';
     return;
   }
-  el.innerHTML = '<table><thead><tr><th>Pedido</th><th>Fecha</th><th>Total</th><th>Comisión</th><th>Puntos</th><th>Admin</th><th>Envío</th><th>Recibido</th><th>Resumen</th></tr></thead><tbody>' +
+  const getSubtotalProd = p => (p.subtotal_productos != null ? p.subtotal_productos : ((p.total||0) - (p.flete||0)));
+
+  el.innerHTML = '<table><thead><tr><th>Pedido</th><th>Fecha</th><th>Destino</th><th>Total</th><th>Comisión</th><th>Puntos</th><th>Admin</th><th>Envío</th><th>Recibido</th><th>Resumen</th></tr></thead><tbody>' +
     filtered.map(p => {
-      const pCom = calcComision(p.total||0);
-      const pPuntos = p.estado_pago === 'confirmado' ? calcPuntos(p.total||0) : 0;
+      const subtotalProd = getSubtotalProd(p);
+      const pCom = calcComision(subtotalProd);
+      const pPuntos = p.estado_pago === 'confirmado' ? calcPuntos(subtotalProd) : 0;
       const recibido = p.dist_recibido === true;
       const envioMap = {preparando:'📦 Preparando',enviado:'🚚 Enviado',entregado:'✅ Entregado',cancelado:'❌ Cancelado'};
       const envioLabel = envioMap[p.estado_envio||'preparando'] || '📦 Preparando';
       const envioColor = p.estado_envio==='entregado'?'var(--sage)':p.estado_envio==='enviado'?'var(--blue)':p.estado_envio==='cancelado'?'var(--red)':'var(--gold)';
+
+      const esOtra = p.tipo_destino === 'cliente_otra_ciudad';
+      const destinoBadge = esOtra
+        ? `<span class="badge" style="background:#eff6ff;color:#1e40af;font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;border:1px solid #bfdbfe;white-space:nowrap;display:inline-block" title="${p.destinatario_nombre||''} · ${p.destinatario_direccion||''} · Tel: ${p.destinatario_telefono||''}">🌎 ${p.destinatario_ciudad||'Otra Ciudad'}<br><span style="font-size:9.5px;color:var(--ink3);font-weight:400">${p.destinatario_nombre||'Cliente final'}</span></span>`
+        : `<span class="badge" style="background:#f3f4f6;color:var(--ink2);font-size:11px;padding:3px 8px;border-radius:4px;white-space:nowrap;display:inline-block">🚚 Mi Domicilio</span>`;
+
       return `<tr>
         <td class="mono fw6" style="white-space:nowrap">${p.num||p.id.slice(-6)}</td>
         <td style="white-space:nowrap;font-size:12px">${p.fecha}</td>
-        <td class="fw6">${fmt(p.total||0)}</td>
+        <td>${destinoBadge}</td>
+        <td class="fw6" style="white-space:nowrap">
+          ${fmt(p.total||0)}
+          ${p.flete > 0 ? `<div style="font-size:9.5px;color:#92400e;font-weight:400">Prod: ${fmt(subtotalProd)} + Fle: ${fmt(p.flete)}</div>` : ''}
+        </td>
         <td style="white-space:nowrap">
           ${pCom.pct > 0
             ? `<span style="font-weight:600;color:var(--sage)">${fmt(pCom.val)}</span><span style="font-size:10px;color:var(--ink3);margin-left:2px">(${pCom.pct}%)</span>
-               ${p.comision_pagada?`<br><span style="font-size:9px;background:#e8f0e8;color:#5a7a5c;padding:1px 5px;border-radius:2px">✓ Pagada</span>${p.comprobante_comision_base64?` <span onclick="event.stopPropagation();verComprobanteComisionDist('${p.id}')" style="font-size:9px;color:#4a7ab5;cursor:pointer;text-decoration:underline">📎 Ver</span>`:''}`:''}`
-            : '<span style="color:var(--ink3);font-size:12px">—</span>'}
+               ${p.comision_pagada?`<br><span style="font-size:9px;background:#e8f0e8;color:#5a7a5c;padding:1px 5px;border-radius:2px">✓ Pagada</span>${p.comprobante_comision_base64?` <span onclick="event.stopPropagation();verComprobanteComisionDist('${p.id}')" style="cursor:pointer;font-size:10px;text-decoration:underline" title="Ver comprobante de pago">🧾</span>`:''}`:''}`
+            : '<span style="color:var(--ink3);font-size:11px">0%</span>'
+          }
         </td>
-        <td style="white-space:nowrap">
-          ${pPuntos > 0
-            ? `<span style="font-weight:600;color:#6a3a7a">💎 ${pPuntos}</span>`
-            : p.estado_pago==='confirmado' ? '<span style="color:var(--ink3);font-size:12px">—</span>' : '<span style="color:var(--ink3);font-size:11px;font-style:italic">Pend. confirmar</span>'}
-        </td>
+        <td style="font-size:12px;color:var(--blue);font-weight:600">${pPuntos > 0 ? `+${pPuntos} pts` : '—'}</td>
         <td>
-          <span class="badge ${p.estado_pago==='confirmado'?'badge-green':'badge-gold'}" style="font-size:11px">${p.estado_pago==='confirmado'?'✓ Conf.':'⏳ Pend.'}</span>
+          ${p.estado_pago === 'confirmado'
+            ? '<span class="badge badge-green">✓ Confirmado</span>'
+            : p.estado_pago === 'cancelado'
+              ? '<span class="badge badge-red">❌ Rechazado</span>'
+              : '<span class="badge badge-gold">⏳ Pendiente</span>'
+          }
         </td>
         <td style="white-space:nowrap;font-size:12px;color:${envioColor}">
           ${envioLabel}
           ${(p.estado_envio==='enviado'||p.estado_envio==='entregado') && p.numero_guia ? `<br><span style="font-size:10px;color:var(--ink3)">${p.transportadora||''} · <span style="cursor:pointer;text-decoration:underline" onclick="event.stopPropagation();copiarTexto('${p.numero_guia}')">${p.numero_guia} 📋</span></span>` : ''}
         </td>
         <td>
-          <button onclick="toggleRecibido('${p.id}',${recibido})"
-            style="border:none;border-radius:4px;padding:4px 9px;font-size:11px;cursor:pointer;white-space:nowrap;
-              background:${recibido?'var(--sage)':'var(--bg2)'};color:${recibido?'#fff':'var(--ink3)'};
-              border:1px solid ${recibido?'var(--sage)':'var(--border)'}">
-            ${recibido?'✓ Recibido':'En espera'}
-          </button>
+          ${recibido
+            ? '<span class="badge badge-green">✓ Recibido</span>'
+            : (p.estado_envio === 'enviado' || p.estado_envio === 'entregado')
+              ? `<button class="btn-recibido" onclick="marcarRecibido('${p.id}')">Confirmar recibido</button>`
+              : '<span style="color:var(--ink3);font-size:11px">—</span>'
+          }
         </td>
-        <td>
-          <div style="display:flex;gap:4px;flex-wrap:wrap">
-            <button onclick="verResumenPedido('${p.id}')"
-              style="border:1px solid var(--border);border-radius:4px;padding:4px 9px;font-size:11px;cursor:pointer;background:var(--surface);color:var(--ink2)">
-              📋 Ver
-            </button>
-            ${!p.procesado ? `<button onclick="editarPedido('${p.id}')"
-              style="border:1px solid var(--gold);border-radius:4px;padding:4px 9px;font-size:11px;cursor:pointer;background:var(--gold-light);color:var(--gold)">
-              ✏️ Editar
-            </button>` : ''}
-          </div>
+        <td style="white-space:nowrap">
+          <button class="btn-view-detail" onclick="verResumenPedido('${p.id}')">Ver resumen</button>
+          ${!p.procesado ? `<button class="btn-view-detail" style="margin-left:4px" onclick="editarPedido('${p.id}')">✏️</button>` : ''}
         </td>
       </tr>`;
-    }).join('') + '</tbody></table>';
+    }).join('') +
+    '</tbody></table>';
 }
 
-// ══════════════════════════════════════════════════════════
-// MODAL PEDIDO
-// ══════════════════════════════════════════════════════════
-// Toggle received status (controlled by distributor)
-async function toggleRecibido(pedidoId, current) {
-  const nueva = !current;
-  try {
-    await PEDIDOS_COL.doc(pedidoId).update({dist_recibido: nueva});
-    const idx = _pedidos.findIndex(p => p.id === pedidoId);
-    if (idx >= 0) _pedidos[idx].dist_recibido = nueva;
-    renderPedidos();
-    showToast(nueva ? '✓ Marcado como recibido' : 'Marcado como en espera');
-  } catch(e) { showToast('⚠ Error: ' + e.message); }
-}
-
-// Show order summary in a modal-like overlay
 function verResumenPedido(pedidoId) {
   const p = _pedidos.find(x => x.id === pedidoId);
   if (!p) return;
-  const pCom = calcComision(p.total||0);
+  const getSubtotalProd = o => (o.subtotal_productos != null ? o.subtotal_productos : ((o.total||0) - (o.flete||0)));
+  const subtotalProd = getSubtotalProd(p);
+  const pCom = calcComision(subtotalProd);
   const fmt2 = n => new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',minimumFractionDigits:0}).format(n||0);
+
   const itemsHTML = (p.items||[]).map(i =>
     `<div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #e8e4dc;font-size:13px">
        <span>${i.nombre}${i.cantidad>1?' <strong>x'+i.cantidad+'</strong>':''}</span>
@@ -1965,12 +1711,27 @@ function verResumenPedido(pedidoId) {
      </div>`
   ).join('');
 
-  // Create overlay
+  const esOtra = p.tipo_destino === 'cliente_otra_ciudad';
+  const destinoBlock = esOtra ? `
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px;margin:12px 0;font-size:12px">
+      <div style="font-weight:700;color:#1e40af;margin-bottom:6px">🌎 Envío directo a cliente en otra ciudad:</div>
+      <div><b>Destinatario:</b> ${p.destinatario_nombre||'—'} · <b>Tel:</b> ${p.destinatario_telefono||'—'}</div>
+      <div><b>Ciudad:</b> ${p.destinatario_ciudad||'—'}</div>
+      <div><b>Dirección de entrega:</b> ${p.destinatario_direccion||'—'}</div>
+      ${p.destinatario_notas ? `<div style="margin-top:4px;color:#475569"><b>Indicaciones:</b> ${p.destinatario_notas}</div>` : ''}
+      <div style="margin-top:6px;font-size:11px;color:#92400e"><b>Flete nacional:</b> ${p.flete > 0 ? fmt2(p.flete) + ' (cobrado al cliente)' : '¡GRATIS! ($0)'}</div>
+    </div>
+  ` : `
+    <div style="background:#f3f4f6;border-radius:6px;padding:8px 12px;margin:12px 0;font-size:11.5px;color:var(--ink2)">
+      🚚 <b>Destino:</b> A mi domicilio (para entrega a clientes locales).
+    </div>
+  `;
+
   const overlay = document.createElement('div');
   overlay.id = 'overlay-resumen-pedido';
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px';
   overlay.innerHTML = `
-    <div style="background:#fff;border-radius:12px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto;padding:0;box-shadow:0 10px 40px rgba(0,0,0,.25)">
+    <div style="background:#fff;border-radius:12px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;padding:0;box-shadow:0 10px 40px rgba(0,0,0,.25)">
       <div style="padding:16px 20px;border-bottom:1px solid #e8e4dc;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;border-radius:12px 12px 0 0">
         <div>
           <div style="font-weight:600;font-size:15px">Resumen del Pedido</div>
@@ -1979,49 +1740,40 @@ function verResumenPedido(pedidoId) {
         <button onclick="document.getElementById('overlay-resumen-pedido').remove()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#8a847a;line-height:1;padding:4px 8px">✕</button>
       </div>
       <div style="padding:16px 20px">
-        <div style="font-size:11px;font-weight:600;color:#8a847a;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Productos</div>
+        ${destinoBlock}
+        <div style="font-size:11px;font-weight:600;color:#8a847a;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Productos & Flete</div>
         ${itemsHTML}
+        ${p.flete > 0 ? `
+          <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;color:#92400e">
+            <span>Subtotal Productos</span><span>${fmt2(subtotalProd)}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:12px;color:#92400e;border-bottom:1px solid #e8e4dc">
+            <span>Flete Nacional</span><span>${fmt2(p.flete)}</span>
+          </div>
+        ` : ''}
         <div style="display:flex;justify-content:space-between;padding:10px 0;font-size:15px;font-weight:700">
           <span>Total Pedido</span><span>${fmt2(p.total||0)}</span>
         </div>
         <div style="background:#f5f2ed;border-radius:6px;padding:12px;margin-top:8px">
           <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+            <span style="color:#8a847a">Base comisionable de productos</span>
+            <span style="font-weight:600">${fmt2(subtotalProd)}</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
             <span style="color:#8a847a">Porcentaje comisión</span>
             <span style="font-weight:600">${pCom.pct}%</span>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:700">
-            <span>Comisión Generada</span>
+            <span>Comisión estimada</span>
             <span style="color:#5a7a5c">${fmt2(pCom.val)}</span>
           </div>
-          ${p.comision_pagada?`<div style="margin-top:6px;font-size:11px;background:#e8f0e8;color:#5a7a5c;padding:4px 8px;border-radius:3px;display:inline-block">✓ Comisión pagada</div>${p.comprobante_comision_base64?`<div style="margin-top:8px"><div style="font-size:10px;color:#8a847a;margin-bottom:4px">Comprobante de pago:</div><img src="${p.comprobante_comision_base64}" onclick="verComprobanteComisionDist('${p.id}')" style="max-width:140px;border-radius:4px;border:1px solid var(--border);cursor:pointer;display:block"></div>`:''}`:'<div style="margin-top:6px;font-size:11px;color:#8a6c3a">⏳ Pendiente de pago</div>'}
-          <div style="display:flex;justify-content:space-between;font-size:14px;font-weight:700;margin-top:10px;padding-top:10px;border-top:1px dashed #ddd8cf">
-            <span style="color:#6a3a7a">💎 Puntos generados</span>
-            <span style="color:#6a3a7a">${p.estado_pago==='confirmado' ? calcPuntos(p.total||0) : 0} pts</span>
-          </div>
-          ${p.estado_pago!=='confirmado' ? '<div style="font-size:10px;color:#8a847a;margin-top:2px">Se acreditan cuando el admin confirme el pedido</div>' : ''}
         </div>
-        ${(p.estado_envio==='enviado'||p.estado_envio==='entregado') && p.numero_guia ? `
-        <div style="background:#f5f2ed;border-radius:6px;padding:12px;margin-top:10px">
-          <div style="font-size:11px;font-weight:600;color:#8a847a;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">📦 Información de envío</div>
-          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
-            <span style="color:#8a847a">Transportadora</span>
-            <span style="font-weight:600">${p.transportadora||'—'}</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px">
-            <span style="color:#8a847a">N° de guía</span>
-            <span style="display:flex;align-items:center;gap:6px">
-              <span style="font-weight:600">${p.numero_guia}</span>
-              <button type="button" onclick="copiarTexto('${p.numero_guia}')" style="border:1px solid var(--border);background:#fff;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;color:var(--ink)">Copiar</button>
-            </span>
-          </div>
-        </div>` : ''}
       </div>
-    </div>`;
-  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+    </div>
+  `;
   document.body.appendChild(overlay);
 }
 
-// ── Ver comprobante de pago de comisión (subido por el admin) en grande ──
 function verComprobanteComisionDist(pedidoId) {
   const p = _pedidos.find(x => x.id === pedidoId);
   if (!p || !p.comprobante_comision_base64) { showToast('⚠ No hay comprobante disponible'); return; }
@@ -2039,6 +1791,37 @@ function verComprobanteComisionDist(pedidoId) {
   document.body.appendChild(overlay);
 }
 
+// ══════════════════════════════════════════════════════════
+// MODAL: NUEVO / EDITAR PEDIDO
+// ══════════════════════════════════════════════════════════
+function toggleTipoDestinoPedido() {
+  const tipo = document.querySelector('input[name="p-tipo-destino"]:checked')?.value || 'distribuidora';
+  const isOtra = tipo === 'cliente_otra_ciudad';
+  const boxDist = document.getElementById('p-box-dest-dist');
+  const boxOtra = document.getElementById('p-box-dest-otra');
+  const lblDist = document.getElementById('lbl-dest-dist');
+  const lblOtra = document.getElementById('lbl-dest-otra');
+
+  if (boxDist) boxDist.style.display = isOtra ? 'none' : 'block';
+  if (boxOtra) boxOtra.style.display = isOtra ? 'block' : 'none';
+
+  if (lblDist) {
+    lblDist.style.borderColor = isOtra ? 'var(--border)' : 'var(--sage)';
+    lblDist.style.background = isOtra ? '#fff' : '#f0fdf4';
+  }
+  if (lblOtra) {
+    lblOtra.style.borderColor = isOtra ? 'var(--blue)' : 'var(--border)';
+    lblOtra.style.background = isOtra ? '#eff6ff' : '#fff';
+  }
+
+  const dirEl = document.getElementById('p-dest-mi-dir');
+  if (dirEl && _dist) {
+    dirEl.textContent = (_dist.direccion ? _dist.direccion + ', ' : '') + (_dist.municipio || 'tu municipio registrado');
+  }
+
+  renderOrderSummary();
+}
+
 function openModalPedido() {
   if (!_adminDB) { showToast('⚠ Cargando catálogo, intenta de nuevo'); loadAdminDB(); return; }
   _editandoPedidoId = null;
@@ -2052,6 +1835,14 @@ function openModalPedido() {
   document.getElementById('p-comprobante').value = '';
   document.getElementById('p-comprobante-preview').innerHTML = '';
   document.getElementById('p-fecha').value = today();
+
+  const rDist = document.querySelector('input[name="p-tipo-destino"][value="distribuidora"]');
+  if (rDist) rDist.checked = true;
+  ['p-dest-nombre','p-dest-tel','p-dest-ciudad','p-dest-depto','p-dest-direccion','p-dest-notas'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  toggleTipoDestinoPedido();
+
   renderCatTabs();
   renderProductsGrid();
   renderOrderSummary();
@@ -2064,7 +1855,6 @@ function closePedidoModal() {
   _comprobanteBase64 = null;
 }
 
-// ── Payment screenshot: compress client-side and store as base64 (no paid Storage needed) ──
 function previewComprobante(input) {
   const file = input.files && input.files[0];
   if (!file) { _comprobanteBase64 = null; document.getElementById('p-comprobante-preview').innerHTML = ''; return; }
@@ -2084,7 +1874,7 @@ function previewComprobante(input) {
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
       const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
       _comprobanteBase64 = dataUrl;
-      const kb = Math.round(dataUrl.length * 0.75 / 1024); // approx decoded size
+      const kb = Math.round(dataUrl.length * 0.75 / 1024);
       previewEl.innerHTML = `<img src="${dataUrl}" style="max-width:160px;border-radius:4px;border:1px solid var(--border);display:block;margin-top:4px">
         <span style="font-size:10px;color:var(--ink3)">✓ Comprobante listo (~${kb} KB)</span>`;
     };
@@ -2100,23 +1890,18 @@ function renderCatTabs() {
     `<button class="cat-tab${c===_catActiva?' active':''}" onclick="setCat('${c}')">${c}</button>`
   ).join('');
 }
-
 function setCat(cat) {
   _catActiva = cat;
   renderCatTabs();
   renderProductsGrid();
 }
-
-// ── Buscar producto en todo el catálogo, sin importar la categoría activa ──
 function filtrarProductosPorBusqueda(valor) {
   _terminoBusquedaProd = valor || '';
   renderProductsGrid();
 }
-
-// ── Copiar texto (llave Bre-B / número Nequi-DaviPlata) al portapapeles ──
 function copiarTexto(texto) {
   navigator.clipboard.writeText(texto)
-    .then(() => showToast('✓ Copiado'))
+    .then(() => showToast('✓ Copiado al portapapeles'))
     .catch(() => showToast('⚠ No se pudo copiar'));
 }
 
@@ -2155,7 +1940,6 @@ function addToCart(prodId) {
   renderProductsGrid();
   renderOrderSummary();
 }
-
 function changeQty(prodId, delta) {
   _cart[prodId] = (_cart[prodId] || 0) + delta;
   if (_cart[prodId] <= 0) delete _cart[prodId];
@@ -2173,22 +1957,68 @@ function renderOrderSummary() {
       const precioEf = precioEfectivo(p);
       return {id, nombre:p.nombre, qty, precio:p.precio, precioEf, subtotal:precioEf*qty, ahorro:(p.precio-precioEf)*qty, costo:p.costo, enPromo:productoEnPromoHoy(p)};
     }).filter(Boolean);
-  const total = items.reduce((a,i) => a+i.subtotal, 0);
+  const subtotalProd = items.reduce((a,i) => a+i.subtotal, 0);
   const ahorroTotal = items.reduce((a,i) => a+i.ahorro, 0);
+
+  const tipoDestino = document.querySelector('input[name="p-tipo-destino"]:checked')?.value || 'distribuidora';
+  const esOtraCiudad = tipoDestino === 'cliente_otra_ciudad';
+
+  let flete = 0;
+  let fleteItemHtml = '';
+  const fleteBanner = document.getElementById('p-dest-flete-banner');
+
+  if (esOtraCiudad && subtotalProd > 0) {
+    if (subtotalProd < 150000) {
+      flete = 5000;
+      if (fleteBanner) {
+        fleteBanner.style.background = '#fef3c7';
+        fleteBanner.style.border = '1px solid #fde68a';
+        fleteBanner.style.color = '#92400e';
+        fleteBanner.innerHTML = '🚚 <b>Flete Nacional: $5.000 COP</b> (pedidos entre $70.000 y $149.999).<br>Debes cobrar estos $5.000 a tu cliente y sumarlos al total. <i>Este valor no genera comisión ni puntos.</i>';
+      }
+      fleteItemHtml = `
+        <div class="summary-row" style="color:#b45309;font-size:12px;font-weight:600;background:#fef3c7;padding:5px 8px;border-radius:4px;margin:4px 0">
+          <span>🚚 Flete Nacional (a otra ciudad)</span>
+          <span>${fmt(5000)}</span>
+        </div>`;
+    } else {
+      flete = 0;
+      if (fleteBanner) {
+        fleteBanner.style.background = '#dcfce7';
+        fleteBanner.style.border = '1px solid #bbf7d0';
+        fleteBanner.style.color = '#166534';
+        fleteBanner.innerHTML = '🎉 <b>¡Envío Nacional GRATIS!</b> Por superar $150.000 COP en productos, Frescura Natural asume el flete.';
+      }
+      fleteItemHtml = `
+        <div class="summary-row" style="color:#166534;font-size:12px;font-weight:600;background:#dcfce7;padding:5px 8px;border-radius:4px;margin:4px 0">
+          <span>🎉 Envío Nacional (≥ $150.000)</span>
+          <span>¡GRATIS! ($0)</span>
+        </div>`;
+    }
+  } else if (fleteBanner) {
+    fleteBanner.innerHTML = '';
+  }
+
+  const totalFinal = subtotalProd + flete;
   const el = document.getElementById('summary-items');
   if (!items.length) {
     el.innerHTML = '<div style="font-size:13px;color:var(--ink3);text-align:center;padding:8px">Selecciona productos del catálogo</div>';
   } else {
     el.innerHTML = items.map(i =>
       `<div class="summary-row"><span>${i.nombre} x${i.qty}${i.enPromo?' <span style="color:var(--gold);font-size:10px">🏷️ promo</span>':''}</span><span>${fmt(i.subtotal)}</span></div>`
-    ).join('') + (ahorroTotal>0?`<div class="summary-row" style="color:var(--gold);font-size:12px"><span>Ahorro por promociones</span><span>-${fmt(ahorroTotal)}</span></div>`:'');
+    ).join('')
+    + (ahorroTotal>0?`<div class="summary-row" style="color:var(--gold);font-size:12px"><span>Ahorro por promociones</span><span>-${fmt(ahorroTotal)}</span></div>`:'')
+    + fleteItemHtml
+    + (esOtraCiudad && flete > 0 ? `<div style="font-size:10.5px;color:var(--ink3);text-align:right;margin-top:2px">Subtotal productos: ${fmt(subtotalProd)} + Flete: ${fmt(flete)}</div>` : '');
   }
-  document.getElementById('summary-total').textContent = fmt(total);
+
+  const totalEl = document.getElementById('summary-total');
+  if (totalEl) {
+    totalEl.innerHTML = `${fmt(totalFinal)}${flete > 0 ? `<div style="font-size:10px;font-weight:400;color:var(--ink3)">Base comisionable: ${fmt(subtotalProd)}</div>` : ''}`;
+  }
 }
 
-// ══════════════════════════════════════════════════════════
-// SEND ORDER
-// ══════════════════════════════════════════════════════════
+// ── Enviar pedido con validación de mínimo de $70.000 unificado ──
 async function enviarPedido() {
   const items = Object.entries(_cart)
     .map(([id,qty]) => {
@@ -2206,20 +2036,108 @@ async function enviarPedido() {
 
   if (!items.length) { showToast('⚠ Agrega al menos un producto'); return; }
 
-  // EDIT MODE: update existing pedido
+  const subtotalProd = items.reduce((a,i) => a + i.subtotal, 0);
+
+  // UNIFICACIÓN: Monto mínimo de pedido para distribuidores = $70.000 COP en productos
+  if (subtotalProd < 70000) {
+    showToast('⚠ El pedido mínimo para distribuidoras es de ' + fmt(70000));
+    alert('El pedido mínimo para distribuidoras es de ' + fmt(70000) + ' en productos cosméticos. Tu pedido actual suma ' + fmt(subtotalProd) + '. Por favor agrega más productos para continuar.');
+    return;
+  }
+
+  // Destino y datos de destinatario
+  const tipoDestino = document.querySelector('input[name="p-tipo-destino"]:checked')?.value || 'distribuidora';
+  const esOtraCiudad = tipoDestino === 'cliente_otra_ciudad';
+
+  let destNombre = '', destTel = '', destCiudad = '', destDepto = '', destDir = '', destNotas = '';
+  if (esOtraCiudad) {
+    destNombre = (document.getElementById('p-dest-nombre')?.value || '').trim();
+    destTel    = (document.getElementById('p-dest-tel')?.value || '').trim();
+    destCiudad = (document.getElementById('p-dest-ciudad')?.value || '').trim();
+    destDepto  = (document.getElementById('p-dest-depto')?.value || '').trim();
+    destDir    = (document.getElementById('p-dest-direccion')?.value || '').trim();
+    destNotas  = (document.getElementById('p-dest-notas')?.value || '').trim();
+
+    if (!destNombre || !destTel || !destCiudad || !destDir) {
+      showToast('⚠ Completa los datos de entrega del cliente en otra ciudad');
+      alert('Por favor completa todos los datos obligatorios del destinatario en otra ciudad:\n• Nombre completo del cliente\n• Teléfono / WhatsApp\n• Ciudad / Municipio de destino\n• Dirección exacta de entrega');
+      return;
+    }
+  }
+
+  // Flete nacional: $5.000 si está entre 70.000 y 149.999; $0 gratis a partir de 150.000
+  let flete = 0;
+  if (esOtraCiudad) {
+    flete = subtotalProd < 150000 ? 5000 : 0;
+  }
+
+  // Ítems registrados (se incluye el flete como ítem visible para que todo quede registrado)
+  const itemsRegistrados = [...items];
+  if (esOtraCiudad && flete > 0) {
+    itemsRegistrados.push({
+      id: 'FLETE-OTRA-CIUDAD',
+      nombre: '🚚 Flete Nacional (Envío a otra ciudad)',
+      cantidad: 1,
+      precio: 5000,
+      subtotal: 5000,
+      costo: 0,
+      precio_original: 5000,
+      descuento_pct_aplicado: 0,
+      es_flete: true
+    });
+  } else if (esOtraCiudad && flete === 0) {
+    itemsRegistrados.push({
+      id: 'FLETE-GRATIS',
+      nombre: '🎉 Flete Nacional (Envío Gratis ≥ $150.000)',
+      cantidad: 1,
+      precio: 0,
+      subtotal: 0,
+      costo: 0,
+      precio_original: 0,
+      descuento_pct_aplicado: 0,
+      es_flete: true
+    });
+  }
+
+  const totalFinal = subtotalProd + flete;
+  const ciudadDestinoStr = esOtraCiudad ? (destCiudad + (destDepto ? ', ' + destDepto : '')) : (_dist?.municipio || 'Local');
+
+  // EDIT MODE
   if (_editandoPedidoId) {
     const btn = document.getElementById('btn-enviar');
     btn.disabled = true; btn.textContent = 'Actualizando...';
-    const total = items.reduce((a,i) => a + i.subtotal, 0);
     try {
       await PEDIDOS_COL.doc(_editandoPedidoId).update({
-        items, total,
+        items: itemsRegistrados,
+        subtotal_productos: subtotalProd,
+        flete: flete,
+        total: totalFinal,
+        tipo_destino: tipoDestino,
+        destinatario_nombre: destNombre,
+        destinatario_telefono: destTel,
+        destinatario_ciudad: ciudadDestinoStr,
+        destinatario_direccion: destDir,
+        destinatario_notas: destNotas,
         fecha: document.getElementById('p-fecha').value,
         metodo_pago: document.getElementById('p-metodo').value,
         comprobante_base64: _comprobanteBase64 || null
       });
       const idx = _pedidos.findIndex(p => p.id === _editandoPedidoId);
-      if (idx >= 0) _pedidos[idx] = {..._pedidos[idx], items, total};
+      if (idx >= 0) {
+        _pedidos[idx] = {
+          ..._pedidos[idx],
+          items: itemsRegistrados,
+          subtotal_productos: subtotalProd,
+          flete: flete,
+          total: totalFinal,
+          tipo_destino: tipoDestino,
+          destinatario_nombre: destNombre,
+          destinatario_telefono: destTel,
+          destinatario_ciudad: ciudadDestinoStr,
+          destinatario_direccion: destDir,
+          destinatario_notas: destNotas
+        };
+      }
       _editandoPedidoId = null;
       closePedidoModal();
       renderKPIs(); renderPedidos();
@@ -2229,7 +2147,7 @@ async function enviarPedido() {
     return;
   }
 
-  // Check stock one more time
+  // Verificar stock de productos
   for (const item of items) {
     const p = (_adminDB.productos||[]).find(x => x.id === item.id);
     if (!p || p.stock < item.cantidad) {
@@ -2237,24 +2155,24 @@ async function enviarPedido() {
     }
   }
 
-  // ── Verification step before sending: show a summary for the distributor to confirm ──
-  const totalPreview = items.reduce((a,i) => a + i.subtotal, 0);
   const resumenTexto = items.map(i => `• ${i.nombre} x${i.cantidad} — ${fmt(i.subtotal)}`).join('\n')
-    + `\n\nTOTAL: ${fmt(totalPreview)}`
-    + `\n\n¿Confirmas que este pedido está correcto? Una vez enviado, solo podrás editarlo si el administrador aún no lo ha confirmado.`;
+    + (esOtraCiudad ? (flete > 0 ? `\n• 🚚 Flete Nacional (a otra ciudad) — ${fmt(5000)}` : `\n• 🎉 Envío Nacional — ¡GRATIS! ($0)`) : '')
+    + `\n\nDESTINO: ` + (esOtraCiudad ? `🌎 ${destNombre} (${ciudadDestinoStr})` : `🚚 A mi domicilio (${_dist?.municipio||'Local'})`)
+    + (esOtraCiudad ? `\nDIRECCIÓN: ${destDir}` : '')
+    + `\n\nTOTAL A PAGAR: ${fmt(totalFinal)}`
+    + (flete > 0 ? `\n(Base comisionable de productos: ${fmt(subtotalProd)} — el flete no suma comisión)` : '')
+    + `\n\n¿Confirmas que este pedido está correcto?`;
   if (!confirm(resumenTexto)) return;
 
   const btn = document.getElementById('btn-enviar');
   btn.disabled = true; btn.textContent = 'Enviando...';
 
   try {
-    const total = items.reduce((a,i) => a + i.subtotal, 0);
     const consecutivo = _pedidos.length + 1;
     const vid  = uid('VTA');
     const fecha = document.getElementById('p-fecha').value;
     const metodo = document.getElementById('p-metodo').value;
 
-    // Write to pedidos_dist — admin will pick this up via onSnapshot
     await PEDIDOS_COL.doc(vid).set({
       id: vid,
       num: '#' + String(consecutivo).padStart(4,'0'),
@@ -2262,33 +2180,59 @@ async function enviarPedido() {
       dist_id:    _dist.id,
       dist_nombre: _dist.nombre,
       fecha,
-      items,
-      total,
+      items: itemsRegistrados,
+      subtotal_productos: subtotalProd,
+      flete: flete,
+      total: totalFinal,
+      tipo_destino: tipoDestino,
+      destinatario_nombre: destNombre,
+      destinatario_telefono: destTel,
+      destinatario_ciudad: ciudadDestinoStr,
+      destinatario_direccion: destDir,
+      destinatario_notas: destNotas,
       metodo_pago:  metodo,
       comprobante_base64: _comprobanteBase64 || null,
       estado_pago:  'pendiente',
       estado_envio: 'preparando',
       canal_venta:  'Distribuidora',
       creado_en:    Date.now(),
-      procesado:    false       // admin will set this to true when integrated
+      procesado:    false
     });
 
-    // Update local state (evita duplicado si el listener en tiempo real ya lo agregó primero)
-    const newPedido = {id:vid, num:'#'+String(consecutivo).padStart(4,'0'),
-      dist_consecutivo:consecutivo, dist_id:_dist.id, dist_nombre:_dist.nombre,
-      fecha, items, total, metodo_pago:metodo, estado_pago:'pendiente',
-      estado_envio:'preparando', procesado:false, comision_pagada:false};
+    const newPedido = {
+      id: vid,
+      num: '#' + String(consecutivo).padStart(4,'0'),
+      dist_consecutivo: consecutivo,
+      dist_id: _dist.id,
+      dist_nombre: _dist.nombre,
+      fecha,
+      items: itemsRegistrados,
+      subtotal_productos: subtotalProd,
+      flete: flete,
+      total: totalFinal,
+      tipo_destino: tipoDestino,
+      destinatario_nombre: destNombre,
+      destinatario_telefono: destTel,
+      destinatario_ciudad: ciudadDestinoStr,
+      destinatario_direccion: destDir,
+      destinatario_notas: destNotas,
+      metodo_pago: metodo,
+      estado_pago: 'pendiente',
+      estado_envio: 'preparando',
+      procesado: false,
+      comision_pagada: false
+    };
+
     if (!_pedidos.find(p => p.id === vid)) _pedidos.unshift(newPedido);
 
-    // Reset "esta venta" KPIs
-    _lastPedidoTotal = total;
+    _lastPedidoTotal = totalFinal;
+    _lastPedidoSubtotal = subtotalProd;
     _lastPedidoComPagada = false;
 
     closePedidoModal();
-    updateNextNum();
     renderKPIs();
     renderPedidos();
-    showToast('✓ Pedido ' + '#'+String(consecutivo).padStart(4,'0') + ' enviado — pendiente de confirmación');
+    showToast('✓ Pedido ' + '#' + String(consecutivo).padStart(4,'0') + ' enviado — pendiente de confirmación');
 
   } catch(e) {
     showToast('⚠ Error al enviar: ' + e.message);
@@ -2297,27 +2241,172 @@ async function enviarPedido() {
     btn.disabled = false; btn.textContent = 'Enviar Pedido ✓';
   }
 }
-</script>
-<!-- ══ MODAL: META ══ -->
-<div class="modal-overlay" id="modal-meta">
-  <div class="modal" style="max-width:380px">
-    <div class="modal-header">
-      <span class="modal-title">🎯 Meta de Ventas Mensual</span>
-      <button class="modal-close" onclick="document.getElementById('modal-meta').classList.remove('open')">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label>Meta mensual (COP)</label>
-        <input type="number" id="meta-valor" placeholder="ej: 500000" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--r);font-family:'Outfit',sans-serif;font-size:14px;outline:none">
-      </div>
-      <div id="meta-progress" style="margin-top:8px"></div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-secondary" onclick="document.getElementById('modal-meta').classList.remove('open')">Cancelar</button>
-      <button class="btn-primary" onclick="guardarMeta()" style="width:auto;margin-top:0;padding:10px 20px">Guardar</button>
-    </div>
-  </div>
-</div>
 
+function editarPedido(pedidoId) {
+  const p = _pedidos.find(x => x.id === pedidoId);
+  if (!p) return;
+  if (p.procesado) { showToast('⚠ Este pedido ya fue confirmado por el administrador'); return; }
+  _editandoPedidoId = pedidoId;
+  _cart = {};
+  (p.items||[]).forEach(i => {
+    if (!i.es_flete && i.id !== 'FLETE-OTRA-CIUDAD' && i.id !== 'FLETE-GRATIS') {
+      _cart[i.id] = i.cantidad;
+    }
+  });
+  _lastPedidoTotal = 0;
+  document.getElementById('p-fecha').value = p.fecha;
+  document.getElementById('p-metodo').value = p.metodo_pago || 'Bre-B';
+  _terminoBusquedaProd = '';
+  document.getElementById('p-buscar-producto').value = '';
+  _comprobanteBase64 = p.comprobante_base64 || null;
+  document.getElementById('p-comprobante').value = '';
+  document.getElementById('p-comprobante-preview').innerHTML = _comprobanteBase64
+    ? `<img src="${_comprobanteBase64}" style="max-width:160px;border-radius:4px;border:1px solid var(--border);display:block;margin-top:4px"><span style="font-size:10px;color:var(--ink3)">Comprobante ya adjunto (sube uno nuevo para reemplazarlo)</span>`
+    : '';
+
+  // Destino
+  const isOtra = p.tipo_destino === 'cliente_otra_ciudad';
+  const rOtra = document.querySelector('input[name="p-tipo-destino"][value="cliente_otra_ciudad"]');
+  const rDist = document.querySelector('input[name="p-tipo-destino"][value="distribuidora"]');
+  if (isOtra && rOtra) rOtra.checked = true;
+  else if (rDist) rDist.checked = true;
+
+  document.getElementById('p-dest-nombre').value = p.destinatario_nombre || '';
+  document.getElementById('p-dest-tel').value = p.destinatario_telefono || '';
+  document.getElementById('p-dest-ciudad').value = p.destinatario_ciudad || '';
+  document.getElementById('p-dest-direccion').value = p.destinatario_direccion || '';
+  document.getElementById('p-dest-notas').value = p.destinatario_notas || '';
+
+  toggleTipoDestinoPedido();
+  renderCatTabs(); renderProductsGrid(); renderOrderSummary();
+  document.getElementById('modal-pedido').classList.add('open');
+  document.querySelector('#modal-pedido .modal-title').textContent = '✏️ Editar Pedido ' + p.num;
+  document.getElementById('btn-enviar').textContent = 'Actualizar Pedido ✓';
+}
+
+// ══════════════════════════════════════════════════════════
+// CATÁLOGO DE RECOMPENSAS & CANJE
+// ══════════════════════════════════════════════════════════
+async function verCatalogoRecompensas() {
+  const overlay = document.createElement('div');
+  overlay.id = 'overlay-catalogo';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:flex;align-items:center;justify-content:center;padding:16px';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:12px;width:100%;max-width:420px;max-height:85vh;overflow-y:auto">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;border-radius:12px 12px 0 0">
+        <div style="font-weight:600;font-size:15px">🎁 Catálogo de Recompensas</div>
+        <button onclick="document.getElementById('overlay-catalogo').remove()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--ink3);line-height:1;padding:4px 8px">✕</button>
+      </div>
+      <div style="padding:12px 20px">
+        <div style="font-size:13px;color:var(--ink3);margin-bottom:10px">Tienes <b style="color:#6a3a7a">${_dist.puntos_disponibles||0} puntos</b> disponibles</div>
+        <div id="catalogo-items">Cargando...</div>
+      </div>
+    </div>`;
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.body.appendChild(overlay);
+
+  try {
+    const snap = await db.collection('recompensas').where('activo','==',true).get();
+    const items = snap.docs.map(d => ({id: d.id, ...d.data()})).sort((a,b)=>a.pvp-b.pvp);
+    const disponibles = (_dist && _dist.puntos_disponibles) ? _dist.puntos_disponibles : 0;
+    document.getElementById('catalogo-items').innerHTML = items.length ? items.map(r => {
+      const pts = Math.ceil(r.pvp / _configComisiones.valor_punto);
+      const alcanza = disponibles >= pts;
+      const faltante = Math.max(0, pts - disponibles);
+      const montoFaltante = faltante * _configComisiones.valor_punto;
+      return `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)">
+        ${r.foto_base64 ? `<img src="${r.foto_base64}" style="width:48px;height:48px;object-fit:cover;border-radius:6px">` : '<div style="width:48px;height:48px;background:var(--bg);border-radius:6px;display:flex;align-items:center;justify-content:center">🎁</div>'}
+        <div style="flex:1"><div style="font-size:13px;font-weight:600">${r.nombre}</div><div style="font-size:11px;color:var(--ink3)">${pts} puntos${!alcanza ? ` · te faltan ${faltante} pts (${fmt(montoFaltante)})` : ''}</div></div>
+        <button class="btn btn-xs" style="background:${alcanza?'var(--sage)':'#8a6c3a'};color:#fff;border:none;padding:5px 10px;border-radius:4px;cursor:pointer" onclick="solicitarCanje('${r.id}','${r.nombre.replace(/'/g,"\\'")}',${pts})">${alcanza?'Canjear':'Completar con $'}</button>
+      </div>`;
+    }).join('') : '<div class="text-muted" style="font-size:13px">Aún no hay recompensas disponibles.</div>';
+  } catch(e) { document.getElementById('catalogo-items').innerHTML = '<div class="alert-strip">Error: '+e.message+'</div>'; }
+}
+
+let _canjeEfectivoComprobante = null;
+async function solicitarCanje(recompensaId, recompensaNombre, puntos) {
+  const disponibles = (_dist && _dist.puntos_disponibles) ? _dist.puntos_disponibles : 0;
+  if (disponibles >= puntos) {
+    if (!confirm(`¿Canjear "${recompensaNombre}" por ${puntos} puntos? Quedará pendiente de aprobación del administrador.`)) return;
+    await _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados: puntos, montoEfectivo: 0, comprobanteEfectivo: null});
+    return;
+  }
+  const faltante = puntos - disponibles;
+  const montoFaltante = faltante * _configComisiones.valor_punto;
+  const overlay = document.createElement('div');
+  overlay.id = 'overlay-canje-efectivo';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2100;display:flex;align-items:center;justify-content:center;padding:16px';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:12px;width:100%;max-width:380px;padding:20px">
+      <div style="font-weight:600;margin-bottom:10px">Completar canje con dinero</div>
+      <div style="font-size:13px;color:#4a4640;margin-bottom:14px">
+        "${recompensaNombre}" cuesta ${puntos} puntos. Tienes ${disponibles}, te faltan <b>${faltante} puntos</b>.
+        Puedes cubrir esa diferencia pagando <b style="color:#8a6c3a">${fmt(montoFaltante)}</b> y subir el comprobante aquí.
+      </div>
+      <div class="form-group"><label>Comprobante de pago</label><input type="file" accept="image/*" onchange="_previewComprobanteCanje(this)"><div id="canje-efectivo-preview" style="margin-top:6px"></div></div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="btn btn-secondary" style="flex:1" onclick="document.getElementById('overlay-canje-efectivo').remove()">Cancelar</button>
+        <button class="btn btn-primary" style="flex:1" onclick="_confirmarCanjeConEfectivo('${recompensaId}','${recompensaNombre.replace(/'/g,"\\'")}',${puntos},${disponibles},${montoFaltante})">Solicitar canje</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+}
+function _previewComprobanteCanje(input) {
+  const file = input.files?.[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, 700/img.width);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width*scale; canvas.height = img.height*scale;
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      _canjeEfectivoComprobante = canvas.toDataURL('image/jpeg', 0.6);
+      document.getElementById('canje-efectivo-preview').innerHTML = `<img src="${_canjeEfectivoComprobante}" style="max-width:140px;border-radius:4px">`;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+async function _confirmarCanjeConEfectivo(recompensaId, recompensaNombre, puntosRequeridos, puntosDisponibles, montoFaltante) {
+  if (!_canjeEfectivoComprobante) { alert('Sube el comprobante de pago antes de continuar'); return; }
+  document.getElementById('overlay-canje-efectivo')?.remove();
+  await _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados: puntosDisponibles, montoEfectivo: montoFaltante, comprobanteEfectivo: _canjeEfectivoComprobante});
+  _canjeEfectivoComprobante = null;
+}
+function consumirLotesFIFO(lotes, puntosAConsumir) {
+  const ordenados = [...(lotes||[])].sort((a,b)=>(a.fecha||'').localeCompare(b.fecha||''));
+  let restante = puntosAConsumir;
+  for (const l of ordenados) {
+    if (restante <= 0) break;
+    if ((l.restantes||0) <= 0) continue;
+    const consumir = Math.min(l.restantes, restante);
+    l.restantes -= consumir;
+    restante -= consumir;
+  }
+  return ordenados;
+}
+async function _ejecutarCanje({recompensaId, recompensaNombre, puntosUsados, montoEfectivo, comprobanteEfectivo}) {
+  try {
+    await db.collection('canjes').add({
+      dist_id: _dist.id, dist_nombre: _dist.nombre,
+      recompensa_id: recompensaId, recompensa_nombre: recompensaNombre,
+      puntos: puntosUsados, monto_efectivo: montoEfectivo || 0,
+      comprobante_efectivo_base64: comprobanteEfectivo || null,
+      fecha: today(), estado: 'pendiente'
+    });
+    const nuevosLotes = consumirLotesFIFO(_dist.puntos_lotes || [], puntosUsados);
+    await DIST_COL.doc(_dist.id).update({
+      puntos_disponibles: firebase.firestore.FieldValue.increment(-puntosUsados),
+      puntos_lotes: nuevosLotes
+    });
+    _dist.puntos_disponibles = (_dist.puntos_disponibles||0) - puntosUsados;
+    _dist.puntos_lotes = nuevosLotes;
+    document.getElementById('overlay-catalogo')?.remove();
+    showToast(montoEfectivo > 0 ? '✓ Canje solicitado con pago adicional' : '✓ Canje solicitado');
+    renderKPIs();
+  } catch(e) { alert('Error al solicitar canje: ' + e.message); }
+}
+</script>
 </body>
 </html>
