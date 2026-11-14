@@ -1,0 +1,106 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.admin == true
+        || exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        || request.auth.token.email == 'frescuranaturalcosmeticos@gmail.com'
+      );
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Colección opcional para registrar UIDs de administradores en Firebase Console
+    match /admins/{adminUid} {
+      allow read: if isOwner(adminUid) || isAdmin();
+      allow write: if false; // Solo editable desde Firebase Console / Admin SDK
+    }
+
+    // Distribuidoras: cada una lee y crea su propio perfil, sin poder inflar puntos ni comisiones
+    match /distribuidores/{uid} {
+      allow get: if isOwner(uid) || isAdmin();
+      allow list: if isAdmin();
+
+      allow create: if isOwner(uid)
+        && request.resource.data.id == uid
+        && request.resource.data.puntos_disponibles == 0
+        && request.resource.data.puntos_historicos == 0
+        && request.resource.data.puntos_lotes.size() == 0
+        && request.resource.data.comision_pagada == false;
+
+      allow update: if isAdmin() || (
+        isOwner(uid)
+        && request.resource.data.id == resource.data.id
+        && request.resource.data.usuario == resource.data.usuario
+        && request.resource.data.comision_pagada == resource.data.comision_pagada
+        && request.resource.data.puntos_historicos == resource.data.puntos_historicos
+        && request.resource.data.puntos_disponibles >= 0
+        && request.resource.data.puntos_disponibles <= resource.data.puntos_disponibles
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // Pedidos de distribuidoras: solo pueden crear/editar sus propios pedidos mientras estén 'pendiente'
+    match /pedidos_dist/{pedidoId} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.dist_id == request.auth.uid);
+
+      allow create: if isAdmin() || (
+        isSignedIn()
+        && request.resource.data.dist_id == request.auth.uid
+        && request.resource.data.estado == 'pendiente'
+        && request.resource.data.comision_pagada == false
+        && request.resource.data.total >= 70000
+      );
+
+      allow update: if isAdmin() || (
+        isSignedIn()
+        && resource.data.dist_id == request.auth.uid
+        && request.resource.data.dist_id == request.auth.uid
+        && resource.data.estado == 'pendiente'
+        && request.resource.data.estado == 'pendiente'
+        && request.resource.data.comision_pagada == false
+      );
+
+      allow delete: if isAdmin();
+    }
+
+    // Canjes de recompensas: creación por la distribuidora en estado 'pendiente'; aprobación solo admin
+    match /canjes/{canjeId} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.dist_id == request.auth.uid);
+
+      allow create: if isAdmin() || (
+        isSignedIn()
+        && request.resource.data.dist_id == request.auth.uid
+        && request.resource.data.estado == 'pendiente'
+      );
+
+      allow update, delete: if isAdmin();
+    }
+
+    // Configuración global y catálogo admin: lectura para usuarias autenticadas, escritura solo admin
+    match /admin/{docId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // Catálogo de recompensas: lectura autenticada, escritura solo admin
+    match /recompensas/{recId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+
+    // Bloqueo por defecto para cualquier otra colección
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
