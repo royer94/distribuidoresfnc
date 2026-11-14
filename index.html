@@ -1536,11 +1536,65 @@ async function guardarMeta() {
 // ══════════════════════════════════════════════════════════
 // DATA LOADING & REAL-TIME
 // ══════════════════════════════════════════════════════════
+const FNC_SYNC_URL = 'https://www.frescuranaturalcosmeticos.com/api/catalogo_distribuidores.php';
+
+async function syncCatalogoDesdeWeb() {
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 4000);
+    const res = await fetch(FNC_SYNC_URL, { signal: ctrl.signal, cache: 'no-store' });
+    clearTimeout(timer);
+    if (!res.ok) return;
+    const json = await res.json();
+    if (!json || !json.success || !Array.isArray(json.products) || !json.products.length) return;
+
+    // 1. Actualizar referencia visual oficial en el portal
+    FNC_OFFICIAL_CATALOG.length = 0;
+    json.products.forEach(p => FNC_OFFICIAL_CATALOG.push({
+      id: p.id, name: p.name, price: p.price, slug: p.slug,
+      cat: p.cat, variants: p.variants || [], description: p.description || ''
+    }));
+    try { renderCatalogoOficialRef(); } catch(e) {}
+
+    // 2. Sincronizar precios, promos, stock y productos nuevos en _adminDB.productos (sin doTERRA)
+    if (!_adminDB) _adminDB = { productos: [] };
+    if (!Array.isArray(_adminDB.productos)) _adminDB.productos = [];
+    const byId = new Map(_adminDB.productos.map(x => [x.id, x]));
+    json.products.forEach(wp => {
+      const ex = byId.get(wp.id);
+      if (ex) {
+        ex.precio = wp.precio;
+        ex.stock = wp.stock;
+        ex.activo = true;
+        ex.descuento_pct = wp.descuento_pct || 0;
+        ex.promo_desde = wp.promo_desde || null;
+        ex.promo_hasta = wp.promo_hasta || null;
+      } else {
+        _adminDB.productos.push({
+          id: wp.id, nombre: wp.nombre, categoria: wp.categoria,
+          precio: wp.precio, stock: wp.stock, activo: true,
+          descuento_pct: wp.descuento_pct || 0,
+          promo_desde: wp.promo_desde || null,
+          promo_hasta: wp.promo_hasta || null
+        });
+      }
+    });
+    // Ocultar cualquier producto doTERRA o Club si existía en admin/db
+    _adminDB.productos = _adminDB.productos.filter(p => {
+      const n = ((p.nombre || '') + ' ' + (p.id || '')).toLowerCase();
+      return p.id !== 'CLUB-001' && !n.includes('doterra') && !n.includes('dōterra');
+    });
+  } catch(e) {
+    console.warn('[syncWeb] usando respaldo local/Firestore:', e.message);
+  }
+}
+
 async function loadAdminDB() {
   try {
     const snap = await ADMIN_DOC.get();
     if (snap.exists) _adminDB = JSON.parse(snap.data().data);
   } catch(e) { console.warn('loadAdminDB:', e.message); }
+  await syncCatalogoDesdeWeb();
 }
 
 async function loadPedidos() {
