@@ -98,6 +98,12 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // Pedidos de la tienda web (fn.js): cualquier cliente puede crear su pedido; solo admin lee/modifica
+    match /pedidos_web/{pedidoWebId} {
+      allow create: if true;
+      allow read, update, delete: if isAdmin();
+    }
+
     // Bloqueo por defecto para cualquier otra colección
     match /{document=**} {
       allow read, write: if false;
